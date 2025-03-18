@@ -12,7 +12,7 @@
 
 NAME = minishell
 SOURCES = \
-	main.c
+	srcs/main.c
 OBJECTS = $(SOURCES:.c=.o)
 
 MAKE_PRINTF = make -C ./lib/libft
