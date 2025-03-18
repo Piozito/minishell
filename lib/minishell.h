@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <stdlib.h>
+#include <signal.h>
 # include <unistd.h>
 # include <X11/keysym.h>
 # include <X11/X.h>
@@ -23,6 +24,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <readline/readline.h>
+# include <sys/wait.h>
 # include "./libft/libft.h"
 
 #endif
