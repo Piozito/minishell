@@ -12,14 +12,14 @@
 
 NAME = minishell
 SOURCES = \
-
+	main.c
 OBJECTS = $(SOURCES:.c=.o)
 
-MAKE_PRINTF = make -C ./lib/ft_printf
+MAKE_PRINTF = make -C ./lib/libft
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./minilibx-linux
-ADLIBS = ./lib/ft_printf/libftprintf.a
+CFLAGS = -Wall -Wextra -Werror
+ADLIBS = ./lib/libft/libft.a
 
 all: $(NAME)
 
