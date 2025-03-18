@@ -36,13 +36,14 @@
 
 typedef struct s_node
 {
-    t_nmode
+    t_node TYPE;
+    t_node LEFT;
+    t_node RIGHT;
+    char PIPE;
+    char ECHO;
+    char CD;
+    int VALUE;
+    
 }				t_node;
-
-typedef struct s_nmode
-{
-
-}				t_nmode;
-
 
 #endif
