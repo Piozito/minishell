@@ -27,4 +27,15 @@
 # include <sys/wait.h>
 # include "./libft/libft.h"
 
+typedef struct s_node
+{
+    t_nmode
+}				t_node;
+
+typedef struct s_nmode
+{
+
+}				t_nmode;
+
+
 #endif
