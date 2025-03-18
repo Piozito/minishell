@@ -13,18 +13,25 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <stdlib.h>
-#include <signal.h>
-# include <unistd.h>
 # include <X11/keysym.h>
 # include <X11/X.h>
 # include <stdio.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# include <stdio.h>
 # include <readline/readline.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <signal.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
+# include <dirent.h>
+# include <string.h>
+# include <sys/ioctl.h>
+# include <terminos.h>
+# include <curses.h>
 # include "./libft/libft.h"
 
 typedef struct s_node
