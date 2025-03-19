@@ -30,23 +30,24 @@
 # include <dirent.h>
 # include <string.h>
 # include <sys/ioctl.h>
-# include <terminos.h>
+# include <termios.h>
 # include <curses.h>
-# include "./libft/libft.h"
-
-typedef struct s_node
-{
-    t_mode TYPE;
-    void *LEFT;
-    void *RIGHT;
-}				t_node;
+# include "./pipex/libft/libft.h"
+# include "./pipex/pipex.h"
 
 typedef struct s_type
 {
     char PIPE;
-    char ECHO;
+    char ECO; 
     char CD;
     int VALUE;
-}				t_type;
+}               t_type;
+
+typedef struct s_node
+{
+    char *TYPE;
+    void *LEFT;
+    void *RIGHT;
+}				t_node;
 
 #endif

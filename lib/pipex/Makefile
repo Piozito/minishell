@@ -1,28 +1,47 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/03/19 13:30:31 by aaleixo-          #+#    #+#              #
+#    Updated: 2025/03/19 13:30:31 by aaleixo-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+
+
 NAME = pipex
+SOURCES = \
+	srcs/pipex.c srcs/utils.c
+OBJECTS = $(SOURCES:.c=.o)
 
-CC = gcc
+MAKE_PRINTF = make -C ./libft
 
-CFLAGS = -Werror -Wall -Wextra
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+ADLIBS = ./libft/libft.a
 
-RM = rm -rf
+all: $(NAME)
 
-SRCS = 	src/pipex.c \
-		src/utils.c \
-		lib/libft/libft.a \
+$(ADLIBS):
+	$(MAKE_PRINTF)
 
-$(NAME) :
-	make all -C ./lib/libft
-	gcc $(CFLAGS) $(SRCS) -o $(NAME)
+$(NAME): $(OBJECTS) $(ADLIBS)
+	$(CC) $(CFLAGS) $(OBJECTS) $(ADLIBS) -o $(NAME)
 
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-all : $(NAME)
+clean:
+	rm -f $(OBJECTS)
+	$(MAKE_PRINTF) clean
 
-fclean : clean
-	$(RM) $(NAME)
-	make fclean -C ./lib/libft
+fclean: clean
+	rm -f $(NAME)
+	$(MAKE_PRINTF) fclean
 
-clean :
-	$(RM) $(NAME)
-	make clean -C ./lib/libft
+re: fclean all
 
-re : fclean all
+.PHONY: all clean fclean re
