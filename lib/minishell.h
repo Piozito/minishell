@@ -36,14 +36,17 @@
 
 typedef struct s_node
 {
-    t_node TYPE;
-    t_node LEFT;
-    t_node RIGHT;
+    t_mode TYPE;
+    void *LEFT;
+    void *RIGHT;
+}				t_node;
+
+typedef struct s_type
+{
     char PIPE;
     char ECHO;
     char CD;
     int VALUE;
-    
-}				t_node;
+}				t_type;
 
 #endif
