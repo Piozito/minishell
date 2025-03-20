@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:10:40 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/03/20 14:45:10 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:53:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-int pwd(void)
+int ft_pwd()
 {
     char cwd[MAX_PATH];
 

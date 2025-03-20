@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/20 14:30:49 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/03/20 16:53:33 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -40,7 +41,7 @@
 typedef struct s_type
 {
     char PIPE;
-    char ECO;
+    char ECO; 
     char CD;
     int VALUE;
 }               t_type;
@@ -51,5 +52,9 @@ typedef struct s_node
     void *LEFT;
     void *RIGHT;
 }				t_node;
+
+void ft_echo(char **args);
+int ft_pwd();
+int ft_cd (char *path);
 
 #endif

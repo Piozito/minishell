@@ -6,13 +6,14 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/18 16:13:04 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/03/18 16:13:04 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/03/20 16:52:09 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 SOURCES = \
-	srcs/main.c
+	srcs/main.c srcs/builtins/echo.c \
+	srcs/builtins/pwd.c
 OBJECTS = $(SOURCES:.c=.o)
 
 MAKE_PRINTF = make -C ./lib/pipex/
@@ -27,7 +28,7 @@ $(ADLIBS):
 	$(MAKE_PRINTF)
 
 $(NAME): $(OBJECTS) $(ADLIBS)
-	$(CC) $(CFLAGS) $(OBJECTS) $(ADLIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJECTS) $(ADLIBS) -o $(NAME) -lreadline
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

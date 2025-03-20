@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:00:22 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/20 12:51:34 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:15:53 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../../lib/minishell.h"
 
 int arg_c(char **args)
 {
@@ -20,29 +22,29 @@ int arg_c(char **args)
     return (size);
 }
 
-int ft_echo(char **args)
+void ft_echo(char **args)
 {
-    int i;
+	int j;
     int n;
 
-    i = 1;
-    n = 0;
+	j = 1;
+    n = 1;
     if(arg_c(args) > 1)
     {
-        if (args[1][0] == "-" && args[1][1] == "n")
+        if (args[j][0] == '-' && args[j][1] == 'n' 
+		&& args[j][2] == '\0')
         {
-            n = 1;
-            i++;
+            n = 0;
+			j++;
         }
-        while (args[i])
+        while (args[j])
         {
-            ft_putstr_fd(args[i], 1);
-            if (args[i + 1])
-                write(1, " ", 1);
-            i++;
+            printf("%s", args[j]);
+            if (args[j + 1])
+                printf(" ");
+            j++;
         }
     }
-    if (n == 0)
-        write(1, "\n", 1);
-    return (1);
+    if (n == 1)
+        printf("\n");
 }
