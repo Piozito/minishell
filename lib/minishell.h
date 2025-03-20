@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2024/12/28 15:48:26 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/20 14:30:49 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@
 # include "./pipex/libft/libft.h"
 # include "./pipex/pipex.h"
 
+#define MAX_PATH 1024
+
 typedef struct s_type
 {
     char PIPE;
-    char ECO; 
+    char ECO;
     char CD;
     int VALUE;
 }               t_type;
