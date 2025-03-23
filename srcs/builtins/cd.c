@@ -32,15 +32,11 @@ static char *get_cd_path(t_env *pwd, char *path)
     if (!path || !*path)
     {
         home = ft_getenv(pwd->env, "HOME");
-        if (!home)
-            write(1, "cd: HOME not set\n", 17);
         return (home);
     }
     if (ft_strcmp(path, "-") == 0)
     {
         old_pwd = ft_getenv(pwd->env, "OLDPWD");
-        if (!old_pwd)
-            write(1, "cd: OLDPWD not set\n", 19);
         return (old_pwd);
     }
     return (path);
