@@ -12,7 +12,7 @@
 
 #include "../../lib/minishell.h"
 
-int arg_c(char **args)
+static int arg_c(char **args)
 {
     int size;
 

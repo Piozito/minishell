@@ -38,6 +38,12 @@
 
 #define MAX_PATH 1024
 
+typedef struct s_env
+{
+    char **env;
+
+} t_env;
+
 typedef struct s_type
 {
     char PIPE;
