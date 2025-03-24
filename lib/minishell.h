@@ -6,13 +6,15 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/24 12:21:05 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/24 14:17:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "./pipex/libft/libft.h"
+# include "./pipex/pipex.h"
 # include <X11/keysym.h>
 # include <X11/X.h>
 # include <stdio.h>
@@ -33,14 +35,13 @@
 # include <sys/ioctl.h>
 # include <termios.h>
 # include <curses.h>
-# include "./pipex/libft/libft.h"
-# include "./pipex/pipex.h"
 
 #define MAX_PATH 1024
 
 typedef struct s_env
 {
     char **env;
+	char *path;
 } t_env;
 
 typedef struct s_type

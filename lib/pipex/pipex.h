@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 16:29:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/24 12:28:25 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/24 14:10:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char    *my_getenv(char *cmd, char **env);
 char    *get_path(char *cmd, char **env);
 int     open_file(char *file, int read);
 void    exit_handler(int n_exit);
+void	exec(char *cmd, char **env);
 
 
 #endif
