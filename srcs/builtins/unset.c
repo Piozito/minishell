@@ -18,12 +18,10 @@ static void remove_env_var(t_env *env, const char *var)
     int j;
 
     i = 0;
-    while (env->env[i])
-    {
         if (ft_strncmp(env->env[i], var, ft_strlen(var)) == 0
             && env->env[i][ft_strlen(var)] == '=')
         {
-            free(env->env[i]);
+            env->env[i] = NULL;
             j = i;
             while (env->env[j])
             {
@@ -33,7 +31,7 @@ static void remove_env_var(t_env *env, const char *var)
             return ;
         }
         i++;
-    }
+    
 }
 
 void ft_unset(t_env *env, char **args)
