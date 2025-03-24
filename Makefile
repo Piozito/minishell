@@ -6,14 +6,16 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/18 16:13:04 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/03/20 16:52:09 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/03/24 12:21:50 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 SOURCES = \
 	srcs/main.c srcs/builtins/echo.c \
-	srcs/builtins/pwd.c
+	srcs/builtins/pwd.c srcs/builtins/cd.c \
+	srcs/builtins/env.c srcs/builtins/exit.c \
+	srcs/builtins/unset.c
 OBJECTS = $(SOURCES:.c=.o)
 
 MAKE_PRINTF = make -C ./lib/pipex/

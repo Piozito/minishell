@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/03/20 16:53:03 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/24 12:28:53 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ static char *get_cd_path(t_env *pwd, char *path)
 
     if (!path || !*path)
     {
-        home = ft_getenv(pwd->env, "HOME");
+        home = my_getenv("HOME", pwd->env);
         return (home);
     }
     if (ft_strcmp(path, "-") == 0)
     {
-        old_pwd = ft_getenv(pwd->env, "OLDPWD");
+        old_pwd = my_getenv("OLDPWD", pwd->env);
         return (old_pwd);
     }
     return (path);
@@ -44,10 +44,10 @@ static char *get_cd_path(t_env *pwd, char *path)
 
 static void update_pwd(t_env *pwd, char *old_pwd)
 {
-    char    new_pwd[PATH_MAX];
+    char    new_pwd[MAX_PATH];
     char    *tmp;
 
-    if (getcwd(new_pwd, PATH_MAX))
+    if (getcwd(new_pwd, MAX_PATH))
     {
         tmp = ft_strjoin("OLDPWD=", old_pwd);
         ft_putenv(pwd, tmp);
@@ -60,12 +60,12 @@ static void update_pwd(t_env *pwd, char *old_pwd)
         perror("getcwd");
 }
 
-void    cd(t_env *mini, char **args)
+void    ft_cd(t_env *mini, char **args)
 {
-    char    old_pwd[PATH_MAX];
+    char    old_pwd[MAX_PATH];
     char    *path;
 
-    if (!getcwd(old_pwd, PATH_MAX))
+    if (!getcwd(old_pwd, MAX_PATH))
         return (perror("getcwd"));
     path = get_cd_path(mini, args[1]);
     if (!path)

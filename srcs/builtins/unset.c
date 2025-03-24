@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/23 19:19:52 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/24 12:17:51 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-static void remove_env_var(t_minishell *env, const char *var)
+static void remove_env_var(t_env *env, const char *var)
 {
     int i;
     int j;
@@ -36,7 +36,7 @@ static void remove_env_var(t_minishell *env, const char *var)
     }
 }
 
-void unset(t_env *env, char **args)
+void ft_unset(t_env *env, char **args)
 {
     int i;
 

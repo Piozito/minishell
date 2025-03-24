@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 17:46:58 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/23 17:46:58 by marvin           ###   ########.fr       */
+/*   Updated: 2025/03/24 12:16:44 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-void    env(t_env *mini)
+void    ft_env(t_env *mini)
 {
     int     i;
     char    **env;
