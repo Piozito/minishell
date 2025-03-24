@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 17:41:07 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/24 16:21:04 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/24 16:44:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,24 +124,7 @@ int main(int argc, char **argv, char **envp)
 			else if(ft_strcmp(args[0], "unset") == 0)
 				ft_unset(&cmds, args);
 			else
-			{
-				pid_t pid = fork();
-				if (pid == 0)
-				{
-					// Child process
-					exec(*args, cmds.env);
-				}
-				else if (pid > 0)
-				{
-					// Parent process
-					waitpid(pid, NULL, 0);
-				}
-				else
-				{
-					// Fork failed
-					perror("fork");
-				}
-			}
+				exec(*args, cmds.env);
 			free(input);
 		}
     }
