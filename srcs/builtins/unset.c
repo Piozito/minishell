@@ -15,23 +15,25 @@
 static void remove_env_var(t_env *env, const char *var)
 {
     int i;
-    int j;
 
+    if (!env || !env->env || !var)
+        return;
     i = 0;
-        if (ft_strncmp(env->env[i], var, ft_strlen(var)) == 0
-            && env->env[i][ft_strlen(var)] == '=')
+    while (env->env[i])
+    {
+        if (ft_strncmp(env->env[i], var, ft_strlen(var);) == 0
+            && env->env[i][ft_strlen(var);] == '=')
         {
-            env->env[i] = NULL;
-            j = i;
-            while (env->env[j])
+            free(env->env[i]);
+            while (env->env[i])
             {
-                env->env[j] = env->env[j + 1];
-                j++;
+                env->env[i] = env->env[i + 1];
+                i++;
             }
-            return ;
+            return;
         }
         i++;
-    
+    }
 }
 
 void ft_unset(t_env *env, char **args)
