@@ -21,8 +21,8 @@ static void remove_env_var(t_env *env, const char *var)
     i = 0;
     while (env->env[i])
     {
-        if (ft_strncmp(env->env[i], var, ft_strlen(var);) == 0
-            && env->env[i][ft_strlen(var);] == '=')
+        if (ft_strncmp(env->env[i], var, ft_strlen(var)) == 0
+            && env->env[i][ft_strlen(var)] == '=')
         {
             free(env->env[i]);
             while (env->env[i])

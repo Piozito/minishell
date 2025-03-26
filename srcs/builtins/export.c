@@ -16,15 +16,19 @@ static int is_valid(char *str)
 {
     if (!str || (!ft_isalpha(*str) && *str != '_'))
         return (0);
-    while (*++str)
+    while (*str && *str != '=')
+    {
         if (!ft_isalnum(*str) && *str != '_')
             return (0);
+        str++;
+    }
     return (1);
 }
 
 static void update_env(t_env *env, char *arg)
 {
     int i;
+    int j;
     char **new_env
 
     i = 0;
