@@ -123,6 +123,8 @@ int main(int argc, char **argv, char **envp)
 				ft_exit(args);
 			else if(ft_strcmp(args[0], "unset") == 0)
 				ft_unset(&cmds, args);
+			else if(ft_strcmp(args[0], "export") == 0)
+				ft_export(&cmds, args);
 			else
 				exec(*args, cmds.env);
 			free(input);

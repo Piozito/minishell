@@ -65,5 +65,6 @@ void	ft_cd(t_env *mini, char **args);
 void    ft_env(t_env *mini);
 void 	ft_exit(char **args);
 void 	ft_unset(t_env *env, char **args);
+void 	ft_export(t_env *env, char **args);
 
 #endif

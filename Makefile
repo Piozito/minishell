@@ -15,7 +15,8 @@ SOURCES = \
 	srcs/main.c srcs/builtins/echo.c \
 	srcs/builtins/pwd.c srcs/builtins/cd.c \
 	srcs/builtins/env.c srcs/builtins/exit.c \
-	srcs/builtins/unset.c
+	srcs/builtins/unset.c\
+	srcs/builtins/export.c
 OBJECTS = $(SOURCES:.c=.o)
 
 MAKE_PRINTF = make -C ./lib/pipex/
