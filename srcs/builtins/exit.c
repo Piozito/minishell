@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/24 16:00:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/27 15:52:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ static int is_numeric(const char *str)
     return (1);
 }
 
-void ft_exit(char **args)
+void ft_exit(t_env *cmds)
 {
     int exit_status;
 
-    if (args[1])
+    if (cmds->arg[0])
     {
-        if (!is_numeric(args[1]))
+        if (!is_numeric(cmds->arg[0]))
             exit(2);
-        if (args[2])
+        if (cmds->arg[1])
             return ;
-        exit_status = ft_atoi(args[1]);
+        exit_status = ft_atoi(cmds->arg[0]);
         exit(exit_status % 256);
     }
     exit(0);

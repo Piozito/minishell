@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/24 12:17:51 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/27 15:58:31 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,15 @@ static void remove_env_var(t_env *env, const char *var)
     }
 }
 
-void ft_unset(t_env *env, char **args)
+void ft_unset(t_env *cmds)
 {
     int i;
 
     i = 1;
-    while (args[i])
+    while (cmds->arg[i])
     {
-        if (ft_strcmp(args[i], "_") != 0)
-            remove_env_var(env, args[i]);
+        if (ft_strcmp(cmds->arg[i], "_") != 0)
+            remove_env_var(cmds, cmds->arg[i]);
         i++;
     }
 }

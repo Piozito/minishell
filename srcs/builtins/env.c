@@ -6,23 +6,20 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 17:46:58 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/24 12:16:44 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/27 15:51:27 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-void    ft_env(t_env *mini)
+void    ft_env(t_env *cmds)
 {
     int     i;
-    char    **env;
 
     i = 0;
-    env = mini->env;
-    while (env[i])
+    while (cmds->env[i])
     {
-        write(1, env[i], ft_strlen(env[i]));
-        write(1, "\n", 1);
+        printf("%s\n", cmds->env[i]);
         i++;
     }
 }

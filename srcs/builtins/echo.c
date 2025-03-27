@@ -6,41 +6,30 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:00:22 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/24 12:17:30 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/27 15:38:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-static int arg_c(char **args)
+void ft_echo(t_env *cmds)
 {
-    int size;
-
-    size = 0;
-    while (args[size])
-        size++;
-    return (size);
-}
-
-void ft_echo(char **args)
-{
-	int j;
+    int j;
     int n;
 
-	j = 1;
+    j = 0;
     n = 1;
-    if(arg_c(args) > 1)
+    if (cmds->arg[0] != NULL)
     {
-        if (args[j][0] == '-' && args[j][1] == 'n' 
-		&& args[j][2] == '\0')
+        if (cmds->flag[0] != NULL && cmds->flag[0][0] != '\0')
         {
-            n = 0;
-			j++;
+            if (cmds->flag[j] && cmds->flag[j][0] == '-' && cmds->flag[j][1] == 'n' && cmds->flag[j][2] == '\0')
+                n = 0;
         }
-        while (args[j])
+        while (cmds->arg[j])
         {
-            printf("%s", args[j]);
-            if (args[j + 1])
+            printf("%s", cmds->arg[j]);
+            if (cmds->arg[j + 1] != NULL)
                 printf(" ");
             j++;
         }
