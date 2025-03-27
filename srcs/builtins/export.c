@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/26 15:45:02 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:09:50 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ static void update_env(t_env *env, char *arg)
     free(arg);
 }
 
-void ft_export(t_env *env, char **args)
+void ft_export(t_env *env)
 {
     int i;
 
-    if (!args[1])
+    if (!env->arg[1])
     {
         i = 0;
         while (env->env[i])
@@ -67,10 +67,10 @@ void ft_export(t_env *env, char **args)
         return;
     }
     i = 1;
-    while (args[i])
+    while (env->arg[i])
     {
-        if (is_valid(args[i]))
-            update_env(env, args[i]);
+        if (is_valid(env->arg[i]))
+            update_env(env, env->arg[i]);
         i++;
     }
 }

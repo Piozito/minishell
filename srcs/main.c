@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 17:41:07 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/27 16:00:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/27 17:07:35 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,72 @@ char	*my_get_path(char *cmd)
 	return (NULL);
 }
 
-void	exec(char *cmd, char **env)
+void	ft_exec(t_env *command)
 {
-	char	**s_cmd;
+	pid_t	pid;
+	int		status;
 	char	*path;
+	int		arg_count;
+	char	**exec_args;
+	int		i;
+	int		j;
 
-	s_cmd = ft_split(cmd, ' ');
-	path = my_get_path(s_cmd[0]);
+	i = 0;
+	arg_count = 0;
+	while (command->arg[arg_count] != NULL)
+		arg_count++;
+	while (command->flag[i] != NULL)
+	{
+		arg_count++;
+		i++;
+	}
+	exec_args = malloc((arg_count + 2) * sizeof(char *));
+	if (!exec_args)
+	{
+		perror("malloc");
+		exit(1);
+	}
+	exec_args[0] = command->cmd;
+	i = 0;
+	while (command->flag[i] != NULL)
+	{
+		exec_args[i + 1] = command->flag[i];
+		i++;
+	}
+	j = 0;
+	while (command->arg[j] != NULL)
+	{
+		exec_args[i + 1] = command->arg[j];
+		j++;
+		i++;
+	}
+	exec_args[arg_count + 1] = NULL;
+	path = my_get_path(command->cmd);
 	if (path == NULL)
 	{
-		printf("command not found: \"%s\"\n", s_cmd[0]);
-		ft_free_tab(s_cmd);
-		exit(127);
+		printf("command not found: \"%s\"\n", command->cmd);
+		free(exec_args);
+		return ;
 	}
-	if (execve(path, s_cmd, env) == -1)
+	pid = fork();
+	if (pid == -1)
 	{
-		perror("execve");
-		ft_free_tab(s_cmd);
-		exit(127);
+		perror("fork");
+		free(exec_args);
+		exit(1);
 	}
+	else if (pid == 0)
+	{
+		if (execve(path, exec_args, command->env) == -1)
+		{
+			perror("execve");
+			free(exec_args);
+			exit(127);
+		}
+	}
+	else
+		waitpid(pid, &status, 0);
+	free(exec_args);
 }
 
 void ft_handler()
@@ -85,71 +132,44 @@ void ft_handler()
 	rl_redisplay();
 }
 
-void parsing(const char *input, t_env commands[], int num_commands) 
+void parsing(const char *input, t_env *cmd)
 {
-    char **tokens = ft_split(input, '|');
-    num_commands = 0;
-    int i = 0;
-    while (tokens[i] != NULL && num_commands < MAX_COMMANDS)
+	char **subtokens = ft_split(input, ' ');
+	int flag_index = 0;
+	int arg_index = 0;
+	int command_set = 0;
+	int j = 0;
+
+	cmd->cmd = NULL;
+	for (int i = 0; i < MAX_FLAGS; i++)
+		cmd->flag[i] = NULL;
+	for (int i = 0; i < MAX_ARGS; i++)
+		cmd->arg[i] = NULL;
+
+	while (subtokens[j] != NULL)
 	{
-        t_env *cmd = &commands[(num_commands)++];
-        char **subtokens = ft_split(tokens[i], ' ');
-        int flag_index = 0;
-        int arg_index = 0;
-        int command_set = 0;
-        int j = 0;
-        while (subtokens[j] != NULL)
+		if (!command_set)
 		{
-            if (!command_set)
-			{
-                cmd->cmd = ft_strdup(subtokens[j]);
-                command_set = 1;
-            } 
-			else if (subtokens[j][0] == '-') 
-                cmd->flag[flag_index++] = ft_strdup(subtokens[j]);
-			else
-                cmd->arg[arg_index++] = ft_strdup(subtokens[j]);
-            j++;
-        }
-        cmd->flag[flag_index] = NULL;
-        cmd->arg[arg_index] = NULL;
-        int k = 0;
-        while (subtokens[k] != NULL)
-		{
-            free(subtokens[k]);
-            k++;
-        }
-        free(subtokens);
-        i++;
-    }
-    i = 0;
-    while (tokens[i] != NULL) {
-        free(tokens[i]);
-        i++;
-    }
-    free(tokens);
-}
+			cmd->cmd = ft_strdup(subtokens[j]);
+			command_set = 1;
+		}
+		else if (subtokens[j][0] == '-')
+			cmd->flag[flag_index++] = ft_strdup(subtokens[j]);
+		else
+			cmd->arg[arg_index++] = ft_strdup(subtokens[j]);
+		j++;
+	}
+	cmd->flag[flag_index] = NULL;
+	cmd->arg[arg_index] = NULL;
 
-int space_check(const char *input)
-{
-    int i;
-    int check;
-
-    i = 0;
-    check = 0;
-    while (input[i] != '\0')
-    {
-        if (input[i] == ' ')
-            check++;
-        i++;
-    }
-    return check;
+	for (int k = 0; subtokens[k] != NULL; k++)
+		free(subtokens[k]);
+	free(subtokens);
 }
 
 int main(int argc, char **argv, char **envp)
 {
     char *input;
-
 	(void)argc;
 	(void)argv;
 	if(argc != 1)
@@ -169,7 +189,7 @@ int main(int argc, char **argv, char **envp)
 			exit(0);
 		else if(*input != '\0')
 		{
-			parsing(input, &cmds, space_check(input));
+			parsing(input, &cmds);
 			add_history(input);
 			if(ft_strcmp(cmds.cmd, "echo") == 0)
 				ft_echo(&cmds);
@@ -183,10 +203,10 @@ int main(int argc, char **argv, char **envp)
 				ft_exit(&cmds);
 			else if(ft_strcmp(cmds.cmd, "unset") == 0)
 				ft_unset(&cmds);
-			else if(ft_strcmp(cmds.cmd, "export") == 0)
-				ft_export(&cmds);
+			/* else if(ft_strcmp(cmds.cmd, "export") == 0)
+				ft_export(&cmds); */
 			else
-				exec(cmds.cmd, cmds.env);
+				ft_exec(&cmds);
 			free(input);
 		}
     }
