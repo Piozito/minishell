@@ -24,7 +24,6 @@ static void remove_env_var(t_env *env, const char *var)
         if (ft_strncmp(env->env[i], var, ft_strlen(var)) == 0
             && env->env[i][ft_strlen(var)] == '=')
         {
-            free(env->env[i]);
             while (env->env[i])
             {
                 env->env[i] = env->env[i + 1];
@@ -40,7 +39,7 @@ void ft_unset(t_env *cmds)
 {
     int i;
 
-    i = 1;
+    i = 0;
     while (cmds->arg[i])
     {
         if (ft_strcmp(cmds->arg[i], "_") != 0)

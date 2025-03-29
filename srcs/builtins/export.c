@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/27 16:09:50 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/24 21:36:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
+
+static int is_chr(const char *str, int c)
+{
+    int i = 0;
+    while (str[i])
+    {
+        if (str[i] == c)
+            return (i + 1);
+        i++;
+    }
+    return (0);
+}
 
 static int is_valid(char *str)
 {
@@ -27,50 +39,76 @@ static int is_valid(char *str)
 
 static void update_env(t_env *env, char *arg)
 {
-    int i;
-    int j;
+    int i = 0;
+    int j = 0;
     char **new_env;
-
-    i = 0;
-    j = 0;
-    while (env->env[i] && ft_strncmp(env->env[i], arg, ft_strlen(arg)))
+    
+    while (env->env[i] && ft_strncmp(env->env[i], arg, is_chr(arg, '=')))
         i++;
+    
     if (env->env[i])
     {
-        free(env->env[i]);
-        env->env[i] = ft_strdup(arg);
+        if (is_chr(arg, '='))
+        {
+            env->env[i] = arg;
+        }
+        else
+            free(arg);
     }
     else
     {
         new_env = malloc((i + 2) * sizeof(char *));
         if (!new_env)
+        {
             return;
-        while (++j < i)
+        }
+        while (env->env[j])
+        {
             new_env[j] = env->env[j];
-        new_env[i] = ft_strdup(arg);
-        new_env[i + 1] = NULL;
-        free(env->env);
+            j++;
+        }
+        new_env[j] = arg;
+        new_env[j + 1] = NULL;
         env->env = new_env;
     }
-    free(arg);
 }
 
 void ft_export(t_env *env)
 {
     int i;
 
-    if (!env->arg[1])
+    if (!env->arg[0])
     {
         i = 0;
         while (env->env[i])
-            printf("%s\n", env->env[i++]);
+            printf("declare -x %s\n", env->env[i++]);
         return;
     }
-    i = 1;
+    i = 0;
     while (env->arg[i])
     {
         if (is_valid(env->arg[i]))
-            update_env(env, env->arg[i]);
+        {
+            char *eq = ft_strchr(env->arg[i], '=');
+            if (eq)
+            {
+                update_env(env, ft_strdup(env->arg[i]));
+            }
+            else
+            {
+                char *tmp = ft_strjoin(env->arg[i], "=");
+                if (tmp)
+                {
+                    update_env(env, tmp);
+                }
+            }
+        }
+        else
+        {
+            printf("export: `%s': not a valid identifier\n", env->arg[i]);
+        }
         i++;
     }
 }
+
+
