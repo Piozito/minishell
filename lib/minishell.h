@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/27 15:59:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/31 11:20:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,9 @@ void    ft_env(t_env *cmds);
 void 	ft_exit(t_env *cmds);
 void 	ft_unset(t_env *env);
 void    ft_export(t_env *env);
+void	ft_exec(t_env *command);
+void	parsing(const char *input, t_env *cmd);
+void	ft_free_tab(char **tab);
+char	*my_get_path(char *cmd);
 
 #endif
