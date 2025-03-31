@@ -55,8 +55,8 @@ int main(int argc, char **argv, char **envp)
 				ft_exit(&cmds);
 			else if(ft_strcmp(cmds.cmd, "unset") == 0)
 				ft_unset(&cmds);
-			/* else if(ft_strcmp(cmds.cmd, "export") == 0)
-				ft_export(&cmds); */
+			else if(ft_strcmp(cmds.cmd, "export") == 0)
+				ft_export(&cmds);
 			else
 				ft_exec(&cmds);
 			free(input);
