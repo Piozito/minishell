@@ -59,22 +59,23 @@ static void handle_parent_process(int p_fd[2], int *prev_fd)
     *prev_fd = p_fd[0];
 }
 
-void ft_pipe(char **cmds, int num_cmds)
+void ft_pipe(t_env *cmds)
 {
     int prev_fd = 0;
     int p_fd[2];
+    int num_cmds;
     int i;
 
     i = 0;
+    num_cmds = ft_lstsize(cmds);
     while ( i < num_cmds) 
     {
         if (i < num_cmds - 1)
             create_pipe(p_fd);
-        
-        handle_child_process(cmds[i], prev_fd, p_fd, i == num_cmds - 1);
-        
+        handle_child_process(cmds->arg, prev_fd, p_fd, i == num_cmds - 1); 
         if (i < num_cmds - 1)
             handle_parent_process(p_fd, &prev_fd);
+        cmds = cmds->next;
         i++;
     }
     
