@@ -71,6 +71,7 @@ void pipes_handler(t_env *cmds, char *input)
 		parsing(pipes[i], temp);
 		temp = temp->next;
 		i++;
+		printf("a");
 	}
 	ft_pipe(cmds);
 }

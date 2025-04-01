@@ -65,14 +65,17 @@ void ft_pipe(t_env *cmds)
     int p_fd[2];
     int num_cmds;
     int i;
-
+    num_cmds = 0;
     i = 0;
-    num_cmds = ft_lstsize(cmds);
+    while (cmds->arg[num_cmds])
+    {
+        num_cmds++;
+    }
     while ( i < num_cmds) 
     {
         if (i < num_cmds - 1)
             create_pipe(p_fd);
-        handle_child_process(cmds->arg, prev_fd, p_fd, i == num_cmds - 1); 
+        handle_child_process(cmds->arg[i], prev_fd, p_fd, i == num_cmds - 1); 
         if (i < num_cmds - 1)
             handle_parent_process(p_fd, &prev_fd);
         cmds = cmds->next;
