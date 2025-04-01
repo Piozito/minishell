@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/31 16:00:25 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:46:23 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,12 @@
 
 typedef struct s_env
 {
-	char	*cmd;
-	char	*flag[MAX_FLAGS];
-	char	*arg[MAX_ARGS];
-	char	*path;
-	char	**env;
+	char			*cmd;
+	char			*flag[MAX_FLAGS];
+	char			*arg[MAX_ARGS];
+	char			*path;
+	char			**env;
+	struct s_env	next;
 }				t_env;
 
 void	ft_echo(t_env *cmds);
@@ -60,6 +61,7 @@ void	ft_export(t_env *env);
 void	ft_exec(t_env *command);
 void	parsing(const char *input, t_env *cmd);
 void	ft_free_tab(char **tab);
+void	initialize_cmd(t_env *cmd);
 char	*my_get_path(char *cmd);
 
 #endif

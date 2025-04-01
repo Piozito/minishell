@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 17:41:07 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/31 15:51:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/01 16:44:43 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,23 @@ void	check_builtin(t_env *cmds)
 		ft_exec(cmds);
 }
 
+void ft_cmds_free(t_env *cmds)
+{
+	int i;
+
+	i = 0;
+	if(cmds->cmd)
+		free(cmds->cmd);
+	while (i < MAX_FLAGS)
+	{
+		if (cmds->flag[i] != NULL)
+			free(cmds->flag[i]);
+		if (cmds->arg[i] != NULL)
+			free(cmds->arg[i]);
+		i++;
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
@@ -55,15 +72,21 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
+		initialize_cmd(&cmds);
 		input = readline("./minishell: ");
 		if (input == NULL)
+		{
+			free(input);
+			ft_cmds_free(&cmds);
 			exit(0);
+		}
 		else if (*input != '\0')
 		{
 			parsing(input, &cmds);
 			add_history(input);
 			check_builtin(&cmds);
 			free(input);
+			ft_cmds_free(&cmds);
 		}
 	}
 	rl_clear_history();
