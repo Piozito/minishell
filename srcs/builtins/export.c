@@ -49,9 +49,7 @@ static void update_env(t_env *env, char *arg)
     if (env->env[i])
     {
         if (is_chr(arg, '='))
-        {
             env->env[i] = arg;
-        }
         else
             free(arg);
     }
@@ -59,9 +57,7 @@ static void update_env(t_env *env, char *arg)
     {
         new_env = malloc((i + 2) * sizeof(char *));
         if (!new_env)
-        {
             return;
-        }
         while (env->env[j])
         {
             new_env[j] = env->env[j];
@@ -91,22 +87,16 @@ void ft_export(t_env *env)
         {
             char *eq = ft_strchr(env->arg[i], '=');
             if (eq)
-            {
                 update_env(env, ft_strdup(env->arg[i]));
-            }
             else
             {
                 char *tmp = ft_strjoin(env->arg[i], "=");
                 if (tmp)
-                {
                     update_env(env, tmp);
-                }
             }
         }
         else
-        {
             printf("export: `%s': not a valid identifier\n", env->arg[i]);
-        }
         i++;
     }
 }
