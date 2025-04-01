@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/31 11:20:38 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:00:25 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,42 +36,27 @@
 # include <termios.h>
 # include <curses.h>
 
-#define MAX_FLAGS 10
-#define MAX_ARGS 10
-#define MAX_COMMANDS 100
-#define MAX_PATH 1024
+# define MAX_FLAGS 10
+# define MAX_ARGS 10
+# define MAX_COMMANDS 100
+# define MAX_PATH 1024
 
 typedef struct s_env
 {
-    char *cmd;
-    char *flag[MAX_FLAGS];
-    char *arg[MAX_ARGS];
-    char *path;
-    char **env;
-} t_env;
+	char	*cmd;
+	char	*flag[MAX_FLAGS];
+	char	*arg[MAX_ARGS];
+	char	*path;
+	char	**env;
+}				t_env;
 
-typedef struct s_type
-{
-    char PIPE;
-    char ECO; 
-    char CD;
-    int VALUE;
-}               t_type;
-
-typedef struct s_node
-{
-    char *TYPE;
-    void *LEFT;
-    void *RIGHT;
-}				t_node;
-
-void 	ft_echo(t_env *cmds);
-int 	ft_pwd();
+void	ft_echo(t_env *cmds);
+int		ft_pwd(void);
 void	ft_cd(t_env *cmds);
-void    ft_env(t_env *cmds);
-void 	ft_exit(t_env *cmds);
-void 	ft_unset(t_env *env);
-void    ft_export(t_env *env);
+void	ft_env(t_env *cmds);
+void	ft_exit(t_env *cmds);
+void	ft_unset(t_env *env);
+void	ft_export(t_env *env);
 void	ft_exec(t_env *command);
 void	parsing(const char *input, t_env *cmd);
 void	ft_free_tab(char **tab);

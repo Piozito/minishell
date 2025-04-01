@@ -6,39 +6,42 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/31 11:54:19 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:06:26 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-static int is_chr(const char *str, int c)
+static int	is_chr(const char *str, int c)
 {
-    int i = 0;
-    while (str[i])
-    {
-        if (str[i] == c)
-            return (i + 1);
-        i++;
-    }
-    return (0);
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (i + 1);
+		i++;
+	}
+	return (0);
 }
 
-static int is_valid(char *str)
+static int	is_valid(char *str)
 {
-    if (!str || (!ft_isalpha(*str) && *str != '_'))
-        return (0);
-    while (*str && *str != '=')
-    {
-        if (!ft_isalnum(*str) && *str != '_')
-            return (0);
-        str++;
-    }
-    return (1);
+	if (!str || (!ft_isalpha(*str) && *str != '_'))
+		return (0);
+	while (*str && *str != '=')
+	{
+		if (!ft_isalnum(*str) && *str != '_')
+			return (0);
+		str++;
+	}
+	return (1);
 }
 
-static void update_env(t_env *env, char *arg)
+static void	update_env(t_env *env, char *arg)
 {
+
     int i = 0;
     int j = 0;
     char **new_env;
@@ -69,9 +72,11 @@ static void update_env(t_env *env, char *arg)
     }
 }
 
-void ft_export(t_env *env)
+void	ft_export(t_env *env)
 {
-    int i;
+	int		i;
+	char	*eq;
+	char	*tmp;
 
     if (!env->arg[0])
     {
