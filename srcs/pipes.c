@@ -22,7 +22,7 @@ static void create_pipe(int p_fd[2])
     }
 }
 
-static void execute_command(char **cmd, int prev_fd, int p_fd[2], int is_last) 
+static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last) 
 {
     if (prev_fd != 0) 
     {
@@ -41,12 +41,11 @@ static void execute_command(char **cmd, int prev_fd, int p_fd[2], int is_last)
         close(p_fd[1]);
     }
     close(p_fd[0]);
-    execvp(cmd[0], cmd);
-    perror("execvp");
+    check_builtin(cmd);
     exit(1);
 }
 
-static void handle_child_process(char **cmd, int prev_fd, int p_fd[2], int is_last) 
+static void handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_last) 
 {
     pid_t pid = fork();
     if (pid == -1)
@@ -57,7 +56,7 @@ static void handle_child_process(char **cmd, int prev_fd, int p_fd[2], int is_la
 
     if (pid == 0) 
     {
-        execute_command(cmd, prev_fd, p_fd, is_last);
+        execute_command(cmds, prev_fd, p_fd, is_last);
     }
 }
 
@@ -96,7 +95,7 @@ void ft_pipe(t_env *cmds)
             p_fd[0] = p_fd[1] = -1;
         }
 
-        handle_child_process(cmds->arg, prev_fd, p_fd, i == num_cmds - 1);
+        handle_child_process(cmds, prev_fd, p_fd, i == num_cmds - 1);
 
         if (i < num_cmds - 1) 
         {
