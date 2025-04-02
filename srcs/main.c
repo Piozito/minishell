@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 17:41:07 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/01 17:08:03 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:10:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,7 @@ void ft_cmds_free(t_env *cmds)
 	}
 }
 
-void pipes_handler(t_env *cmds, char *input)
-{
-	char **pipes;
-	t_env *temp;
-	int i;
 
-	temp = cmds;
-	pipes = ft_split(input, '|');
-	i = 0;
-	while(pipes[i] != NULL)
-	{
-		parsing(pipes[i], temp);
-		temp = temp->next;
-		i++;
-		printf("a");
-	}
-	ft_pipe(cmds);
-}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -99,7 +82,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_cmds_free(&cmds);
 			exit(0);
 		}
-		else if (ft_strchr(input, '|'))
+		else if (ft_strchr(input, '|') != NULL)
 		{
 			pipes_handler(&cmds, input);
 			add_history(input);

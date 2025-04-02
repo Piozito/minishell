@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/31 13:30:04 by marvin           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:03:23 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void create_pipe(int p_fd[2])
     }
 }
 
-static void execute_command(char **cmd, int prev_fd, int p_fd[2], int is_last) {
+static void execute_command(char **cmd, int prev_fd, int p_fd[2], int is_last) 
+{
     if (prev_fd != 0) 
     {
         if (dup2(prev_fd, STDIN_FILENO) == -1) 
@@ -75,7 +76,9 @@ void ft_pipe(t_env *cmds)
     int prev_fd = 0;
     int p_fd[2];
     int num_cmds = 0;
-    t_env *cmd = cmds->arg;
+    t_env *cmd;
+	
+	cmd = cmds;
     while (cmd) 
     {
         num_cmds++;

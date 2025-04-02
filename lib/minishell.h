@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/01 17:05:26 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:45:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	parsing(const char *input, t_env *cmd);
 void	ft_free_tab(char **tab);
 void	initialize_cmd(t_env *cmd);
 char	*my_get_path(char *cmd);
+void	pipes_handler(t_env *cmds, char *input);
 void	ft_pipe(t_env *cmds);
+void	check_builtin(t_env *cmds);
 
 #endif

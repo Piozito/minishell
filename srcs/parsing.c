@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/03/31 15:55:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:52:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,63 @@ void	free_subtokens(char **subtokens)
 	}
 	free(subtokens);
 }
+
+char *trim_spaces(char *str) {
+    char *end;
+
+    // Trim leading space
+    while (isspace((unsigned char)*str)) str++;
+
+    if (*str == 0)  // All spaces?
+        return str;
+
+    // Trim trailing space
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char)*end)) end--;
+
+    // Write new null terminator
+    *(end + 1) = 0;
+
+    return str;
+}
+
+void pipes_handler(t_env *cmds, char *input)
+{
+    char **pipes;
+    t_env *temp;
+    t_env *new_cmd;
+    int i;
+
+    pipes = ft_split(input, '|');
+    i = 0;
+    while (pipes[i] != NULL)
+    {
+        new_cmd = (t_env *)malloc(sizeof(t_env));
+        if (new_cmd == NULL)
+        {
+            perror("malloc");
+            exit(1);
+        }
+        parsing(trim_spaces(pipes[i]), new_cmd);
+        if (i == 0)
+        {
+            cmds = new_cmd;
+            temp = cmds;
+        }
+        else
+        {
+            temp->next = new_cmd;
+            temp = temp->next;
+        }
+        i++;
+    }
+    temp->next = NULL;
+    temp = cmds;
+    i = 0;
+    ft_pipe(cmds);
+    free_subtokens(pipes);
+}
+
 
 void	parsing(const char *input, t_env *cmd)
 {
