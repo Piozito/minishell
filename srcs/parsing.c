@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/02 15:52:45 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:03:23 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	initialize_cmd(t_env *cmd)
 	i = 0;
 	while (i < MAX_ARGS)
 		cmd->arg[i++] = NULL;
+	cmd->next = NULL;
 }
 
 void	free_subtokens(char **subtokens)
@@ -38,22 +39,17 @@ void	free_subtokens(char **subtokens)
 	free(subtokens);
 }
 
-char *trim_spaces(char *str) {
+char *trim_spaces(char *str) 
+{
     char *end;
-
-    // Trim leading space
-    while (isspace((unsigned char)*str)) str++;
-
-    if (*str == 0)  // All spaces?
+    while (isspace((unsigned char)*str))
+		str++;
+    if (*str == 0)
         return str;
-
-    // Trim trailing space
     end = str + strlen(str) - 1;
-    while (end > str && isspace((unsigned char)*end)) end--;
-
-    // Write new null terminator
+    while (end > str && isspace((unsigned char)*end))
+		end--;
     *(end + 1) = 0;
-
     return str;
 }
 
