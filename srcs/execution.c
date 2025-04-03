@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/03/31 11:18:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:30:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,5 @@ void	ft_exec(t_env *command)
 	}
 	handle_fork_execution(path, exec_args, command);
 	free(exec_args);
+	free(path);
 }

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/03 15:03:23 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:44:31 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,6 @@ void pipes_handler(t_env *cmds, char *input)
     while (pipes[i] != NULL)
     {
         new_cmd = (t_env *)malloc(sizeof(t_env));
-        if (new_cmd == NULL)
-        {
-            perror("malloc");
-            exit(1);
-        }
         parsing(trim_spaces(pipes[i]), new_cmd);
         if (i == 0)
         {
@@ -91,34 +86,41 @@ void pipes_handler(t_env *cmds, char *input)
 }
 
 
-void	parsing(const char *input, t_env *cmd)
-{
-	char	**subtokens;
-	int		flag_index;
-	int		arg_index;
-	int		command_set;
-	int		j;
 
-	subtokens = ft_split(input, ' ');
-	flag_index = 0;
-	arg_index = 0;
-	command_set = 0;
-	j = 0;
-	initialize_cmd(cmd);
-	while (subtokens[j] != NULL)
-	{
-		if (!command_set)
-		{
-			cmd->cmd = ft_strdup(subtokens[j]);
-			command_set = 1;
-		}
-		else if (subtokens[j][0] == '-')
-			cmd->flag[flag_index++] = ft_strdup(subtokens[j]);
-		else
-			cmd->arg[arg_index++] = ft_strdup(subtokens[j]);
-		j++;
-	}
-	cmd->flag[flag_index] = NULL;
-	cmd->arg[arg_index] = NULL;
-	free_subtokens(subtokens);
+void parsing(const char *input, t_env *cmd)
+{
+    char **subtokens;
+    int flag_index;
+    int arg_index;
+    int command_set;
+    int j;
+
+    subtokens = ft_split(input, ' ');
+    flag_index = 0;
+    arg_index = 0;
+    command_set = 0;
+    j = 0;
+    initialize_cmd(cmd);
+    while (subtokens[j] != NULL)
+    {
+        if (!command_set)
+        {
+            cmd->cmd = ft_strdup(subtokens[j]);
+            command_set = 1;
+        }
+        else if (subtokens[j][0] == '-')
+        {
+            cmd->flag[flag_index] = ft_strdup(subtokens[j]);
+            flag_index++;
+        }
+        else
+        {
+            cmd->arg[arg_index] = ft_strdup(subtokens[j]);
+            arg_index++;
+        }
+        j++;
+    }
+    cmd->flag[flag_index] = NULL;
+    cmd->arg[arg_index] = NULL;
+    free_subtokens(subtokens);
 }
