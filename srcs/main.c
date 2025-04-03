@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/18 17:41:07 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/03 15:40:38 by aaleixo-         ###   ########.fr       */
+/*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
+/*   Updated: 2025/04/03 16:12:08 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 void	ft_handler(int sig)
 {
 	(void)sig;
-	write(1, "\n", 1);
+	rl_replace_line("", 0);
 	rl_on_new_line();
+	write(1, "\n", 1);
 	rl_redisplay();
 }
 
