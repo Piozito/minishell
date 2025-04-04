@@ -1,30 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/23 17:46:58 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 10:30:42 by aaleixo-         ###   ########.fr       */
+/*   Created: 2024/04/08 13:45:15 by aaleixo-          #+#    #+#             */
+/*   Updated: 2024/04/29 15:38:11 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "libft.h"
 
-void	ft_env(t_env *cmds)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	int	i;
+	unsigned char	*p;
+	size_t			i;
 
+	p = (unsigned char *)s;
 	i = 0;
-	if(cmds->arg[0] == NULL && cmds->flag[0] == NULL)
+	while (i < n)
 	{
-		while (cmds->env[i])
-		{
-			printf("%s\n", cmds->env[i]);
-			i++;
-		}
+		p[i] = c;
+		i++;
 	}
-	else
-		printf("env: env doesn't accept flags or arguments.\n");
+	return (p);
 }
+/*
+#include <stdio.h>
+
+int	main(void)
+{
+	char src[] = "Panquecas com chocolate";
+	char *dest;
+	int arg;
+
+	dest = src + 1;
+	ft_memset(dest, 'c', 6);
+	printf("%s\n", dest);
+	memset(dest, 'c', 6);
+	printf("%s\n", dest);
+	return (0);
+} */

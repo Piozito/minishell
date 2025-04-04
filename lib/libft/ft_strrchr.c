@@ -1,30 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/23 17:46:58 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 10:30:42 by aaleixo-         ###   ########.fr       */
+/*   Created: 2024/04/08 15:39:34 by aaleixo-          #+#    #+#             */
+/*   Updated: 2024/05/06 16:46:40 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "libft.h"
 
-void	ft_env(t_env *cmds)
+char	*ft_strrchr(const char *s, int c)
 {
-	int	i;
+	const char	*ptrsrc = s;
+	char		*res;
 
-	i = 0;
-	if(cmds->arg[0] == NULL && cmds->flag[0] == NULL)
+	res = NULL;
+	if (c > 255)
+		c -= 256;
+	while (*ptrsrc != '\0')
 	{
-		while (cmds->env[i])
-		{
-			printf("%s\n", cmds->env[i]);
-			i++;
-		}
+		if (*ptrsrc == c)
+			res = (char *)ptrsrc;
+		ptrsrc++;
 	}
-	else
-		printf("env: env doesn't accept flags or arguments.\n");
+	if (c == '\0')
+		return ((char *)ptrsrc);
+	return (res);
 }
+/*
+#include <stdio.h>
+
+int	main(void)
+{
+	char teste[] = "leite, bolachas e beca de leite(mimosa)";
+
+	printf("%s", ft_strrchr(teste, 'e'));
+} */

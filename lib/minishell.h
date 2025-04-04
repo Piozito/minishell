@@ -6,15 +6,14 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 09:14:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 11:15:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "./pipex/libft/libft.h"
-# include "./pipex/pipex.h"
+# include "./libft/libft.h"
 # include <X11/keysym.h>
 # include <X11/X.h>
 # include <stdio.h>

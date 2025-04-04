@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/23 17:46:58 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 10:30:42 by aaleixo-         ###   ########.fr       */
+/*   Created: 2024/04/08 15:22:42 by aaleixo-          #+#    #+#             */
+/*   Updated: 2025/03/10 19:49:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "libft.h"
 
-void	ft_env(t_env *cmds)
+char	*ft_strchr(const char *str, int c)
 {
-	int	i;
-
-	i = 0;
-	if(cmds->arg[0] == NULL && cmds->flag[0] == NULL)
+	while (*str)
 	{
-		while (cmds->env[i])
-		{
-			printf("%s\n", cmds->env[i]);
-			i++;
-		}
+		if (*str == c)
+			return ((char *)str);
+		str++;
 	}
-	else
-		printf("env: env doesn't accept flags or arguments.\n");
+	return (NULL);
 }

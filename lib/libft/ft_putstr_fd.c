@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/23 17:46:58 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 10:30:42 by aaleixo-         ###   ########.fr       */
+/*   Created: 2024/04/15 23:02:51 by aaleixo-          #+#    #+#             */
+/*   Updated: 2024/04/22 11:22:59 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "libft.h"
 
-void	ft_env(t_env *cmds)
+void	ft_putstr_fd(char *s, int fd)
 {
-	int	i;
-
-	i = 0;
-	if(cmds->arg[0] == NULL && cmds->flag[0] == NULL)
-	{
-		while (cmds->env[i])
-		{
-			printf("%s\n", cmds->env[i]);
-			i++;
-		}
-	}
-	else
-		printf("env: env doesn't accept flags or arguments.\n");
+	write(fd, s, ft_strlen(s));
 }
+/*
+#include <fcntl.h>
+
+int	main(void)
+{
+	int fd = open("test.txt", O_WRONLY | O_CREAT, 0644);
+	char test[] = "YOYO teste 1234 abcde";
+
+	ft_putstr_fd(test, fd);
+	close(fd);
+}*/

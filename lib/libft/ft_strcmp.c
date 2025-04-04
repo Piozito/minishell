@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/23 17:46:58 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 10:30:42 by aaleixo-         ###   ########.fr       */
+/*   Created: 2024/12/12 16:14:37 by aaleixo-          #+#    #+#             */
+/*   Updated: 2025/03/10 19:44:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "libft.h"
 
-void	ft_env(t_env *cmds)
+int	ft_strcmp(char *s1, char *s2)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	if(cmds->arg[0] == NULL && cmds->flag[0] == NULL)
+	if (!s1)
+		return (1);
+	while (s1[i] || s2[i])
 	{
-		while (cmds->env[i])
-		{
-			printf("%s\n", cmds->env[i]);
-			i++;
-		}
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
 	}
-	else
-		printf("env: env doesn't accept flags or arguments.\n");
+	return (0);
 }

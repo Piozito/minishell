@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/23 17:46:58 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 10:30:42 by aaleixo-         ###   ########.fr       */
+/*   Created: 2024/04/08 15:20:35 by aaleixo-          #+#    #+#             */
+/*   Updated: 2024/04/09 16:12:42 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "libft.h"
 
-void	ft_env(t_env *cmds)
+int	ft_tolower(int c)
 {
-	int	i;
-
-	i = 0;
-	if(cmds->arg[0] == NULL && cmds->flag[0] == NULL)
-	{
-		while (cmds->env[i])
-		{
-			printf("%s\n", cmds->env[i]);
-			i++;
-		}
-	}
-	else
-		printf("env: env doesn't accept flags or arguments.\n");
+	if (c >= 'A' && c <= 'Z')
+		c += 32;
+	return (c);
 }

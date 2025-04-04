@@ -1,30 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/23 17:46:58 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 10:30:42 by aaleixo-         ###   ########.fr       */
+/*   Created: 2024/04/08 19:27:11 by aaleixo-          #+#    #+#             */
+/*   Updated: 2024/05/09 14:52:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../lib/minishell.h"
+#include "libft.h"
 
-void	ft_env(t_env *cmds)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	int	i;
+	void	*str;
 
-	i = 0;
-	if(cmds->arg[0] == NULL && cmds->flag[0] == NULL)
+	if (size > 0)
 	{
-		while (cmds->env[i])
-		{
-			printf("%s\n", cmds->env[i]);
-			i++;
-		}
+		if ((nmemb > (18446744073709551615UL / size)) && size > 0)
+			return (NULL);
 	}
-	else
-		printf("env: env doesn't accept flags or arguments.\n");
+	str = malloc(nmemb * size);
+	if (!str)
+		return (NULL);
+	ft_bzero(str, nmemb * size);
+	return (str);
 }
+/*
+#include <stdio.h>
+
+int	main(void)
+{
+	char *teste = calloc(5, 1);
+	ft_strlcpy(teste, "bora", 5);
+
+	printf("%s\n", teste);
+	free(teste);
+}*/
