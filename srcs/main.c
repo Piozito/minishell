@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/03 16:12:08 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 09:41:10 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	check_builtin(t_env *cmds)
 	if (ft_strcmp(cmds->cmd, "echo") == 0)
 		ft_echo(cmds);
 	else if (ft_strcmp(cmds->cmd, "pwd") == 0)
-		ft_pwd();
+		ft_pwd(cmds);
 	else if (ft_strcmp(cmds->cmd, "cd") == 0)
 		ft_cd(cmds);
 	else if (ft_strcmp(cmds->cmd, "env") == 0)
@@ -79,6 +79,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			free(input);
 			ft_cmds_free(&cmds);
+			rl_clear_history();
 			exit(0);
 		}
 		else if (ft_strchr(input, '|') != NULL)
@@ -95,5 +96,4 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 		ft_cmds_free(&cmds);
 	}
-	rl_clear_history();
 }

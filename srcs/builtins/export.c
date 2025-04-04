@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/31 11:54:19 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 09:07:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,11 @@ void ft_export(t_env *env)
 {
     int i;
 
+	if(env->flag[0] != NULL)
+	{
+		printf("export: export doens't accepts flags.\n");
+		return ;
+	}
     if (!env->arg[0])
     {
         i = 0;

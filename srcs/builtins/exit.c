@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/31 15:25:44 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 09:20:06 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,23 @@ void	ft_exit(t_env *cmds)
 {
 	int	exit_status;
 
-	if (cmds->arg[0])
+
+	if (cmds->flag[0] == NULL && cmds->arg[1] == NULL)
 	{
-		if (!is_numeric(cmds->arg[0]))
-			exit(2);
-		if (cmds->arg[1])
-			return ;
-		exit_status = ft_atoi(cmds->arg[0]);
-		exit(exit_status % 256);
+		if (cmds->arg[0])
+		{
+			if (!is_numeric(cmds->arg[0]))
+				exit(2);
+			exit_status = ft_atoi(cmds->arg[0]);
+			if(exit_status > 255 || exit_status < 0)
+			{
+				printf("exit: Error codes must be less than 256.\n");
+				return ;
+			}
+			exit(exit_status % 256);
+		}
+		exit(0);
 	}
-	exit(0);
+	else
+		printf("exit: exit only accepts a positive integer less than 256 and no flags.\n");
 }

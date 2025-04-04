@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/03 15:44:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 10:11:56 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,31 @@ char *trim_spaces(char *str)
     return str;
 }
 
+int pipe_check(const char *input)
+{
+	int i;
+	int command_set;
+
+	i = 0;
+	command_set = 0;
+	while(input[i] != '\0')
+	{
+		if(input[i] == '|')
+		{
+			if(command_set == 0)
+			{
+				printf("pipe: no command before pipe.\n");
+				return 1;
+			}
+			command_set = 0;
+		}
+		else if(input[i] != ' ' && input[i] != '|')
+			command_set = 1;
+		i++;
+	}
+	return 0;
+}
+
 void pipes_handler(t_env *cmds, char *input)
 {
     char **pipes;
@@ -60,8 +85,10 @@ void pipes_handler(t_env *cmds, char *input)
     t_env *new_cmd;
     int i;
 
+	if(pipe_check(input) == 1)
+		return ;
+	i = 0;
     pipes = ft_split(input, '|');
-    i = 0;
     while (pipes[i] != NULL)
     {
         new_cmd = (t_env *)malloc(sizeof(t_env));
@@ -84,8 +111,6 @@ void pipes_handler(t_env *cmds, char *input)
     ft_pipe(cmds);
     free_subtokens(pipes);
 }
-
-
 
 void parsing(const char *input, t_env *cmd)
 {

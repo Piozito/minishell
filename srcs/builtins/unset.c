@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/03/31 15:47:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 09:17:16 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ void	ft_unset(t_env *cmds)
 	int	i;
 
 	i = 0;
+	if(cmds->flag[0] != NULL)
+	{
+		printf("unset: unset doesn't accept flags.\n");
+		return ;
+	}
 	while (cmds->arg[i])
 	{
 		if (ft_strcmp(cmds->arg[i], "_") != 0)

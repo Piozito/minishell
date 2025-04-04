@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/03 15:40:54 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 09:14:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_env
 }				t_env;
 
 void	ft_echo(t_env *cmds);
-int		ft_pwd(void);
+void	ft_pwd(t_env *cmds);
 void	ft_cd(t_env *cmds);
 void	ft_env(t_env *cmds);
 void	ft_exit(t_env *cmds);
