@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 11:15:01 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:52:11 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,13 @@ void	ft_exit(t_env *cmds);
 void	ft_unset(t_env *env);
 void	ft_export(t_env *env);
 void	ft_exec(t_env *command);
-void	parsing(const char *input, t_env *cmd);
+void	parsing(t_env *cmd, const char *input);
 void	ft_free_tab(char **tab);
 void	initialize_cmd(t_env *cmd);
 char	*my_get_path(char *cmd);
-void	pipes_handler(t_env *cmds, char *input);
+void	pipes_handler(t_env *cmds, const char *input);
 void	ft_pipe(t_env *cmds);
 void	check_builtin(t_env *cmds);
+char	**ft_split_quotes(char const *s, char c);
 
 #endif

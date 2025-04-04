@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 18:52:24 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/04 09:07:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,43 +37,41 @@ static int is_valid(char *str)
     return (1);
 }
 
-static void update_env(char *arg)
+static void update_env(t_env *env, char *arg)
 {
     int i = 0;
     int j = 0;
     char **new_env;
-	extern char **environ;
-
-    while (environ[i] && ft_strncmp(environ[i], arg, is_chr(arg, '=')))
+    
+    while (env->env[i] && ft_strncmp(env->env[i], arg, is_chr(arg, '=')))
         i++;
-
-    if (environ[i])
+    
+    if (env->env[i])
     {
         if (is_chr(arg, '='))
-            environ[i] = arg;
+            env->env[i] = arg;
         else
             free(arg);
-	}
+    }
     else
     {
         new_env = malloc((i + 2) * sizeof(char *));
         if (!new_env)
             return;
-        while (environ[j])
+        while (env->env[j])
         {
-            new_env[j] = environ[j];
+            new_env[j] = env->env[j];
             j++;
         }
         new_env[j] = arg;
         new_env[j + 1] = NULL;
-        environ = new_env;
+        env->env = new_env;
     }
 }
 
 void ft_export(t_env *env)
 {
     int i;
-	extern char **environ;
 
 	if(env->flag[0] != NULL)
 	{
@@ -83,8 +81,8 @@ void ft_export(t_env *env)
     if (!env->arg[0])
     {
         i = 0;
-        while (environ[i])
-            printf("declare -x %s\n", environ[i++]);
+        while (env->env[i])
+            printf("declare -x %s\n", env->env[i++]);
         return;
     }
     i = 0;
@@ -94,16 +92,16 @@ void ft_export(t_env *env)
         {
             char *eq = ft_strchr(env->arg[i], '=');
             if (eq)
-                update_env(ft_strdup(env->arg[i]));
+                update_env(env, ft_strdup(env->arg[i]));
             else
             {
                 char *tmp = ft_strjoin(env->arg[i], "=");
                 if (tmp)
-                    update_env(tmp);
+                    update_env(env, tmp);
             }
         }
         else
-            printf("export: `%s': not a valid identifier\n", environ[i]);
+            printf("export: `%s': not a valid identifier\n", env->arg[i]);
         i++;
     }
 }
