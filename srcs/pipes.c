@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/03 15:46:13 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:33:31 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ void ft_pipe(t_env *cmds)
     int prev_fd = 0;
     int p_fd[2];
     int num_cmds = 0;
+	int i;
     t_env *cmd;
 
+	i = 0;
     if (cmds == NULL)
 	{
         fprintf(stderr, "Error: cmds is NULL\n");
@@ -79,7 +81,7 @@ void ft_pipe(t_env *cmds)
         num_cmds++;
         cmd = cmd->next;
     }
-    for (int i = 0; i < num_cmds; i++)
+    while (i < num_cmds)
     {
         if (i < num_cmds - 1)
             create_pipe(p_fd);
@@ -89,6 +91,7 @@ void ft_pipe(t_env *cmds)
         if (i < num_cmds - 1)
             handle_parent_process(p_fd, &prev_fd);
         cmds = cmds->next;
+		i++;
     }
     if (prev_fd != 0)
         close(prev_fd);

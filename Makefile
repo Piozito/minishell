@@ -6,7 +6,7 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/18 16:13:04 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/04/01 17:06:28 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/04/04 19:38:36 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,19 +17,19 @@ SOURCES = \
 	srcs/builtins/env.c srcs/builtins/exit.c \
 	srcs/builtins/unset.c srcs/builtins/export.c \
 	srcs/parsing.c srcs/execution.c srcs/utils.c \
-	srcs/pipes.c
+	srcs/pipes.c srcs/utils2.c
 OBJECTS = $(SOURCES:.c=.o)
 
-MAKE_PRINTF = make -C ./lib/pipex/
+MAKE_LIBFT = make -C ./lib/libft/
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-ADLIBS = ./lib/pipex/libft/libft.a
+ADLIBS = ./lib/libft/libft.a
 
 all: $(NAME)
 
 $(ADLIBS):
-	$(MAKE_PRINTF)
+	$(MAKE_LIBFT)
 
 $(NAME): $(OBJECTS) $(ADLIBS)
 	$(CC) $(CFLAGS) $(OBJECTS) $(ADLIBS) -o $(NAME) -lreadline
@@ -39,11 +39,11 @@ $(NAME): $(OBJECTS) $(ADLIBS)
 
 clean:
 	rm -f $(OBJECTS)
-	$(MAKE_PRINTF) clean
+	$(MAKE_LIBFT) clean
 
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE_PRINTF) fclean
+	$(MAKE_LIBFT) fclean
 
 re: fclean all
 

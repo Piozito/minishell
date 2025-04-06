@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/03/31 15:23:44 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 08:39:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,18 @@ void	ft_cd(t_env *cmds)
 {
 	char	old_pwd[MAX_PATH];
 	char	*path;
-
-	if (!getcwd(old_pwd, MAX_PATH))
-		return (perror("getcwd"));
-	path = get_cd_path(cmds->arg[0]);
-	if (!path)
-		return ;
-	if (chdir(path) != 0)
-		printf("cd: no such file or directory: \"%s\"\n", path);
+	if(cmds->arg[1] == NULL && cmds->flag[0] == NULL)
+	{
+		if (!getcwd(old_pwd, MAX_PATH))
+			return (perror("getcwd"));
+		path = get_cd_path(cmds->arg[0]);
+		if (!path)
+			return ;
+		if (chdir(path) != 0)
+			printf("cd: no such file or directory: \"%s\"\n", path);
+		else
+			update_pwd(cmds, old_pwd);
+	}
 	else
-		update_pwd(cmds, old_pwd);
+		printf("cd: cd doesn't accept flags or more than 1 argument.\n");
 }

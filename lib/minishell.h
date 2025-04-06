@@ -6,15 +6,14 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/03 15:40:54 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 17:52:11 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "./pipex/libft/libft.h"
-# include "./pipex/pipex.h"
+# include "./libft/libft.h"
 # include <X11/keysym.h>
 # include <X11/X.h>
 # include <stdio.h>
@@ -52,19 +51,20 @@ typedef struct s_env
 }				t_env;
 
 void	ft_echo(t_env *cmds);
-int		ft_pwd(void);
+void	ft_pwd(t_env *cmds);
 void	ft_cd(t_env *cmds);
 void	ft_env(t_env *cmds);
 void	ft_exit(t_env *cmds);
 void	ft_unset(t_env *env);
 void	ft_export(t_env *env);
 void	ft_exec(t_env *command);
-void	parsing(const char *input, t_env *cmd);
+void	parsing(t_env *cmd, const char *input);
 void	ft_free_tab(char **tab);
 void	initialize_cmd(t_env *cmd);
 char	*my_get_path(char *cmd);
-void	pipes_handler(t_env *cmds, char *input);
+void	pipes_handler(t_env *cmds, const char *input);
 void	ft_pipe(t_env *cmds);
 void	check_builtin(t_env *cmds);
+char	**ft_split_quotes(char const *s, char c);
 
 #endif

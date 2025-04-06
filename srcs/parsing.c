@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/03 15:44:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/04 19:28:43 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,50 @@ char *trim_spaces(char *str)
     return str;
 }
 
-void pipes_handler(t_env *cmds, char *input)
+int pipe_check(const char *input)
+{
+	int i;
+	int command_set;
+
+	i = 0;
+	command_set = 0;
+	while(input[i] != '\0')
+	{
+		if(input[i] == '|')
+		{
+			if(command_set == 0)
+			{
+				printf("pipe: no command before pipe.\n");
+				return 1;
+			}
+			command_set = 0;
+		}
+		else if(input[i] != ' ' && input[i] != '|')
+			command_set = 1;
+		i++;
+	}
+	return 0;
+}
+
+void pipes_handler(t_env *cmds, const char *input)
 {
     char **pipes;
     t_env *temp;
     t_env *new_cmd;
     int i;
 
-    pipes = ft_split(input, '|');
-    i = 0;
+	i = 0;
+    pipes = ft_split_quotes(input, '|');
+	if(pipes[1] == NULL)
+	{
+		parsing(cmds, input);
+		check_builtin(cmds);
+		return ;
+	}
     while (pipes[i] != NULL)
     {
         new_cmd = (t_env *)malloc(sizeof(t_env));
-        parsing(trim_spaces(pipes[i]), new_cmd);
+        parsing(new_cmd, trim_spaces(pipes[i]));
         if (i == 0)
         {
             cmds = new_cmd;
@@ -85,9 +116,7 @@ void pipes_handler(t_env *cmds, char *input)
     free_subtokens(pipes);
 }
 
-
-
-void parsing(const char *input, t_env *cmd)
+void parsing(t_env *cmd, const char *input)
 {
     char **subtokens;
     int flag_index;
@@ -95,8 +124,8 @@ void parsing(const char *input, t_env *cmd)
     int command_set;
     int j;
 
-    subtokens = ft_split(input, ' ');
-    flag_index = 0;
+    subtokens = ft_split_quotes(input, ' ');
+	flag_index = 0;
     arg_index = 0;
     command_set = 0;
     j = 0;
