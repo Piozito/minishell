@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/04 19:28:43 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:36:49 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,18 @@ int pipe_check(const char *input)
 {
 	int i;
 	int command_set;
+	int quote = 0;
+	int dquote = 0;
 
 	i = 0;
 	command_set = 0;
 	while(input[i] != '\0')
 	{
-		if(input[i] == '|')
+		if (input[i] == '\'' && !dquote)
+			quote = !quote;
+		else if (input[i] == '\"' && !quote)
+			dquote = !dquote;
+		else if(input[i] == '|' && !quote && !dquote)
 		{
 			if(command_set == 0)
 			{
