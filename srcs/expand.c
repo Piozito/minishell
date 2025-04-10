@@ -1,113 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   $.c                                                :+:      :+:    :+:   */
+/*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/07 16:07:41 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:51:51 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-static int *get_key(char *arg)
+void replace_variable(char *result, char *str, char *start, char *end, char *expanded)
 {
-	int key;
+    int len_before = start - str;
+    int len_expanded = ft_strlen(expanded);
+    int len_after = ft_strlen(end);
 
-	key = 0;
-	while (ft_strcmp(arg[key], "=") != 0)
-		key++;
-	return(key);
+    ft_strncpy(result, str, len_before);
+    ft_strncpy(result + len_before, expanded, len_expanded);
+    ft_strncpy(result + len_before + len_expanded, end, len_after);
+    result[len_before + len_expanded + len_after] = '\0';
 }
 
-static char *ft_key(char *arg)
+void ft_expand_variable(char *arg)
 {
-	char *key;
-	int i;
-	int j;
+    char result[MAX_PATH];
+    char var_name[256];
+    char *start;
+    char *end;
+    char *expanded;
 
-	j = 0;
-	i = 0;
-	while (ft_strcmp(arg[i], "=") != 0 && arg[i])
-	{
-		key = arg[i];
-		i++;
-	}
-	return(key);
+    start = ft_strchr(arg, '$');
+    if (!start)
+        return;
+
+    end = start + 1;
+    while (*end && *end != ' ')
+        end++;
+
+    ft_strncpy(var_name, start + 1, end - (start + 1));
+    var_name[end - (start + 1)] = '\0';
+
+    expanded = getenv(var_name);
+    if (!expanded)
+        expanded = "";
+
+    replace_variable(result, arg, start, end, expanded);
+    ft_strncpy(arg, result, MAX_PATH - 1);
 }
-
-static char *ft_new(char *arg)
-{
-	char *key;
-	int i;
-	int j;
-
-	j = 0;
-	i = 0;
-	while (ft_strcmp(arg[i], "=") != 0 && arg[i])
-		i++;
-	while (arg[i])
-	{
-		key[j] = arg[i];
-		i++;
-		j++;
-	}
-	return(key);
-}
-
-static int find_key(char *arg)
-{
-	int i;
-	int j;
-	extern char **environ;
-
-	j = 0;
-	i = 0;
-	while (ft_strcmp(ft_key(environ[i]), arg) != 0 && environ[i])
-		i++;
-	if (ft_strcmp(ft_key(environ[i]), arg) != 0)
-		return (0);
-	return(i);
-}
-
-void	ft_$(t_env *cmds)
-{
-	int	i;
-	int j;
-	int k;
-	int l;
-	char *tmp;
-	char *tmp2;
-	extern char **environ;
-
-	i = 0;
-	k = 0;
-	j = 0;
-	l = 0;
-	while (cmds->arg[i])
-	{
-		if (cmds->arg[i] == "$")
-		{
-
-			while(cmds->arg[i] != " ")
-			{
-				tmp2[l] = cmds->arg[i];
-				l++;
-				i++;
-			}
-			l = 0;
-			while(tmp2[l])
-			{
-				tmp[k] = ((ft_new(environ[find_key(tmp2)]))[j]);
-				k++;
-				l++;
-			}
-		}
-		tmp[k] = cmds->arg[i];
-		k++;
-		i++;
-	}
-}
-
