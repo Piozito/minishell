@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/07 11:49:43 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:29:05 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ int	main(int argc, char **argv, char **envp)
 		return (0);
 	(void)argc;
 	(void)argv;
+	if(envp[0] == NULL)
+	{
+		printf("No enviroment variables available.\n");
+		exit(0);
+	}
 	cmds.path = getenv("PATH");
 	cmds.env = envp;
 	signal(SIGINT, ft_handler);

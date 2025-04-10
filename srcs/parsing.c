@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/07 17:36:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:26:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,37 +53,6 @@ char *trim_spaces(char *str)
     return str;
 }
 
-int pipe_check(const char *input)
-{
-	int i;
-	int command_set;
-	int quote = 0;
-	int dquote = 0;
-
-	i = 0;
-	command_set = 0;
-	while(input[i] != '\0')
-	{
-		if (input[i] == '\'' && !dquote)
-			quote = !quote;
-		else if (input[i] == '\"' && !quote)
-			dquote = !dquote;
-		else if(input[i] == '|' && !quote && !dquote)
-		{
-			if(command_set == 0)
-			{
-				printf("pipe: no command before pipe.\n");
-				return 1;
-			}
-			command_set = 0;
-		}
-		else if(input[i] != ' ' && input[i] != '|')
-			command_set = 1;
-		i++;
-	}
-	return 0;
-}
-
 void pipes_handler(t_env *cmds, const char *input)
 {
     char **pipes;
@@ -96,6 +65,7 @@ void pipes_handler(t_env *cmds, const char *input)
 	if(pipes[1] == NULL)
 	{
 		parsing(cmds, input);
+		apply_redirections(cmds);
 		check_builtin(cmds);
 		return ;
 	}
@@ -103,6 +73,7 @@ void pipes_handler(t_env *cmds, const char *input)
     {
         new_cmd = (t_env *)malloc(sizeof(t_env));
         parsing(new_cmd, trim_spaces(pipes[i]));
+		apply_redirections(new_cmd);
         if (i == 0)
         {
             cmds = new_cmd;
