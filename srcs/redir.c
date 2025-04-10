@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 20:56:07 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/07 12:50:34 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:05:40 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,28 +89,31 @@ int handle_redir_input_heredoc(char *word)
     return 0;
 }
 
-void apply_redirections(char **args, int *fd_in, int *fd_out, char *word)
+void apply_redirections(t_env *cmds)
 {
     int i;
+	int *fd_in;
+	int *fd_out;
 
+	*fd_in = -1;
+	*fd_out = -1;
     i = 0;
-    while (args[i])
+    while (cmds->arg[i])
     {
-        if ((strcmp(args[i], "<") == 0 || strcmp(args[i], ">") == 0 ||
-        strcmp(args[i], ">>") == 0 || strcmp(args[i], "<<") == 0) && args[i + 1])
+        if ((strcmp(cmds->arg[i], "<") == 0 || strcmp(cmds->arg[i], ">") == 0 ||
+        strcmp(cmds->arg[i], ">>") == 0 || strcmp(cmds->arg[i], "<<") == 0) && cmds->arg[i + 1])
         {
-            if (strcmp(args[i], "<") == 0)
-                handle_redir_input(args[i + 1], fd_in);
-            else if (strcmp(args[i], ">") == 0)
-                handle_redir_output(args[i + 1], fd_out);
-            else if (strcmp(args[i], ">>") == 0)
-                handle_redir_output_append(args[i + 1], fd_out);
-            else if (strcmp(args[i], "<<") == 0)
-                handle_redir_input_heredoc(word);
-            args[i] = NULL;
-            args[i + 1] = NULL;
+            if (strcmp(cmds->arg[i], "<") == 0)
+                handle_redir_input(cmds->arg[i + 1], fd_in);
+            else if (strcmp(cmds->arg[i], ">") == 0)
+                handle_redir_output(cmds->arg[i + 1], fd_out);
+            else if (strcmp(cmds->arg[i], ">>") == 0)
+                handle_redir_output_append(cmds->arg[i + 1], fd_out);
+            else if (strcmp(cmds->arg[i], "<<") == 0)
+                handle_redir_input_heredoc(cmds->arg[i + 1]);
+            cmds->arg[i] = NULL;
+            cmds->arg[i + 1] = NULL;
         }
         i++;
     }
 }
-wc "batata $USER"
