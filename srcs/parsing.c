@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/14 13:11:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:21:24 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,33 @@ char *trim_spaces(char *str)
     return str;
 }
 
+void cmd_check(t_env *cmds)
+{
+	if (ft_strcmp(cmds->cmd, "echo") == 0)
+		(void)cmds->cmd;
+	else if (ft_strcmp(cmds->cmd, "pwd") == 0)
+		(void)cmds->cmd;
+	else if (ft_strcmp(cmds->cmd, "cd") == 0)
+		(void)cmds->cmd;
+	else if (ft_strcmp(cmds->cmd, "env") == 0)
+		(void)cmds->cmd;
+	else if (ft_strcmp(cmds->cmd, "exit") == 0)
+		(void)cmds->cmd;
+	else if (ft_strcmp(cmds->cmd, "unset") == 0)
+		(void)cmds->cmd;
+	else if (ft_strcmp(cmds->cmd, "export") == 0)
+		(void)cmds->cmd;
+	else
+	{
+		cmds->path = my_get_path(cmds->cmd);
+		if (cmds->path == NULL)
+		{
+			printf("command not found: \"%s\"\n", cmds->cmd);
+			return ;
+		}
+	}
+}
+
 void pipes_handler(t_env *cmds, const char *input)
 {
     char **pipes;
@@ -67,6 +94,7 @@ void pipes_handler(t_env *cmds, const char *input)
 	if(pipes[1] == NULL)
 	{
 		parsing(cmds, input);
+		cmd_check(cmds);
 		apply_redirections(cmds);
 		check_builtin(cmds);
 		return ;
@@ -75,6 +103,7 @@ void pipes_handler(t_env *cmds, const char *input)
     {
         new_cmd = (t_env *)malloc(sizeof(t_env));
         parsing(new_cmd, trim_spaces(pipes[i]));
+		cmd_check(new_cmd);
 		apply_redirections(new_cmd);
         if (i == 0)
         {

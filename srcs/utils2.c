@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/14 13:18:37 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/14 13:49:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,13 +181,15 @@ static char *extract_word(const char *s, int *index, char delimiter)
     return result;
 }
 
-static char **split_string(const char *s, char delimiter)
+char **ft_split_quotes(const char *s, char delimiter)
 {
     char **result;
     int i = 0;
     int index = 0;
     int words = word_count(s, delimiter);
 
+	if (!s)
+        return (NULL);
     result = (char **)malloc((words + 1) * sizeof(char *));
     if (!result)
         return (NULL);
@@ -200,11 +202,4 @@ static char **split_string(const char *s, char delimiter)
     }
     result[i] = NULL;
     return (result);
-}
-
-char **ft_split_quotes(const char *s, char delimiter)
-{
-    if (!s)
-        return (NULL);
-    return (split_string(s, delimiter));
 }

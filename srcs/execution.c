@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/03 15:30:38 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:02:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int	counter(t_env *command)
 
 void	ft_exec(t_env *command)
 {
-	char	*path;
 	int		arg_count;
 	char	**exec_args;
 
@@ -90,14 +89,11 @@ void	ft_exec(t_env *command)
 		exit(1);
 	}
 	init_exec(exec_args, command, arg_count);
-	path = my_get_path(command->cmd);
-	if (path == NULL)
+	if (command->path == NULL)
 	{
-		printf("command not found: \"%s\"\n", command->cmd);
 		free(exec_args);
 		return ;
 	}
-	handle_fork_execution(path, exec_args, command);
+	handle_fork_execution(command->path, exec_args, command);
 	free(exec_args);
-	free(path);
 }
