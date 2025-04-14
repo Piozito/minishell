@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/14 14:12:45 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:58:55 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,15 @@ void ft_cmds_free(t_env *cmds)
 	}
 }
 
+void check_input(char *input)
+{
+	int i = 0;
+	while(input[i] == ' ' || input[i] == '	')
+		i++;
+	if(input[i] == '\0')
+		input[0] = '\0';
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
@@ -87,7 +96,8 @@ int	main(int argc, char **argv, char **envp)
 			rl_clear_history();
 			exit(0);
 		}
-		else if (*input != '\0')
+		check_input(input);
+		if (*input != '\0')
 		{
 			pipes_handler(&cmds, input);
 			add_history(input);
