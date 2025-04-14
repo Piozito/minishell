@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/10 13:02:43 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/14 13:18:37 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,60 @@ static char *ft_find_closing_quote(const char *str, int start, char quote)
         i++;
     }
     return (NULL);
+}
+
+char **pipe_check(const char *input)
+{
+	int i = 0;
+	int pipe = 0;
+	if(input[0] == '|')
+	{
+		printf("pipe: parsing error.\n");
+		return NULL;
+	}
+	while(input[i] != '\0')
+	{
+		if(input[i] == '\'' || input[i] == '\"')
+		{
+			if(input[i] == '\'')
+			{
+				if(ft_find_closing_quote(input, i + 1, '\''))
+				{
+					i++;
+					while(input[i] != '\'')
+						i++;
+				}
+			}
+			else if(input[i] == '\"')
+			{
+				if(ft_find_closing_quote(input, i + 1, '\"'))
+				{
+					i++;
+					while(input[i] != '\"')
+						i++;
+				}
+			}
+		}
+		else if(input[i] == '|')
+		{
+			if(pipe == 1)
+			{
+				printf("pipe: parsing error.\n");
+				return NULL;
+			}
+			else
+				pipe = 1;
+		}
+		else if(input[i] != ' ' && input[i] != '|' && input[i] != '	' && input[i] != '\0')
+			pipe = 0;
+		i++;
+	}
+	if(pipe == 1)
+	{
+		printf("pipe: parsing error.\n");
+		return NULL;
+	}
+	return (ft_split_quotes(input, '|'));
 }
 
 static char *extract_word(const char *s, int *index, char delimiter)

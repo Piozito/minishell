@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/10 16:11:08 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/14 13:04:20 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ void	ft_pipe(t_env *cmds);
 void	check_builtin(t_env *cmds);
 void	apply_redirections(t_env *cmds);
 char	**ft_split_quotes(char const *s, char c);
+char **pipe_check(const char *input);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/10 16:26:48 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/14 13:11:11 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ void pipes_handler(t_env *cmds, const char *input)
     int i;
 
 	i = 0;
-    pipes = ft_split_quotes(input, '|');
+    pipes = pipe_check(input);
+	if(pipes == NULL)
+		return ;
 	if(pipes[1] == NULL)
 	{
 		parsing(cmds, input);
