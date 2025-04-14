@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/14 14:48:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:32:30 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void pipes_handler(t_env *cmds, const char *input)
     while (pipes[i] != NULL)
     {
         new_cmd = (t_env *)malloc(sizeof(t_env));
-        parsing(new_cmd, trim_spaces(pipes[i]));
+        parsing(new_cmd, pipes[i]);
 		cmd_check(new_cmd);
 		apply_redirections(new_cmd);
         if (i == 0)
@@ -132,7 +132,7 @@ void parsing(t_env *cmd, const char *input)
     int command_set;
     int j;
 
-    subtokens = ft_split_quotes(input, ' ');
+    subtokens = ft_split_quotes(input, ' ', 1);
 	flag_index = 0;
     arg_index = 0;
     command_set = 0;

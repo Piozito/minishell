@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/14 13:49:38 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:32:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,10 @@ char **pipe_check(const char *input)
 		printf("pipe: parsing error.\n");
 		return NULL;
 	}
-	return (ft_split_quotes(input, '|'));
+	return (ft_split_quotes(input, '|', 0));
 }
 
-static char *extract_word(const char *s, int *index, char delimiter)
+static char *extract_word(const char *s, int *index, char delimiter, int del)
 {
     char *result;
     int start = *index;
@@ -144,13 +144,19 @@ static char *extract_word(const char *s, int *index, char delimiter)
             if (quote)
             {
                 quote = 0;
-                (*index)++;
+                if(del == 0)
+					result[i++] = s[(*index)++];
+				else if(del == 1)
+					(*index)++;
                 continue;
             }
             if (ft_find_closing_quote(s, *index + 1, '\''))
             {
                 quote = 1;
-                (*index)++;
+                if(del == 0)
+					result[i++] = s[(*index)++];
+				else if(del == 1)
+					(*index)++;
                 continue;
             }
             result[i++] = s[(*index)++];
@@ -160,13 +166,19 @@ static char *extract_word(const char *s, int *index, char delimiter)
             if (dquote)
             {
                 dquote = 0;
-                (*index)++;
+				if(del == 0)
+					result[i++] = s[(*index)++];
+				else if(del == 1)
+					(*index)++;
                 continue;
             }
             if (ft_find_closing_quote(s, *index + 1, '\"'))
             {
                 dquote = 1;
-                (*index)++;
+				if(del == 0)
+					result[i++] = s[(*index)++];
+				else if(del == 1)
+					(*index)++;
                 continue;
             }
             result[i++] = s[(*index)++];
@@ -181,7 +193,7 @@ static char *extract_word(const char *s, int *index, char delimiter)
     return result;
 }
 
-char **ft_split_quotes(const char *s, char delimiter)
+char **ft_split_quotes(const char *s, char delimiter, int del)
 {
     char **result;
     int i = 0;
@@ -198,7 +210,7 @@ char **ft_split_quotes(const char *s, char delimiter)
         while (s[index] && is_separator(s[index], delimiter, 0, 0))
             index++;
         if (s[index] && !is_separator(s[index], delimiter, 0, 0))
-            result[i++] = extract_word(s, &index, delimiter);
+            result[i++] = extract_word(s, &index, delimiter, del);
     }
     result[i] = NULL;
     return (result);
