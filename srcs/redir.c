@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 20:56:07 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/10 16:33:17 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/14 17:29:23 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,5 +123,15 @@ void apply_redirections(t_env *cmds)
 			cmds->arg[i + 1] = NULL;
 		}
 		i++;
+	}
+	if (fd_out != -1)
+	{
+		close(fd_out);
+		fd_out = -1;
+	}
+	if (fd_in != -1)
+	{
+		close(fd_in);
+		fd_in = -1;
 	}
 }
