@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/10 13:51:51 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:09:06 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void replace_variable(char *result, char *str, char *start, char *end, char *exp
 
 void ft_expand_variable(char *arg)
 {
-    char result[MAX_PATH];
+    char result[1024];
     char var_name[256];
     char *start;
     char *end;
@@ -48,5 +48,5 @@ void ft_expand_variable(char *arg)
         expanded = "";
 
     replace_variable(result, arg, start, end, expanded);
-    ft_strncpy(arg, result, MAX_PATH - 1);
+    ft_strncpy(arg, result, 1024 - 1);
 }

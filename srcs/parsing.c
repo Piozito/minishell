@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/14 17:32:30 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:51:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 void	initialize_cmd(t_env *cmd)
 {
-	int	i;
+	extern char **environ;
 
 	cmd->cmd = NULL;
-	i = 0;
-	while (i < MAX_FLAGS)
-		cmd->flag[i++] = NULL;
-	i = 0;
-	while (i < MAX_ARGS)
-		cmd->arg[i++] = NULL;
+	cmd->arg = NULL;
+	cmd->env = environ;
+	cmd->path = getenv("PATH");
+	cmd->flag = NULL;
 	cmd->next = NULL;
 }
 
@@ -91,14 +89,6 @@ void pipes_handler(t_env *cmds, const char *input)
     pipes = pipe_check(input);
 	if(pipes == NULL)
 		return ;
-	if(pipes[1] == NULL)
-	{
-		parsing(cmds, input);
-		cmd_check(cmds);
-		apply_redirections(cmds);
-		check_builtin(cmds);
-		return ;
-	}
     while (pipes[i] != NULL)
     {
         new_cmd = (t_env *)malloc(sizeof(t_env));
@@ -126,38 +116,54 @@ void pipes_handler(t_env *cmds, const char *input)
 
 void parsing(t_env *cmd, const char *input)
 {
-    char **subtokens;
-    int flag_index;
-    int arg_index;
-    int command_set;
-    int j;
+	char **subtokens;
+	int flag_count = 0;
+	int arg_count = 0;
+	int flag_index = 0;
+	int arg_index = 0;
+	int command_set = 0;
+	int j = 0;
 
-    subtokens = ft_split_quotes(input, ' ', 1);
-	flag_index = 0;
-    arg_index = 0;
-    command_set = 0;
-    j = 0;
-    initialize_cmd(cmd);
-    while (subtokens[j] != NULL)
-    {
-        if (!command_set)
-        {
-            cmd->cmd = ft_strdup(subtokens[j]);
-            command_set = 1;
-        }
-        else if (subtokens[j][0] == '-')
-        {
-            cmd->flag[flag_index] = ft_strdup(subtokens[j]);
-            flag_index++;
-        }
-        else
-        {
-            cmd->arg[arg_index] = ft_strdup(subtokens[j]);
-            arg_index++;
-        }
-        j++;
-    }
-    cmd->flag[flag_index] = NULL;
-    cmd->arg[arg_index] = NULL;
-    free_subtokens(subtokens);
+	subtokens = ft_split_quotes(input, ' ', 1);
+
+	for (j = 0; subtokens[j] != NULL; j++)
+	{
+		if (!command_set)
+			command_set = 1;
+		else if (subtokens[j][0] == '-')
+			flag_count++;
+		else if (command_set)
+			arg_count++;
+	}
+	initialize_cmd(cmd);
+	cmd->flag = (char **)malloc((flag_count + 1) * sizeof(char *));
+	cmd->arg = (char **)malloc((arg_count + 1) * sizeof(char *));
+	command_set = 0;
+	if (!cmd->flag || !cmd->arg)
+	{
+		perror("Memory allocation failed");
+		exit(EXIT_FAILURE);
+	}
+	j = 0;
+	while (subtokens[j] != NULL)
+	{
+		if (!command_set)
+		{
+			cmd->cmd = ft_strdup(subtokens[j]);
+			command_set = 1;
+		}
+		else if (subtokens[j][0] == '-' && flag_count > 0)
+		{
+			cmd->flag[flag_index++] = ft_strdup(subtokens[j]);
+		}
+		else if (arg_count > 0)
+		{
+			cmd->arg[arg_index++] = ft_strdup(subtokens[j]);
+		}
+		j++;
+	}
+	cmd->flag[flag_index] = NULL;
+	cmd->arg[arg_index] = NULL;
+	ft_debug(cmd); //Remover antes de entregar (utils3.c)
+	free_subtokens(subtokens);
 }

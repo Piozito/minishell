@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/14 17:41:53 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:45:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,11 @@
 # include <termios.h>
 # include <curses.h>
 
-# define MAX_FLAGS 10
-# define MAX_ARGS 10
-# define MAX_PATH 1024
-
 typedef struct s_env
 {
 	char			*cmd;
-	char			*flag[MAX_FLAGS];
-	char			*arg[MAX_ARGS];
+	char			**flag;
+	char			**arg;
 	char			*path;
 	char			**env;
 	struct s_env	*next;
@@ -67,5 +63,6 @@ void	check_builtin(t_env *cmds);
 void	apply_redirections(t_env *cmds);
 char	**ft_split_quotes(char const *s, char c, int del);
 char **pipe_check(const char *input);
+void ft_debug(t_env *cmd);
 
 #endif

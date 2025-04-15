@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/04 08:39:19 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/15 14:51:51 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ static char	*get_cd_path(char *path)
 
 static void	update_pwd(t_env *cmds, char *old_pwd)
 {
-	char	new_pwd[MAX_PATH];
+	char	new_pwd[1024];
 	char	*tmp;
 
-	if (getcwd(new_pwd, MAX_PATH))
+	if (getcwd(new_pwd, 1024))
 	{
 		tmp = ft_strjoin("OLDPWD=", old_pwd);
 		ft_putenv(cmds, tmp);
@@ -59,11 +59,11 @@ static void	update_pwd(t_env *cmds, char *old_pwd)
 
 void	ft_cd(t_env *cmds)
 {
-	char	old_pwd[MAX_PATH];
+	char	old_pwd[1024];
 	char	*path;
 	if(cmds->arg[1] == NULL && cmds->flag[0] == NULL)
 	{
-		if (!getcwd(old_pwd, MAX_PATH))
+		if (!getcwd(old_pwd, 1024))
 			return (perror("getcwd"));
 		path = get_cd_path(cmds->arg[0]);
 		if (!path)
