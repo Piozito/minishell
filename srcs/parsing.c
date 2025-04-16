@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/15 15:51:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:44:05 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 void	initialize_cmd(t_env *cmd)
 {
-	extern char **environ;
 
 	cmd->cmd = NULL;
 	cmd->arg = NULL;
-	cmd->env = environ;
 	cmd->path = getenv("PATH");
 	cmd->flag = NULL;
 	cmd->next = NULL;
@@ -37,7 +35,7 @@ void	free_subtokens(char **subtokens)
 	free(subtokens);
 }
 
-char *trim_spaces(char *str) 
+char *trim_spaces(char *str)
 {
     char *end;
     while (isspace((unsigned char)*str))
@@ -89,6 +87,15 @@ void pipes_handler(t_env *cmds, const char *input)
     pipes = pipe_check(input);
 	if(pipes == NULL)
 		return ;
+	if(pipes[1] == NULL)
+	{
+		parsing(cmds, pipes[i]);
+		cmd_check(cmds);
+		check_builtin(cmds);
+		apply_redirections(cmds);
+		free_subtokens(pipes);
+		return ;
+	}
     while (pipes[i] != NULL)
     {
         new_cmd = (t_env *)malloc(sizeof(t_env));

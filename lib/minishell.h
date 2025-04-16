@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/15 15:45:02 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:23:50 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_env
 	char			**flag;
 	char			**arg;
 	char			*path;
-	char			**env;
 	struct s_env	*next;
 }				t_env;
 

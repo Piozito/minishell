@@ -3,34 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 17:33:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:27:17 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
 
-static void create_pipe(int p_fd[2]) 
+static void create_pipe(int p_fd[2])
 {
-    if (pipe(p_fd) == -1) 
+    if (pipe(p_fd) == -1)
     {
         perror("pipe");
         exit(1);
     }
 }
 
-static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last) 
+static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
 {
-    if (prev_fd != 0) 
+    if (prev_fd != 0)
     {
         if (dup2(prev_fd, STDIN_FILENO) == -1)
             exit(1);
         close(prev_fd);
     }
-    if (!is_last) 
+    if (!is_last)
     {
         if (dup2(p_fd[1], STDOUT_FILENO) == -1)
             exit(1);
@@ -41,7 +41,7 @@ static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
     exit(1);
 }
 
-static void handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_last) 
+static void handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_last)
 {
     pid_t pid = fork();
     if (pid == -1)
@@ -49,14 +49,14 @@ static void handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_l
         perror("fork");
         exit(1);
     }
-    if (pid == 0) 
+    if (pid == 0)
         execute_command(cmds, prev_fd, p_fd, is_last);
 }
 
-static void handle_parent_process(int p_fd[2], int *prev_fd) 
+static void handle_parent_process(int p_fd[2], int *prev_fd)
 {
     close(p_fd[1]);
-    if (*prev_fd != 0) 
+    if (*prev_fd != 0)
         close(*prev_fd);
     *prev_fd = p_fd[0];
 }

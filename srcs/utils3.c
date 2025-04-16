@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/15 15:40:37 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:24:45 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 void ft_debug(t_env *cmd)
 {
-	if(cmd->env)
-		printf("\033[0;32menv is available.\033[0m\n");
-	else
-		printf("\033[0;31menv has failed.\033[0m\n");
-
 	if(cmd->path)
 		printf("\033[0;32mpath is available.\033[0m\n");
 	else

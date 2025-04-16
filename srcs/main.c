@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/15 15:49:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:24:17 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,11 @@ void check_input(char *input)
 
 int	main()
 {
-	char	*input;
 	extern char **environ;
+	char	*input;
 	t_env	cmds;
 
 
-	cmds.env = environ;
 	cmds.path = getenv("PATH");
 	if(environ[0] == NULL)
 	{

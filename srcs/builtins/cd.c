@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/15 14:51:51 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:28:07 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,19 @@
 
 static void	ft_putenv(t_env *cmds, char *var)
 {
+	extern char **environ;
 	int	i;
 
 	i = 0;
-	if (ft_strncmp(cmds->env[i], var, ft_strlen(var)) == 0)
-		cmds->env[i] = var;
+	(void)cmds;
+	while(environ[i])
+	{
+		if(ft_strncmp(var, "OLDPWD=", 7) == 0 && ft_strncmp(environ[i], "OLDPWD=", 7) == 0)
+			environ[i] = var;
+		else if(ft_strncmp(var, "PWD=", 4) == 0 && ft_strncmp(environ[i], "PWD=", 4) == 0)
+			environ[i] = var;
+		i++;
+	}
 }
 
 static char	*get_cd_path(char *path)
@@ -67,7 +75,7 @@ void	ft_cd(t_env *cmds)
 			return (perror("getcwd"));
 		path = get_cd_path(cmds->arg[0]);
 		if (!path)
-			return ;
+		return ;
 		if (chdir(path) != 0)
 			printf("cd: no such file or directory: \"%s\"\n", path);
 		else
