@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 11:57:44 by aaleixo-          #+#    #+#             */
-/*   Updated: 2024/04/29 15:46:17 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:24:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*ft_strdup(const char *s)
 	while (s[i] != '\0')
 		i++;
 	ptr = (char *)malloc((i + 1) * sizeof(char));
+	if(!ptr)
+		return NULL;
 	i = 0;
 	while (s[i] != '\0')
 	{
