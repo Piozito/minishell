@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/16 15:28:07 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:27:37 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 
 static void	ft_putenv(t_env *cmds, char *var)
 {
-	extern char **environ;
 	int	i;
 
 	i = 0;
 	(void)cmds;
-	while(environ[i])
+	while(cmds->env[i])
 	{
-		if(ft_strncmp(var, "OLDPWD=", 7) == 0 && ft_strncmp(environ[i], "OLDPWD=", 7) == 0)
-			environ[i] = var;
-		else if(ft_strncmp(var, "PWD=", 4) == 0 && ft_strncmp(environ[i], "PWD=", 4) == 0)
-			environ[i] = var;
+		if(ft_strncmp(var, "OLDPWD=", 7) == 0 && ft_strncmp(cmds->env[i], "OLDPWD=", 7) == 0)
+			cmds->env[i] = var;
+		else if(ft_strncmp(var, "PWD=", 4) == 0 && ft_strncmp(cmds->env[i], "PWD=", 4) == 0)
+			cmds->env[i] = var;
 		i++;
 	}
 }
@@ -65,7 +64,7 @@ static void	update_pwd(t_env *cmds, char *old_pwd)
 		perror("getcwd");
 }
 
-void	ft_cd(t_env *cmds)
+void	ft_cd(t_env *cmds, int fd)
 {
 	char	old_pwd[1024];
 	char	*path;
@@ -77,10 +76,13 @@ void	ft_cd(t_env *cmds)
 		if (!path)
 		return ;
 		if (chdir(path) != 0)
-			printf("cd: no such file or directory: \"%s\"\n", path);
+		{
+			write(fd, "cd: no such file or directory:\n", 32);
+			write(fd, path, ft_strlen(path));
+		}
 		else
 			update_pwd(cmds, old_pwd);
 	}
 	else
-		printf("cd: cd doesn't accept flags or more than 1 argument.\n");
+		write(fd, "cd: cd doesn't accept flags or more than 1 argument.\n", 54);
 }

@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 18:54:16 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:29:03 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,18 @@
 static void	remove_env_var(t_env *env, const char *var)
 {
 	int	i;
-	extern char **environ;
 
-	if (!env || !environ || !var)
+	if (!env || !var)
 		return ;
 	i = 0;
-	while (environ[i])
+	while (env->env[i])
 	{
-		if (ft_strncmp(environ[i], var, ft_strlen(var)) == 0
-			&& environ[i][ft_strlen(var)] == '=')
+		if (ft_strncmp(env->env[i], var, ft_strlen(var)) == 0
+			&& env->env[i][ft_strlen(var)] == '=')
 		{
-			while (environ[i])
+			while (env->env[i])
 			{
-				environ[i] = environ[i + 1];
+				env->env[i] = env->env[i + 1];
 				i++;
 			}
 			return ;
@@ -36,14 +35,14 @@ static void	remove_env_var(t_env *env, const char *var)
 	}
 }
 
-void	ft_unset(t_env *cmds)
+void	ft_unset(t_env *cmds, int fd)
 {
 	int	i;
 
 	i = 0;
 	if(cmds->flag[0] != NULL)
 	{
-		printf("unset: unset doesn't accept flags.\n");
+		write(fd, "unset: unset doesn't accept flags.\n", 36);
 		return ;
 	}
 	while (cmds->arg[i])

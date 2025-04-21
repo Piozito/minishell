@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/04 09:20:06 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:08:05 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_numeric(const char *str)
 	return (1);
 }
 
-void	ft_exit(t_env *cmds)
+void	ft_exit(t_env *cmds, int fd)
 {
 	int	exit_status;
 
@@ -42,7 +42,7 @@ void	ft_exit(t_env *cmds)
 			exit_status = ft_atoi(cmds->arg[0]);
 			if(exit_status > 255 || exit_status < 0)
 			{
-				printf("exit: Error codes must be less than 256.\n");
+				write(fd, "exit: Error codes must be less than 256.\n", 42);
 				return ;
 			}
 			exit(exit_status % 256);
@@ -50,5 +50,5 @@ void	ft_exit(t_env *cmds)
 		exit(0);
 	}
 	else
-		printf("exit: exit only accepts a positive integer less than 256 and no flags.\n");
+		printf(fd, "exit: exit only accepts a positive integer less than 256 and no flags.\n", 72);
 }
