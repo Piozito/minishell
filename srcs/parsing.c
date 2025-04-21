@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/16 15:44:05 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/21 11:50:25 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 void	initialize_cmd(t_env *cmd)
 {
+	extern char **environ;
 
 	cmd->cmd = NULL;
 	cmd->arg = NULL;
 	cmd->path = getenv("PATH");
+	if(environ[0] == NULL)
+		cmd->env = NULL;
+	else
+		cmd->env = environ;
 	cmd->flag = NULL;
 	cmd->next = NULL;
 }
