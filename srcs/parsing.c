@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/21 11:50:25 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/21 12:09:18 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@ void	initialize_cmd(t_env *cmd)
 	cmd->cmd = NULL;
 	cmd->arg = NULL;
 	cmd->path = getenv("PATH");
-	if(environ[0] == NULL)
-		cmd->env = NULL;
-	else
-		cmd->env = environ;
 	cmd->flag = NULL;
 	cmd->next = NULL;
 }
@@ -43,7 +39,7 @@ void	free_subtokens(char **subtokens)
 char *trim_spaces(char *str)
 {
     char *end;
-    while (isspace((unsigned char)*str))
+    while (*str == ' ')
 		str++;
     if (*str == 0)
         return str;

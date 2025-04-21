@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/28 15:48:26 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/21 11:51:44 by aaleixo-         ###   ########.fr       */
+/*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
+/*   Updated: 2025/04/21 12:07:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_env
 	char			**arg;
 	char			*path;
 	char			**env;
+	char			**exp;
 	struct s_env	*next;
 }				t_env;
 
