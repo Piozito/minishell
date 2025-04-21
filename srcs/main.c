@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/21 12:08:42 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/21 12:18:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,30 +74,18 @@ void check_input(char *input)
 
 int	main()
 {
-	extern char **environ;
 	char	*input;
 	t_env	cmds;
 
-	if(environ[0] == NULL)
-	{
-		cmds.exp = NULL;
-		cmds.env = NULL;
-	}
-	else
-	{
-		cmds.exp = environ;
-		cmds.env = environ;
-	}
 	signal(SIGINT, ft_handler);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		initialize_cmd(&cmds);
+		initialize_cmd(&cmds, NULL);
 		input = readline("./minishell: ");
 		if (input == NULL)
 		{
 			free(input);
-			ft_cmds_free(&cmds);
 			rl_clear_history();
 			exit(0);
 		}

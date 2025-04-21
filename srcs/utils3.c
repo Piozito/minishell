@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/16 15:24:45 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/21 12:20:17 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ void ft_debug(t_env *cmd)
 		printf("\033[0;32mpath is available.\033[0m\n");
 	else
 		printf("\033[0;31mpath has failed.\033[0m\n");
+	if(cmd->env)
+		printf("\033[0;32menv is available.\033[0m\n");
+	else
+		printf("\033[0;31menv has failed.\033[0m\n");
+	if(cmd->exp)
+		printf("\033[0;32mexport is available.\033[0m\n");
+	else
+		printf("\033[0;31mexport has failed.\033[0m\n");
     printf("-------------------------\n");
 	printf("Command: %s\n", cmd->cmd);
     if (cmd->flag && cmd->flag[0] != NULL)

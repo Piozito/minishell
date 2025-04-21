@@ -6,21 +6,44 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/21 12:09:18 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/21 12:23:58 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-void	initialize_cmd(t_env *cmd)
+void	initialize_cmd(t_env *cmd, t_env *new_cmd)
 {
 	extern char **environ;
 
-	cmd->cmd = NULL;
-	cmd->arg = NULL;
-	cmd->path = getenv("PATH");
-	cmd->flag = NULL;
-	cmd->next = NULL;
+	if(new_cmd == NULL)
+	{
+		cmd->cmd = NULL;
+		cmd->arg = NULL;
+		cmd->path = getenv("PATH");
+		if(environ[0] == NULL)
+		{
+			cmd->exp = NULL;
+			cmd->env = NULL;
+		}
+		else
+		{
+			cmd->exp = environ;
+			cmd->env = environ;
+		}
+		cmd->flag = NULL;
+		cmd->next = NULL;
+	}
+	else
+	{
+		new_cmd->path = cmd->path;
+		new_cmd->env = cmd->env;
+		new_cmd->exp = cmd->exp;
+		new_cmd->cmd = NULL;
+		new_cmd->arg = NULL;
+		new_cmd->flag = NULL;
+		new_cmd->next = NULL;
+	}
 }
 
 void	free_subtokens(char **subtokens)
@@ -87,7 +110,7 @@ void pipes_handler(t_env *cmds, const char *input)
 	i = 0;
     pipes = pipe_check(input);
 	if(pipes == NULL)
-		return ;
+	return ;
 	if(pipes[1] == NULL)
 	{
 		parsing(cmds, pipes[i]);
@@ -99,7 +122,8 @@ void pipes_handler(t_env *cmds, const char *input)
 	}
     while (pipes[i] != NULL)
     {
-        new_cmd = (t_env *)malloc(sizeof(t_env));
+		new_cmd = (t_env *)malloc(sizeof(t_env));
+		initialize_cmd(cmds, new_cmd);
         parsing(new_cmd, pipes[i]);
 		cmd_check(new_cmd);
 		apply_redirections(new_cmd);
@@ -143,7 +167,6 @@ void parsing(t_env *cmd, const char *input)
 		else if (command_set)
 			arg_count++;
 	}
-	initialize_cmd(cmd);
 	cmd->flag = (char **)malloc((flag_count + 1) * sizeof(char *));
 	cmd->arg = (char **)malloc((arg_count + 1) * sizeof(char *));
 	command_set = 0;
