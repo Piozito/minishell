@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/16 15:27:17 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/21 13:19:42 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,20 @@ void ft_pipe(t_env *cmds)
         num_cmds++;
         cmd = cmd->next;
     }
+    cmd = cmds;
     while (i < num_cmds)
     {
         if (i < num_cmds - 1)
             create_pipe(p_fd);
         else
             p_fd[0] = p_fd[1] = -1;
-        handle_child_process(cmds, prev_fd, p_fd, i == num_cmds - 1);
+        handle_child_process(cmd, prev_fd, p_fd, i == num_cmds - 1);
         if (i < num_cmds - 1)
             handle_parent_process(p_fd, &prev_fd);
-        cmds = cmds->next;
+        cmd = cmd->next;
 		i++;
     }
     if (prev_fd != 0)
-        close(prev_fd);
+		close(prev_fd);
     while (wait(NULL) > 0);
 }

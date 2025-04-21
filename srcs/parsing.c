@@ -6,20 +6,38 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/21 12:23:58 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/21 16:08:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-void	initialize_cmd(t_env *cmd, t_env *new_cmd)
+char **deep_copy_environ()
+{
+	extern char **environ;
+	int count = 0;
+    while (environ[count] != NULL) {
+        count++;
+    }
+    char **new_environ = (char **)malloc((count + 1) * sizeof(char *));
+    if (new_environ == NULL) {
+        perror("Failed to allocate memory for new_environ");
+        return NULL;
+    }
+    for (int i = 0; i < count; i++) {
+        new_environ[i] = ft_strdup(environ[i]);
+    }
+    new_environ[count] = NULL;
+    return new_environ;
+}
+
+void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 {
 	extern char **environ;
 
-	if(new_cmd == NULL)
+	if(new_cmd == NULL && i == 1)
 	{
 		cmd->cmd = NULL;
-		cmd->arg = NULL;
 		cmd->path = getenv("PATH");
 		if(environ[0] == NULL)
 		{
@@ -28,22 +46,19 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd)
 		}
 		else
 		{
-			cmd->exp = environ;
-			cmd->env = environ;
+			cmd->exp = deep_copy_environ();
+			cmd->env = deep_copy_environ();
 		}
+		cmd->arg = NULL;
 		cmd->flag = NULL;
 		cmd->next = NULL;
+		cmd->exit_status = 0;
+		return ;
 	}
-	else
-	{
-		new_cmd->path = cmd->path;
-		new_cmd->env = cmd->env;
-		new_cmd->exp = cmd->exp;
-		new_cmd->cmd = NULL;
-		new_cmd->arg = NULL;
-		new_cmd->flag = NULL;
-		new_cmd->next = NULL;
-	}
+	new_cmd->path = cmd->path;
+	new_cmd->env = cmd->env;
+	new_cmd->exp = cmd->exp;
+	new_cmd->exit_status = 0;
 }
 
 void	free_subtokens(char **subtokens)
@@ -73,29 +88,29 @@ char *trim_spaces(char *str)
     return str;
 }
 
-void cmd_check(t_env *cmds)
+int cmd_check(t_env *cmds)
 {
 	if (ft_strcmp(cmds->cmd, "echo") == 0)
-		(void)cmds->cmd;
+		return 0;
 	else if (ft_strcmp(cmds->cmd, "pwd") == 0)
-		(void)cmds->cmd;
+		return 0;
 	else if (ft_strcmp(cmds->cmd, "cd") == 0)
-		(void)cmds->cmd;
+		return 0;
 	else if (ft_strcmp(cmds->cmd, "env") == 0)
-		(void)cmds->cmd;
+		return 0;
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)
-		(void)cmds->cmd;
+		return 0;
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
-		(void)cmds->cmd;
+		return 0;
 	else if (ft_strcmp(cmds->cmd, "export") == 0)
-		(void)cmds->cmd;
+		return 0;
 	else
 	{
 		cmds->path = my_get_path(cmds->cmd);
 		if (cmds->path == NULL)
 		{
 			printf("command not found: \"%s\"\n", cmds->cmd);
-			return ;
+			return 1;
 		}
 	}
 }
@@ -110,23 +125,32 @@ void pipes_handler(t_env *cmds, const char *input)
 	i = 0;
     pipes = pipe_check(input);
 	if(pipes == NULL)
-	return ;
+		return ;
 	if(pipes[1] == NULL)
 	{
 		parsing(cmds, pipes[i]);
-		cmd_check(cmds);
-		check_builtin(cmds);
-		apply_redirections(cmds);
+		if(cmd_check(cmds) == 0)
+			//funcao poggers
+		else
+		{
+			apply_redirections(cmds);
+			ft_exec(cmds);
+		}
 		free_subtokens(pipes);
 		return ;
 	}
     while (pipes[i] != NULL)
     {
 		new_cmd = (t_env *)malloc(sizeof(t_env));
-		initialize_cmd(cmds, new_cmd);
+		initialize_cmd(cmds, new_cmd, 1);
         parsing(new_cmd, pipes[i]);
-		cmd_check(new_cmd);
-		apply_redirections(new_cmd);
+		if(cmd_check(cmds) == 0)
+			//funcao poggers
+		else
+		{
+			apply_redirections(cmds);
+			ft_exec(cmds);
+		}
         if (i == 0)
         {
             cmds = new_cmd;

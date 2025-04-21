@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/21 12:18:45 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:42:25 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,61 +41,80 @@ void	check_builtin(t_env *cmds)
 		ft_exec(cmds);
 }
 
-void ft_cmds_free(t_env *cmds)
+void	ft_cmds_free(t_env *cmds)
 {
-    int i = 0;
+	int	i;
 
-    if (cmds->cmd)
-        free(cmds->cmd);
-    if (cmds->flag)
-    {
-        i = 0;
-        while (cmds->flag[i])
-            free(cmds->flag[i++]);
-        free(cmds->flag);
-    }
-    if (cmds->arg)
-    {
-        i = 0;
-        while (cmds->arg[i])
-            free(cmds->arg[i++]);
-        free(cmds->arg);
-    }
+	i = 0;
+	if (cmds->cmd)
+		free(cmds->cmd);
+	if (cmds->flag)
+	{
+		i = 0;
+		while (cmds->flag[i])
+			free(cmds->flag[i++]);
+		free(cmds->flag);
+	}
+	if (cmds->arg)
+	{
+		i = 0;
+		while (cmds->arg[i])
+			free(cmds->arg[i++]);
+		free(cmds->arg);
+	}
+	if (cmds->env)
+	{
+		i = 0;
+		while (cmds->env[i])
+			free(cmds->env[i++]);
+		free(cmds->env);
+	}
+	if (cmds->exp)
+	{
+		i = 0;
+		while (cmds->exp[i])
+			free(cmds->exp[i++]);
+		free(cmds->exp);
+	}
 }
 
-void check_input(char *input)
+void	check_input(char *input)
 {
-	int i = 0;
-	while(input[i] == ' ' || input[i] == '	')
+	int	i;
+
+	i = 0;
+	while (input[i] == ' ' || input[i] == '	')
 		i++;
-	if(input[i] == '\0')
+	if (input[i] == '\0')
 		input[0] = '\0';
 }
 
-int	main()
+int	main(void)
 {
 	char	*input;
-	t_env	cmds;
+	t_env	*cmds;
 
 	signal(SIGINT, ft_handler);
 	signal(SIGQUIT, SIG_IGN);
+	cmds = (t_env *)malloc(sizeof(t_env));
+	initialize_cmd(cmds, NULL, 1);
 	while (1)
 	{
-		initialize_cmd(&cmds, NULL);
 		input = readline("./minishell: ");
 		if (input == NULL)
 		{
 			free(input);
 			rl_clear_history();
-			exit(0);
+			break;
 		}
 		check_input(input);
 		if (*input != '\0')
 		{
-			pipes_handler(&cmds, input);
+			pipes_handler(cmds, input);
 			add_history(input);
 		}
+		printf("%d", cmds->exit_status % 255);
 		free(input);
-		ft_cmds_free(&cmds);
 	}
+	ft_cmds_free(cmds);
 }
