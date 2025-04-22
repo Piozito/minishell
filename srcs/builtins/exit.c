@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/21 16:08:05 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/22 12:13:36 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,5 @@ void	ft_exit(t_env *cmds, int fd)
 		exit(0);
 	}
 	else
-		printf(fd, "exit: exit only accepts a positive integer less than 256 and no flags.\n", 72);
+		write(fd, "exit: exit only accepts a positive integer less than 256 and no flags.\n", 72);
 }

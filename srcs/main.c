@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/21 14:42:25 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/22 12:44:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ void	ft_handler(int sig)
 void	check_builtin(t_env *cmds)
 {
 	if (ft_strcmp(cmds->cmd, "echo") == 0)
-		ft_echo(cmds);
+		ft_echo(cmds, 1);
 	else if (ft_strcmp(cmds->cmd, "pwd") == 0)
-		ft_pwd(cmds);
+		ft_pwd(cmds, 1);
 	else if (ft_strcmp(cmds->cmd, "cd") == 0)
-		ft_cd(cmds);
+		ft_cd(cmds, 1);
 	else if (ft_strcmp(cmds->cmd, "env") == 0)
-		ft_env(cmds);
+		ft_env(cmds, 1);
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)
-		ft_exit(cmds);
+		ft_exit(cmds, 1);
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
-		ft_unset(cmds);
+		ft_unset(cmds, 1);
 	else if (ft_strcmp(cmds->cmd, "export") == 0)
-		ft_export(cmds);
+		ft_export(cmds, 1);
 	else
 		ft_exec(cmds);
 }
@@ -62,20 +62,6 @@ void	ft_cmds_free(t_env *cmds)
 			free(cmds->arg[i++]);
 		free(cmds->arg);
 	}
-	if (cmds->env)
-	{
-		i = 0;
-		while (cmds->env[i])
-			free(cmds->env[i++]);
-		free(cmds->env);
-	}
-	if (cmds->exp)
-	{
-		i = 0;
-		while (cmds->exp[i])
-			free(cmds->exp[i++]);
-		free(cmds->exp);
-	}
 }
 
 void	check_input(char *input)
@@ -97,9 +83,11 @@ int	main(void)
 	signal(SIGINT, ft_handler);
 	signal(SIGQUIT, SIG_IGN);
 	cmds = (t_env *)malloc(sizeof(t_env));
-	initialize_cmd(cmds, NULL, 1);
+	cmds->exp = deep_copy_environ();
+	cmds->env = deep_copy_environ();
 	while (1)
 	{
+		initialize_cmd(cmds, NULL, 1);
 		input = readline("./minishell: ");
 		if (input == NULL)
 		{
@@ -113,8 +101,22 @@ int	main(void)
 			pipes_handler(cmds, input);
 			add_history(input);
 		}
-		printf("%d", cmds->exit_status % 255);
 		free(input);
+		ft_cmds_free(cmds);
 	}
-	ft_cmds_free(cmds);
+	int i = 0;
+	if (cmds->env)
+	{
+		i = 0;
+		while (cmds->env[i])
+			free(cmds->env[i++]);
+		free(cmds->env);
+	}
+	if (cmds->exp)
+	{
+		i = 0;
+		while (cmds->exp[i])
+			free(cmds->exp[i++]);
+		free(cmds->exp);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:58 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/21 16:01:44 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/22 12:13:14 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void ft_env(t_env *cmds, int fd)
 	}
     while (cmds->env[i] != NULL)
 	{
-        write(fd, cmds->env[i++], ft_strlen(cmds->env[i++]));
+        write(fd, cmds->env[i], ft_strlen(cmds->env[i]));
 		write(fd, "\n", 1);
-
+		i++;
 	}
 }
