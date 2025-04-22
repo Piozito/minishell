@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/22 12:44:48 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:01:07 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,19 @@ void	ft_handler(int sig)
 void	check_builtin(t_env *cmds)
 {
 	if (ft_strcmp(cmds->cmd, "echo") == 0)
-		ft_echo(cmds, 1);
+		ft_echo(cmds);
 	else if (ft_strcmp(cmds->cmd, "pwd") == 0)
-		ft_pwd(cmds, 1);
+		ft_pwd(cmds);
 	else if (ft_strcmp(cmds->cmd, "cd") == 0)
-		ft_cd(cmds, 1);
+		ft_cd(cmds);
 	else if (ft_strcmp(cmds->cmd, "env") == 0)
-		ft_env(cmds, 1);
+		ft_env(cmds);
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)
-		ft_exit(cmds, 1);
+		ft_exit(cmds);
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
-		ft_unset(cmds, 1);
+		ft_unset(cmds);
 	else if (ft_strcmp(cmds->cmd, "export") == 0)
-		ft_export(cmds, 1);
+		ft_export(cmds);
 	else
 		ft_exec(cmds);
 }

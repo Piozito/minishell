@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/22 12:13:36 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:04:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	is_numeric(const char *str)
 	return (1);
 }
 
-void	ft_exit(t_env *cmds, int fd)
+void	ft_exit(t_env *cmds)
 {
 	int	exit_status;
 
@@ -42,7 +42,7 @@ void	ft_exit(t_env *cmds, int fd)
 			exit_status = ft_atoi(cmds->arg[0]);
 			if(exit_status > 255 || exit_status < 0)
 			{
-				write(fd, "exit: Error codes must be less than 256.\n", 42);
+				write(cmds->fd, "exit: Error codes must be less than 256.\n", 42);
 				return ;
 			}
 			exit(exit_status % 256);
@@ -50,5 +50,5 @@ void	ft_exit(t_env *cmds, int fd)
 		exit(0);
 	}
 	else
-		write(fd, "exit: exit only accepts a positive integer less than 256 and no flags.\n", 72);
+		write(cmds->fd, "exit: exit only accepts a positive integer less than 256 and no flags.\n", 72);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/21 16:27:37 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:04:51 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ static void	update_pwd(t_env *cmds, char *old_pwd)
 		perror("getcwd");
 }
 
-void	ft_cd(t_env *cmds, int fd)
+void	ft_cd(t_env *cmds)
 {
 	char	old_pwd[1024];
 	char	*path;
-	if(cmds->arg[1] == NULL && cmds->flag[0] == NULL)
+	if((cmds->arg[1] == NULL || cmds->arg[0] == NULL) && cmds->flag[0] == NULL)
 	{
 		if (!getcwd(old_pwd, 1024))
 			return (perror("getcwd"));
@@ -77,12 +77,12 @@ void	ft_cd(t_env *cmds, int fd)
 		return ;
 		if (chdir(path) != 0)
 		{
-			write(fd, "cd: no such file or directory:\n", 32);
-			write(fd, path, ft_strlen(path));
+			write(cmds->fd, "cd: no such file or directory:\n", 32);
+			write(cmds->fd, path, ft_strlen(path));
 		}
 		else
 			update_pwd(cmds, old_pwd);
 	}
 	else
-		write(fd, "cd: cd doesn't accept flags or more than 1 argument.\n", 54);
+		write(cmds->fd, "cd: cd doesn't accept flags or more than 1 argument.\n", 54);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/21 16:18:48 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:04:35 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,16 @@ char **update_env(char *arg, char **env)
         new_env[j + 1] = NULL;
         env = new_env;
     }
-	// j = 0;
-	// while (env[j])
-	// {
-	// 	printf("%s\n", env[j]);
-	// 	j++;
-	// }
 	return (env);
 }
 
-void ft_export(t_env *env, int fd)
+void ft_export(t_env *env)
 {
     int i;
 
 	if(env->flag[0] != NULL)
 	{
-		write(fd, "export: export doens't accepts flags.\n", 39);
+		write(env->fd, "export: export doens't accepts flags.\n", 39);
 		return ;
 	}
     if (!env->arg[0])
@@ -89,9 +83,9 @@ void ft_export(t_env *env, int fd)
         i = 0;
         while (env->exp[i])
 		{
-			write(fd, "declare -x", 11);
-			write(fd, env->exp[i], ft_strlen(env->exp[i]));
-			write (fd, "\n", 1);
+			write(env->fd, "declare -x", 11);
+			write(env->fd, env->exp[i], ft_strlen(env->exp[i]));
+			write (env->fd, "\n", 1);
 			i++;
 		}
         return;
@@ -115,8 +109,8 @@ void ft_export(t_env *env, int fd)
         }
         else
 		{
-            write(fd, "export:: not a valid identifier\n", 33);
-			write(fd, env->exp[i], ft_strlen(env->exp[i]));
+            write(env->fd, "export:: not a valid identifier\n", 33);
+			write(env->fd, env->exp[i], ft_strlen(env->exp[i]));
         	i++;
 		}
     }

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/22 12:30:57 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:04:57 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,16 @@ typedef struct s_env
 	char			**exp;
 	int				exit_status;
 	struct s_env	*next;
+	int				fd;
 }				t_env;
 
-void	ft_echo(t_env *cmds, int fd);
-void	ft_pwd(t_env *cmds, int fd);
-void	ft_cd(t_env *cmds, int fd);
-void	ft_env(t_env *cmds, int fd);
-void	ft_exit(t_env *cmds, int fd);
-void	ft_unset(t_env *env, int fd);
-void	ft_export(t_env *env, int fd);
+void	ft_echo(t_env *cmds);
+void	ft_pwd(t_env *cmds);
+void	ft_cd(t_env *cmds);
+void	ft_env(t_env *cmds);
+void	ft_exit(t_env *cmds);
+void	ft_unset(t_env *env);
+void	ft_export(t_env *env);
 void	ft_exec(t_env *command);
 void	parsing(t_env *cmd, const char *input);
 void	ft_free_tab(char **tab);

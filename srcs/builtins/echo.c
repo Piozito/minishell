@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:00:22 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/21 15:29:55 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:04:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-void	ft_echo(t_env *cmds, int fd)
+void	ft_echo(t_env *cmds)
 {
 	int	j;
 	int	n;
@@ -27,18 +27,18 @@ void	ft_echo(t_env *cmds, int fd)
 	}
 	while (cmds->flag[j])
 	{
-		write(fd, cmds->flag[j], strlen(cmds->flag[j]));
-		write(fd, " ", 1);
+		write(cmds->fd, cmds->flag[j], strlen(cmds->flag[j]));
+		write(cmds->fd, " ", 1);
 		j++;
 	}
 	j = 0;
 	while (cmds->arg[j])
 	{
-		write(fd, cmds->arg[j], strlen(cmds->arg[j]));
+		write(cmds->fd, cmds->arg[j], strlen(cmds->arg[j]));
 		if (cmds->arg[j + 1])
-			write(fd, " ", 1);
+			write(cmds->fd, " ", 1);
 		j++;
 	}
 	if (n)
-		write(fd, "\n", 1);
+		write(cmds->fd, "\n", 1);
 }

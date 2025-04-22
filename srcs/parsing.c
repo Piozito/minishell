@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/22 12:42:57 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:53:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,14 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 		cmd->flag = NULL;
 		cmd->next = NULL;
 		cmd->exit_status = 0;
+		cmd->fd = 1;
 		return ;
 	}
 	new_cmd->path = cmd->path;
 	new_cmd->env = cmd->env;
 	new_cmd->exp = cmd->exp;
 	new_cmd->exit_status = 0;
+	new_cmd->fd = 1;
 }
 
 void	free_subtokens(char **subtokens)
@@ -119,8 +121,8 @@ void pipes_handler(t_env *cmds, const char *input)
 	{
 		parsing(cmds, pipes[i]);
 		cmd_check(cmds);
-		check_builtin(cmds);
 		apply_redirections(cmds);
+		check_builtin(cmds);
 		free_subtokens(pipes);
 		return ;
 	}
