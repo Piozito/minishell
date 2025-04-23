@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/22 15:53:54 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/23 15:53:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,36 @@ void pipes_handler(t_env *cmds, const char *input)
 	if(pipes[1] == NULL)
 	{
 		parsing(cmds, pipes[i]);
-		cmd_check(cmds);
-		apply_redirections(cmds);
-		check_builtin(cmds);
-		free_subtokens(pipes);
+		if (cmd_check(cmds) == 0)
+		{
+			int saved_stdin = dup(0);
+			int saved_stdout = dup(1);
+			
+			apply_fd(cmds);
+			
+			check_builtin(cmds);
+			
+			dup2(saved_stdin, 0);
+			dup2(saved_stdout, 1);
+			close(saved_stdin);
+			close(saved_stdout);
+			
+		}
+		else
+		{
+			pid_t pid = fork();
+			if (pid == 0) 
+			{
+    			apply_redirections(cmds);
+				check_builtin(cmds);
+				free_subtokens(pipes);
+    			exit(1);
+			} 
+			else if (pid > 0) 
+    			waitpid(pid, NULL, 0);
+			else 
+    			perror("fork failed");
+		}
 		return ;
 	}
     while (pipes[i] != NULL)
