@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/22 16:04:57 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/23 16:02:40 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ char	*my_get_path(char *cmd);
 void	pipes_handler(t_env *cmds, const char *input);
 void	ft_pipe(t_env *cmds);
 void	check_builtin(t_env *cmds);
-void	apply_redirections(t_env *cmds);
 char	**ft_split_quotes(char const *s, char c, int del);
 char **pipe_check(const char *input);
 void ft_debug(t_env *cmd);
 char **deep_copy_environ();
+void apply_fd(t_env *cmds) ;
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/23 15:53:53 by marvin           ###   ########.fr       */
+/*   Updated: 2025/04/23 16:21:17 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void pipes_handler(t_env *cmds, const char *input)
 			pid_t pid = fork();
 			if (pid == 0) 
 			{
-    			apply_redirections(cmds);
+				apply_fd(cmds);
 				check_builtin(cmds);
 				free_subtokens(pipes);
     			exit(1);
@@ -157,8 +157,31 @@ void pipes_handler(t_env *cmds, const char *input)
 		new_cmd = (t_env *)malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
         parsing(new_cmd, pipes[i]);
-		cmd_check(new_cmd);
-		apply_redirections(new_cmd);
+		if (cmd_check(new_cmd) == 0)
+		{
+			int saved_stdin = dup(0);
+			int saved_stdout = dup(1);
+			apply_fd(new_cmd);
+			check_builtin(new_cmd);
+			dup2(saved_stdin, 0);
+			dup2(saved_stdout, 1);
+			close(saved_stdin);
+			close(saved_stdout);
+		}
+		else
+		{
+			pid_t pid = fork();
+			if (pid == 0) 
+			{
+    			apply_fd(new_cmd);
+				free_subtokens(pipes);
+    			exit(1);
+			} 
+			else if (pid > 0) 
+    			waitpid(pid, NULL, 0);
+			else 
+    			perror("fork failed");
+		}
         if (i == 0)
         {
             cmds = new_cmd;
