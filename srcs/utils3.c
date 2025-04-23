@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/23 18:29:33 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:46:32 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,14 @@ void ft_debug(t_env *cmd)
 
 void pop(t_env *cmds, int i)
 {
+	pid_t pid;
+	int saved_stdin;
+	int saved_stdout;
+
 	if (cmd_check(cmds) == 0)
 	{
-		printf("AAAA\n");
-		int saved_stdin = dup(0);
-		int saved_stdout = dup(1);
+		saved_stdin = dup(0);
+		saved_stdout = dup(1);
 		apply_fd(cmds);
 		if(i == 0)
 			check_builtin(cmds);
@@ -65,22 +68,19 @@ void pop(t_env *cmds, int i)
 		dup2(saved_stdout, 1);
 		close(saved_stdin);
 		close(saved_stdout);
+		return ;
 	}
-	else
+	pid = fork();
+	if (pid == 0) 
 	{
-		printf("BBBB\n");
-		pid_t pid = fork();
-		if (pid == 0) 
-		{
-			apply_fd(cmds);
-			if(i == 0)
-				check_builtin(cmds);
-		    exit(1);
-		} 
-		else if (pid > 0) 
-		    waitpid(pid, NULL, 0);
-		else 
-		    perror("fork failed");
-	}
+		apply_fd(cmds);
+		if(i == 0)
+			check_builtin(cmds);
+	    exit(1);
+	} 
+	else if (pid > 0)
+	    waitpid(pid, NULL, 0);
+	else
+	    perror("fork failed");
 	return ; 
 }
