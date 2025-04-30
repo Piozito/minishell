@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/30 09:10:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/30 10:20:44 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void ft_expand_variable(const char *src, int *index, char **dst, int *i)
 
     if (src[*index] != '$')
         return;
-
     start = (char *)src + *index;
     end = start + 1;
     while (*end && *end != ' ' && *end != '\"' && *end != '\'')
@@ -49,24 +48,13 @@ void ft_expand_variable(const char *src, int *index, char **dst, int *i)
         expanded = "";
     *i += strlen(expanded);
     replace_variable(result, src, start, end, expanded);
-
-    // Calculate the new size for dst
-    size_t new_size = strlen(result) + 1;
-
-    // Allocate a new buffer for dst
-    char *new_dst = (char *)malloc(new_size);
+    char *new_dst = (char *)malloc(strlen(result) + 1);
     if (!new_dst)
     {
-        fprintf(stderr, "Memory allocation failed\n");
-        exit(EXIT_FAILURE);
+        write(1, "Memory allocation failed\n", 27);
+        exit(127);
     }
-
-    // Copy the data into the new buffer
-    strcpy(new_dst, result);
-
-    // Free the old buffer
+    ft_strlcpy(new_dst, result, ft_strlen(result) + 1);
     free(*dst);
-
-    // Update the dst pointer
     *dst = new_dst;
 }
