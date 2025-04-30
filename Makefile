@@ -6,7 +6,7 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/18 16:13:04 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/04/23 14:14:18 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/04/28 11:24:05 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SOURCES = \
 	srcs/builtins/unset.c srcs/builtins/export.c \
 	srcs/parsing.c srcs/execution.c srcs/utils.c \
 	srcs/pipes.c srcs/utils2.c srcs/utils3.c \
-	srcs/fd.c
+	srcs/fd.c srcs/expand.c
 OBJECTS = $(SOURCES:.c=.o)
 
 MAKE_LIBFT = make -C ./lib/libft/
