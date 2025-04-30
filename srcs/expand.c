@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/30 10:20:44 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:17:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ void replace_variable(char *result, const char *str, char *start, char *end, cha
 
 void ft_expand_variable(const char *src, int *index, char **dst, int *i)
 {
-    char result[1024];
     char var_name[256];
     char *start;
     char *end;
     char *expanded;
+    int len_before;
+    int len_expanded;
+    int new_size;
 
     if (src[*index] != '$')
         return;
@@ -45,16 +47,22 @@ void ft_expand_variable(const char *src, int *index, char **dst, int *i)
     var_name[end - (start + 1)] = '\0';
     expanded = getenv(var_name);
     if (!expanded)
-        expanded = "";
-    *i += strlen(expanded);
-    replace_variable(result, src, start, end, expanded);
-    char *new_dst = (char *)malloc(strlen(result) + 1);
+		expanded = "";
+    len_expanded = ft_strlen(expanded);
+    len_before = *i;
+    new_size = len_before + len_expanded + 1;
+    char *new_dst = (char *)malloc(new_size * sizeof(char));
     if (!new_dst)
     {
         write(1, "Memory allocation failed\n", 27);
         exit(127);
     }
-    ft_strlcpy(new_dst, result, ft_strlen(result) + 1);
-    free(*dst);
+    if (*dst)
+    {
+        ft_strlcpy(new_dst, *dst, len_before + 1);
+        free(*dst);
+    }
+    ft_strlcpy(new_dst + len_before, expanded, len_expanded + 1);
     *dst = new_dst;
+    *i += len_expanded;
 }
