@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/30 11:17:02 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/05 13:02:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@ void replace_variable(char *result, const char *str, char *start, char *end, cha
     ft_strlcpy(result + len_before, expanded, len_expanded + 1);
     ft_strlcpy(result + len_before + len_expanded, end, len_after + 1);
     result[len_before + len_expanded + len_after] = '\0';
+}
+
+int exit_status(int i)
+{
+	static int exit_status;
+	if (i != -1)
+		exit_status = i;
+	return exit_status;
 }
 
 void ft_expand_variable(const char *src, int *index, char **dst, int *i)
@@ -45,7 +53,14 @@ void ft_expand_variable(const char *src, int *index, char **dst, int *i)
     }
     ft_strlcpy(var_name, start + 1, end - (start + 1) + 1);
     var_name[end - (start + 1)] = '\0';
-    expanded = getenv(var_name);
+	if(var_name[0] == '?' && var_name[1] == '\0')
+	{
+		printf("Before expand: %d\n", exit_status(-1));
+		expanded = ft_itoa(exit_status(-1));
+		printf("After expand: %s\n", expanded);
+	}
+	else
+    	expanded = getenv(var_name);
     if (!expanded)
 		expanded = "";
     len_expanded = ft_strlen(expanded);

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/30 11:17:37 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/05 12:19:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int cmd_check(t_env *cmds)
 		if (cmds->path == NULL)
 		{
 			printf("command not found: \"%s\"\n", cmds->cmd);
+			exit_status(127);
 			return 1;
 		}
 	}
