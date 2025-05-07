@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/05 13:02:33 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:21:32 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	init_exec(char **exec_args, t_env *command, int arg_count)
 void	handle_fork_execution(char *path, char **exec_args, t_env *command)
 {
 	pid_t	pid;
-	int i = 0;
 
 	pid = fork();
 	if (pid == -1)
@@ -56,13 +55,7 @@ void	handle_fork_execution(char *path, char **exec_args, t_env *command)
 		}
 	}
 	else
-	{
-		waitpid(pid, &i, 0);
-		printf("Before execution: %d\n", exit_status(-1));
-		if(WEXITSTATUS(i))
-			exit_status(WEXITSTATUS(i));
-		printf("After execution: %d\n", exit_status(-1));
-	}
+		waitpid(pid, &command->exit_status, 0);
 }
 
 int	counter(t_env *command)
@@ -82,7 +75,7 @@ int	counter(t_env *command)
 	return (arg_count);
 }
 
-void	ft_exec(t_env *command)
+int	ft_exec(t_env *command)
 {
 	int		arg_count;
 	char	**exec_args;
@@ -92,14 +85,15 @@ void	ft_exec(t_env *command)
 	if (!exec_args)
 	{
 		perror("malloc");
-		exit(1);
+		return(1);
 	}
 	init_exec(exec_args, command, arg_count);
 	if (command->path == NULL)
 	{
 		free(exec_args);
-		return ;
+		return (127);
 	}
 	handle_fork_execution(command->path, exec_args, command);
 	free(exec_args);
+	return(0);
 }
