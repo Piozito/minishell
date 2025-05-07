@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 17:57:06 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 19:14:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,9 @@ int cmd_check(t_env *cmds)
 		{
 			cmds->path = my_get_path(cmds->cmd);
 			if (cmds->path == NULL)
+			{
 				cmds->exit_status = 127;
+			}
 			return 1;
 		}
 	}
