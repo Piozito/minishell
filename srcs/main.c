@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 16:21:10 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:15:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,24 @@ void	ft_handler(int sig)
 	rl_redisplay();
 }
 
-void	check_builtin(t_env *cmds)
+int	check_builtin(t_env *cmds)
 {
 	if (ft_strcmp(cmds->cmd, "echo") == 0)
-		ft_echo(cmds);
+		return ft_echo(cmds);
 	else if (ft_strcmp(cmds->cmd, "pwd") == 0)
-		ft_pwd(cmds);
+		return ft_pwd(cmds);
 	else if (ft_strcmp(cmds->cmd, "cd") == 0)
-		ft_cd(cmds);
+		return ft_cd(cmds);
 	else if (ft_strcmp(cmds->cmd, "env") == 0)
-		ft_env(cmds);
+		return ft_env(cmds);
 	else if (ft_strcmp(cmds->cmd, "exit") == 0)
-		ft_exit(cmds);
+		return ft_exit(cmds);
 	else if (ft_strcmp(cmds->cmd, "unset") == 0)
-		ft_unset(cmds);
+		return ft_unset(cmds);
 	else if (ft_strcmp(cmds->cmd, "export") == 0)
-		ft_export(cmds);
+		return ft_export(cmds);
 	else
-		ft_exec(cmds);
+		return ft_exec(cmds);
 }
 
 void	ft_cmds_free(t_env *cmds)

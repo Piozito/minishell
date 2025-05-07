@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 12:21:32 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:16:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,15 @@ void	handle_fork_execution(char *path, char **exec_args, t_env *command)
 	}
 	else if (pid == 0)
 	{
-		if (execve(path, exec_args, command->env) == -1)
+		if(cmd_check(command) == 0)
 		{
-			perror("execve");
+			printf("command not found: \"%s\"\n", command->cmd);
+			free(exec_args);
+			exit(127);
+		}
+		else if (execve(path, exec_args, command->env) == -1)
+		{
+			printf("command not found: \"%s\"\n", command->cmd);
 			free(exec_args);
 			exit(127);
 		}
@@ -85,9 +91,10 @@ int	ft_exec(t_env *command)
 	if (!exec_args)
 	{
 		perror("malloc");
-		return(1);
+		return (1);
 	}
 	init_exec(exec_args, command, arg_count);
+	command->path = my_get_path(command->cmd);
 	if (command->path == NULL)
 	{
 		free(exec_args);
@@ -95,5 +102,5 @@ int	ft_exec(t_env *command)
 	}
 	handle_fork_execution(command->path, exec_args, command);
 	free(exec_args);
-	return(0);
+	return (0);
 }
