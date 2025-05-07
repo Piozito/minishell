@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/30 11:17:48 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:56:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,20 @@
 
 static int is_separator(char ch, char c, int quote, int dquote)
 {
-    return !quote && !dquote && (ch == c || ch == '\0');
+	return !quote && !dquote && (ch == c || ch == '\0');
 }
 
+static char *ft_find_closing_quote(const char *str, int start, char quote)
+{
+	int i = start;
+	while (str[i] != '\0')
+	{
+		if (str[i] == quote)
+			return (char *)(str + i);
+		i++;
+	}
+	return (NULL);
+}
 static int word_count(char const *s, char c)
 {
     int i = 0;
@@ -26,9 +37,9 @@ static int word_count(char const *s, char c)
 
     while (s[i])
     {
-        if (s[i] == '\'' && !dquote)
+        if (s[i] == '\'' && !dquote && ft_find_closing_quote(s, i, s[i]))
             quote = !quote;
-        else if (s[i] == '\"' && !quote)
+        else if (s[i] == '\"' && !quote && ft_find_closing_quote(s, i, s[i]))
             dquote = !dquote;
         else if (is_separator(s[i], c, quote, dquote) && s[i + 1] && !is_separator(s[i + 1], c, quote, dquote))
             count++;
@@ -39,19 +50,8 @@ static int word_count(char const *s, char c)
     return count;
 }
 
-static char *ft_find_closing_quote(const char *str, int start, char quote)
-{
-    int i = start;
-    while (str[i] != '\0')
-    {
-        if (str[i] == quote)
-            return (char *)(str + i);
-        i++;
-    }
-    return (NULL);
-}
 
-char **pipe_check(const char *input)
+char **pipe_check(t_env *cmds, const char *input)
 {
     int i = 0;
     int pipe = 0;
@@ -68,6 +68,7 @@ char **pipe_check(const char *input)
             {
                 if (ft_find_closing_quote(input, i + 1, '\''))
                 {
+					pipe = 0;
                     i++;
                     while (input[i] != '\'')
                         i++;
@@ -77,6 +78,7 @@ char **pipe_check(const char *input)
             {
                 if (ft_find_closing_quote(input, i + 1, '\"'))
                 {
+					pipe = 0;
                     i++;
                     while (input[i] != '\"')
                         i++;
@@ -102,10 +104,10 @@ char **pipe_check(const char *input)
         printf("pipe: parsing error.\n");
         return NULL;
     }
-    return (ft_split_quotes(input, '|', 0));
+    return (ft_split_quotes(cmds, input, '|', 0));
 }
 
-static char *extract_word(const char *s, int *index, char delimiter, int del)
+static char *extract_word(t_env *cmd, const char *s, int *index, char delimiter, int del)
 {
     char *result;
     int allocated_size = 1024;
@@ -120,7 +122,7 @@ static char *extract_word(const char *s, int *index, char delimiter, int del)
     {
 		if (!quote && s[*index] == '$')
         {
-            ft_expand_variable(s, index, &result, &i);
+            ft_expand_variable(cmd, s, index, &result, &i);
 			(*index)++;
             continue;
         }
@@ -191,13 +193,14 @@ static char *extract_word(const char *s, int *index, char delimiter, int del)
     return result;
 }
 
-char **ft_split_quotes(const char *s, char delimiter, int del)
+char **ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del)
 {
     char **result;
     int i = 0;
     int index = 0;
     int words = word_count(s, delimiter);
 
+	printf("\n%d\n", words);
     if (!s)
         return (NULL);
     result = (char **)malloc((words + 1) * sizeof(char *));
@@ -208,7 +211,7 @@ char **ft_split_quotes(const char *s, char delimiter, int del)
         while (s[index] && is_separator(s[index], delimiter, 0, 0))
             index++;
         if (s[index] && !is_separator(s[index], delimiter, 0, 0))
-            result[i++] = extract_word(s, &index, delimiter, del);
+            result[i++] = extract_word(cmd, s, &index, delimiter, del);
     }
     result[i] = NULL;
     return (result);

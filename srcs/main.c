@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/05 12:38:20 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:30:37 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	ft_cmds_free(t_env *cmds)
 {
 	int	i;
 
-	i = 0;
 	if (cmds->cmd)
 		free(cmds->cmd);
 	if (cmds->flag)
@@ -85,6 +84,7 @@ int	main(void)
 	cmds = (t_env *)malloc(sizeof(t_env));
 	cmds->exp = deep_copy_environ();
 	cmds->env = deep_copy_environ();
+	cmds->exit_status = 0;
 	while (1)
 	{
 		initialize_cmd(cmds, NULL, 1);

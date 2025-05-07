@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/04/23 18:46:32 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:50:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,18 @@ void pop(t_env *cmds, int i)
 	else
 	    perror("fork failed");
 	return ; 
+}
+
+void check_errors(t_env *cmds)
+{
+	t_env *temp;
+
+	temp = cmds;
+	while(temp)
+	{
+		temp->path = my_get_path(temp->cmd);
+		if(temp->path == NULL)
+			printf("command not found: \"%s\"\n", temp->cmd);
+		temp = temp->next;
+	}
 }

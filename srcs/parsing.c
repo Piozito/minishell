@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/05 12:19:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 10:35:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,13 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 		cmd->arg = NULL;
 		cmd->flag = NULL;
 		cmd->next = NULL;
-		cmd->exit_status = 0;
 		cmd->fd = 1;
 		return ;
 	}
 	new_cmd->path = cmd->path;
 	new_cmd->env = cmd->env;
 	new_cmd->exp = cmd->exp;
-	new_cmd->exit_status = 0;
+	new_cmd->exit_status = cmd->exit_status;
 	new_cmd->fd = 1;
 }
 
@@ -99,8 +98,9 @@ int cmd_check(t_env *cmds)
 		cmds->path = my_get_path(cmds->cmd);
 		if (cmds->path == NULL)
 		{
-			printf("command not found: \"%s\"\n", cmds->cmd);
-			exit_status(127);
+			cmds->path = my_get_path(cmds->cmd);
+			if (cmds->path == NULL)
+				cmds->exit_status = 127;
 			return 1;
 		}
 	}
@@ -115,7 +115,7 @@ void pipes_handler(t_env *cmds, const char *input)
     int i;
 
 	i = 0;
-    pipes = pipe_check(input);
+    pipes = pipe_check(cmds, input);
 	if(pipes == NULL)
 	return ;
 	if(pipes[1] == NULL)
@@ -148,6 +148,7 @@ void pipes_handler(t_env *cmds, const char *input)
     temp = cmds;
     i = 0;
     ft_pipe(cmds);
+	check_errors(cmds);
     free_subtokens(pipes);
 }
 
@@ -161,9 +162,9 @@ void parsing(t_env *cmd, const char *input)
 	int command_set = 0;
 	int j = 0;
 
-	subtokens = ft_split_quotes(input, ' ', 1);
+	subtokens = ft_split_quotes(cmd, input, ' ', 1);
 
-	for (j = 0; subtokens[j] != NULL; j++)
+	while (subtokens[j])
 	{
 		if (!command_set)
 			command_set = 1;
@@ -171,6 +172,7 @@ void parsing(t_env *cmd, const char *input)
 			flag_count++;
 		else if (command_set)
 			arg_count++;
+		j++;
 	}
 	cmd->flag = (char **)malloc((flag_count + 1) * sizeof(char *));
 	cmd->arg = (char **)malloc((arg_count + 1) * sizeof(char *));
