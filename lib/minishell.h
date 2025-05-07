@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 12:27:16 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:14:32 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,6 @@ void	pop(t_env *cmds, int i);
 int		cmd_check(t_env *cmds);
 void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int *i);
 void check_errors(t_env *cmds);
+char	*ft_strstr(const char *big, const char *little);
 
 #endif
