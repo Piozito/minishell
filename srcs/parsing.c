@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 10:35:52 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:45:00 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,23 +79,22 @@ char *trim_spaces(char *str)
 
 int cmd_check(t_env *cmds)
 {
-	if (ft_strcmp(cmds->cmd, "echo") == 0)
+	if (ft_strstr(cmds->cmd, "echo"))
 		return 0;
-	else if (ft_strcmp(cmds->cmd, "pwd") == 0)
+	else if (ft_strstr(cmds->cmd, "pwd"))
 		return 0;
-	else if (ft_strcmp(cmds->cmd, "cd") == 0)
+	else if (ft_strstr(cmds->cmd, "cd"))
 		return 0;
-	else if (ft_strcmp(cmds->cmd, "env") == 0)
+	else if (ft_strstr(cmds->cmd, "env"))
 		return 0;
-	else if (ft_strcmp(cmds->cmd, "exit") == 0)
+	else if (ft_strstr(cmds->cmd, "exit"))
 		return 0;
-	else if (ft_strcmp(cmds->cmd, "unset") == 0)
+	else if (ft_strstr(cmds->cmd, "unset"))
 		return 0;
-	else if (ft_strcmp(cmds->cmd, "export") == 0)
+	else if (ft_strstr(cmds->cmd, "export"))
 		return 0;
 	else
 	{
-		cmds->path = my_get_path(cmds->cmd);
 		if (cmds->path == NULL)
 		{
 			cmds->path = my_get_path(cmds->cmd);
@@ -130,6 +129,7 @@ void pipes_handler(t_env *cmds, const char *input)
 		new_cmd = (t_env *)malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
         parsing(new_cmd, pipes[i]);
+		new_cmd->path = my_get_path(new_cmd->cmd);
 		pop(new_cmd, 1);
 		apply_fd(new_cmd);
         if (i == 0)

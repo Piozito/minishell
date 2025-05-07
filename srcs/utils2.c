@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 10:56:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 15:42:20 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char *ft_find_closing_quote(const char *str, int start, char quote)
 	}
 	return (NULL);
 }
-static int word_count(char const *s, char c)
+static int word_count(const char *s, char c)
 {
     int i = 0;
     int count = 0;
@@ -37,15 +37,32 @@ static int word_count(char const *s, char c)
 
     while (s[i])
     {
-        if (s[i] == '\'' && !dquote && ft_find_closing_quote(s, i, s[i]))
-            quote = !quote;
-        else if (s[i] == '\"' && !quote && ft_find_closing_quote(s, i, s[i]))
-            dquote = !dquote;
-        else if (is_separator(s[i], c, quote, dquote) && s[i + 1] && !is_separator(s[i + 1], c, quote, dquote))
-            count++;
+        if (s[i] == '\'' && !dquote)
+        {
+            if (quote)
+                quote = 0;
+            else if (ft_find_closing_quote(s, i + 1, '\''))
+                quote = 1;
+            i++;
+            continue;
+        }
+        else if (s[i] == '\"' && !quote)
+        {
+            if (dquote)
+                dquote = 0;
+            else if (ft_find_closing_quote(s, i + 1, '\"'))
+                dquote = 1;
+            i++;
+            continue;
+        }
+        else if (!quote && !dquote && s[i] == c)
+        {
+            if (s[i + 1] && s[i + 1] != c)
+                count++;
+        }
         i++;
     }
-    if (s[0] && !is_separator(s[0], c, quote, dquote))
+    if (s[0] && s[0] != c)
         count++;
     return count;
 }
@@ -200,7 +217,6 @@ char **ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del)
     int index = 0;
     int words = word_count(s, delimiter);
 
-	printf("\n%d\n", words);
     if (!s)
         return (NULL);
     result = (char **)malloc((words + 1) * sizeof(char *));
