@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 17:10:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 17:57:06 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,19 +79,19 @@ char *trim_spaces(char *str)
 
 int cmd_check(t_env *cmds)
 {
-	if (ft_strstr(cmds->cmd, "echo"))
+	if (ft_strstr(cmds->cmd, "echo") != NULL)
 		return 0;
-	else if (ft_strstr(cmds->cmd, "pwd"))
+	else if (ft_strstr(cmds->cmd, "pwd") != NULL)
 		return 0;
-	else if (ft_strstr(cmds->cmd, "cd"))
+	else if (ft_strstr(cmds->cmd, "cd") != NULL)
 		return 0;
-	else if (ft_strstr(cmds->cmd, "env"))
+	else if (ft_strstr(cmds->cmd, "env") != NULL)
 		return 0;
-	else if (ft_strstr(cmds->cmd, "exit"))
+	else if (ft_strstr(cmds->cmd, "exit") != NULL)
 		return 0;
-	else if (ft_strstr(cmds->cmd, "unset"))
+	else if (ft_strstr(cmds->cmd, "unset") != NULL)
 		return 0;
-	else if (ft_strstr(cmds->cmd, "export"))
+	else if (ft_strstr(cmds->cmd, "export") != NULL)
 		return 0;
 	else
 	{
@@ -140,7 +140,6 @@ void pipes_handler(t_env *cmds, const char *input)
     temp = cmds;
     i = 0;
     ft_pipe(cmds);
-	check_errors(cmds);
     free_subtokens(pipes);
 }
 

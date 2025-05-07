@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/21 13:19:42 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 19:08:59 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,14 @@ static void handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_l
         exit(1);
     }
     if (pid == 0)
+	{
+		if(ft_isalpha(cmds->cmd[0]) == 0)
+		{
+			printf("command not found: \"%s\"\n", cmds->cmd);
+			exit(127);
+		}
         execute_command(cmds, prev_fd, p_fd, is_last);
+	}
 }
 
 static void handle_parent_process(int p_fd[2], int *prev_fd)
