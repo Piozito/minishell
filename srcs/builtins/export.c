@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/22 16:04:35 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:20:03 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,14 @@ char **update_env(char *arg, char **env)
 	return (env);
 }
 
-void ft_export(t_env *env)
+int ft_export(t_env *env)
 {
     int i;
 
 	if(env->flag[0] != NULL)
 	{
 		write(env->fd, "export: export doens't accepts flags.\n", 39);
-		return ;
+		return(2);
 	}
     if (!env->arg[0])
     {
@@ -88,7 +88,7 @@ void ft_export(t_env *env)
 			write (env->fd, "\n", 1);
 			i++;
 		}
-        return;
+        return (0);
     }
     i = 0;
     while (env->arg[i])
@@ -106,12 +106,13 @@ void ft_export(t_env *env)
                 if (tmp)
                     env->exp = update_env(tmp, env->exp);
             }
+			i++;
         }
         else
 		{
             write(env->fd, "export:: not a valid identifier\n", 33);
-			write(env->fd, env->exp[i], ft_strlen(env->exp[i]));
-        	i++;
+        	return (2);
 		}
     }
+	return(0);
 }

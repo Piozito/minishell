@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/04/22 16:04:51 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:15:54 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,34 @@ static void	update_pwd(t_env *cmds, char *old_pwd)
 		perror("getcwd");
 }
 
-void	ft_cd(t_env *cmds)
+int	ft_cd(t_env *cmds)
 {
 	char	old_pwd[1024];
 	char	*path;
 	if((cmds->arg[1] == NULL || cmds->arg[0] == NULL) && cmds->flag[0] == NULL)
 	{
 		if (!getcwd(old_pwd, 1024))
-			return (perror("getcwd"));
+		{
+			perror("getcwd");
+			return (1);
+		}
 		path = get_cd_path(cmds->arg[0]);
 		if (!path)
-		return ;
+			return(1);
 		if (chdir(path) != 0)
 		{
 			write(cmds->fd, "cd: no such file or directory:\n", 32);
 			write(cmds->fd, path, ft_strlen(path));
+			return(2);
 		}
 		else
 			update_pwd(cmds, old_pwd);
 	}
 	else
+	{
 		write(cmds->fd, "cd: cd doesn't accept flags or more than 1 argument.\n", 54);
+		return(2);
+	}
+
+	return(0);
 }

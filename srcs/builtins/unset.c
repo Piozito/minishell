@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/04/22 16:04:27 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:16:41 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	remove_env_var(t_env *env, const char *var)
 	}
 }
 
-void	ft_unset(t_env *cmds)
+int	ft_unset(t_env *cmds)
 {
 	int	i;
 
@@ -43,7 +43,7 @@ void	ft_unset(t_env *cmds)
 	if(cmds->flag[0] != NULL)
 	{
 		write(cmds->fd, "unset: unset doesn't accept flags.\n", 36);
-		return ;
+		return(2);
 	}
 	while (cmds->arg[i])
 	{
@@ -51,4 +51,5 @@ void	ft_unset(t_env *cmds)
 			remove_env_var(cmds, cmds->arg[i]);
 		i++;
 	}
+	return(0);
 }
