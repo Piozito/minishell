@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/07 12:20:03 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:14:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int ft_export(t_env *env)
         i = 0;
         while (env->exp[i])
 		{
-			write(env->fd, "declare -x", 11);
+			write(env->fd, "declare -x ", 12);
 			write(env->fd, env->exp[i], ft_strlen(env->exp[i]));
 			write (env->fd, "\n", 1);
 			i++;

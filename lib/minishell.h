@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 17:14:32 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:48:44 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char **ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del);
 char **pipe_check(t_env *cmds, const char *input);
 void	ft_debug(t_env *cmd);
 char	**deep_copy_environ();
-void	apply_fd(t_env *cmds);
+int	apply_fd(t_env *cmds);
 void	pop(t_env *cmds, int i);
 int		cmd_check(t_env *cmds);
 void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int *i);

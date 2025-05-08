@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/05 17:13:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:11:12 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int
     char *new_dst = (char *)malloc(new_size * sizeof(char));
     if (!new_dst)
     {
-        write(1, "Memory allocation failed\n", 27);
+        write(1, "Memory allocation failed\n", 26);
         exit(127);
     }
     if (*dst)

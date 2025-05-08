@@ -95,9 +95,17 @@ int handle_fd_input_heredoc(char *word)
     return 0;
 }
 
-void apply_fd(t_env *cmds) 
+static int redir_error(char *s)
+{
+	ft_putstr_fd(s, 1);
+	return 1;
+}
+
+int apply_fd(t_env *cmds) 
 {
     int i = 0;
+	int error = 0;
+
     while (cmds->arg[i]) 
     {
         if ((ft_strcmp(cmds->arg[i], "<") == 0 ||
@@ -108,27 +116,27 @@ void apply_fd(t_env *cmds)
             if (ft_strcmp(cmds->arg[i], "<") == 0) 
             {
                 if (handle_fd_input(cmds->arg[i + 1]) == -1)
-                    perror("input redirection error");
+                    error = redir_error("input redirection error\n");
             }
             else if (ft_strcmp(cmds->arg[i], ">") == 0) 
             {
                 if (handle_fd_output(cmds->arg[i + 1]) == -1)
-                    perror("output redirection error");
+                    error = redir_error("output redirection error\n");
             }
             else if (ft_strcmp(cmds->arg[i], ">>") == 0) 
             {
                 if (handle_fd_output_append(cmds->arg[i + 1]) == -1)
-                    perror("append redirection error");
+                    error = redir_error("append redirection error\n");
             }
             else if (ft_strcmp(cmds->arg[i], "<<") == 0) 
             {
                 if (handle_fd_input_heredoc(cmds->arg[i + 1]) == -1)
-                    perror("heredoc error");
+                    error = redir_error("heredoc error\n");
             }
-
             remove_args(cmds->arg, i);
-        } else {
+        } 
+		else
             i++;
-        }
     }
+	return error;
 }
