@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 17:15:45 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:46:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	check_input(char *input)
 		input[0] = '\0';
 }
 
-int	main(void)
+int	main()
 {
 	char	*input;
 	t_env	*cmds;

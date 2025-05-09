@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 19:15:24 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:32:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	handle_fork_execution(char *path, char **exec_args, t_env *command)
 	}
 	else if (pid == 0)
 	{
-		if(cmd_check(command) == 0 || ft_isalpha(command->cmd[0]) == 0)
+		if(cmd_check(command) == 0 && ft_isalpha(command->cmd[0]) == 0)
 		{
 			printf("command not found: \"%s\"\n", command->cmd);
 			free(exec_args);
