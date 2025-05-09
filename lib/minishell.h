@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 16:04:37 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:15:13 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_env
 	char			**exp;
 	int				exit_status;
 	struct s_env	*next;
+	int				fd;
 }				t_env;
 
 int	ft_echo(t_env *cmds);
