@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 19:33:58 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:42:40 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,12 +214,11 @@ static char *extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 
 char **ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del)
 {
-    char **result;
+	char **result;
     int i = 0;
     int index = 0;
     int words = word_count(s, delimiter);
 
-	printf("\n\n%d\n\n", words);
     if (!s)
         return (NULL);
     result = (char **)malloc((words + 1) * sizeof(char *));
