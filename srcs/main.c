@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 09:46:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:53:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,25 @@ void	ft_cmds_free(t_env *cmds)
 {
 	int	i;
 
-	if (cmds->cmd)
-		free(cmds->cmd);
-	if (cmds->flag)
+	while(cmds)
 	{
-		i = 0;
-		while (cmds->flag[i])
-			free(cmds->flag[i++]);
-		free(cmds->flag);
-	}
-	if (cmds->arg)
-	{
-		i = 0;
-		while (cmds->arg[i])
-			free(cmds->arg[i++]);
-		free(cmds->arg);
+		if (cmds->cmd)
+			free(cmds->cmd);
+		if (cmds->flag)
+		{
+			i = 0;
+			while (cmds->flag[i])
+				free(cmds->flag[i++]);
+			free(cmds->flag);
+		}
+		if (cmds->arg)
+		{
+			i = 0;
+			while (cmds->arg[i])
+				free(cmds->arg[i++]);
+			free(cmds->arg);
+		}
+		cmds = cmds->next;
 	}
 }
 
@@ -74,16 +78,28 @@ void	check_input(char *input)
 		input[0] = '\0';
 }
 
-int	main()
+void general_error(char *str, int i, t_env *cmds)
+{
+	if(i == 1)
+		ft_cmds_free(cmds);
+	ft_putstr_fd(str, 1);
+	ft_putstr_fd("\n", 1);
+	exit(1);
+}
+
+int	main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_env	*cmds;
 
+	(void)argv;
+	if(argc != 1)
+		general_error("Minishell doesn't take args", 0, NULL);
 	signal(SIGINT, ft_handler);
 	signal(SIGQUIT, SIG_IGN);
 	cmds = (t_env *)malloc(sizeof(t_env));
-	cmds->exp = deep_copy_environ();
-	cmds->env = deep_copy_environ();
+	cmds->exp = deep_copy_environ(env);
+	cmds->env = deep_copy_environ(env);
 	cmds->exit_status = 0;
 	while (1)
 	{

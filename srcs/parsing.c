@@ -6,27 +6,26 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/08 11:59:55 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 09:59:30 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-char **deep_copy_environ()
+char **deep_copy_environ(char **environ)
 {
-	extern char **environ;
-	int count = 0;
-    while (environ[count] != NULL) {
+	int count;
+	int i;
+
+	i = -1;
+	count = 0;
+    while (environ[count] != NULL)
         count++;
-    }
     char **new_environ = (char **)malloc((count + 1) * sizeof(char *));
-    if (new_environ == NULL) {
-        perror("Failed to allocate memory for new_environ");
-        return NULL;
-    }
-    for (int i = 0; i < count; i++) {
+    if (!new_environ)
+		general_error("env malloc failed.", 0, NULL);
+ 	while (++i < count)
         new_environ[i] = ft_strdup(environ[i]);
-    }
     new_environ[count] = NULL;
     return new_environ;
 }
@@ -93,17 +92,11 @@ int cmd_check(t_env *cmds)
 		return 0;
 	else if (ft_strstr(cmds->cmd, "export") != NULL)
 		return 0;
-	else
+	if (cmds->path == NULL)
 	{
+		cmds->path = my_get_path(cmds->cmd);
 		if (cmds->path == NULL)
-		{
-			cmds->path = my_get_path(cmds->cmd);
-			if (cmds->path == NULL)
-			{
-				cmds->exit_status = 127;
-			}
-			return 1;
-		}
+			cmds->exit_status = 127;
 	}
 	return 1;
 }
