@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 15:55:03 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:05:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,20 @@ void	check_input(char *input)
 	int	i;
 
 	i = 0;
-	while (input[i] == ' ' || input[i] == '	')
+	while (input[i] == ' ' || input[i] == '\t')
 		i++;
 	if (input[i] == '\0')
 		input[0] = '\0';
 }
 
-void general_error(char *str, int i, t_env *cmds)
+void general_error(char *str, int free, int ex, t_env *cmds)
 {
-	if(i == 1)
+	if(free == 1)
 		ft_cmds_free(cmds);
 	ft_putstr_fd(str, 1);
 	ft_putstr_fd("\n", 1);
-	exit(1);
+	if(ex == 1)
+		exit(1);
 }
 
 void free_env(char **array, char **env)
@@ -114,7 +115,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argv;
 	if(argc != 1)
-		general_error("Minishell doesn't take args", 0, NULL);
+		general_error("Minishell doesn't take args", 0, 1, NULL);
 	signal(SIGINT, ft_handler);
 	signal(SIGQUIT, SIG_IGN);
 	cmds = (t_env *)malloc(sizeof(t_env));

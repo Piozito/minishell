@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 16:03:44 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:30:23 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char **fake_env_creator()
 	new_environ[3] = ft_strjoin("PWD=", getcwd(NULL, 1024));
 	new_environ[4] = NULL;
     if (!new_environ)
-		general_error("env malloc failed.", 0, NULL);
+		general_error("env malloc failed.", 0, 1, NULL);
 	return new_environ;
 }
 
@@ -43,7 +43,7 @@ char **deep_copy_environ(char **environ)
 	{
     	new_environ = (char **)malloc((count + 1) * sizeof(char *));
 		if (!new_environ)
-			general_error("env malloc failed.", 0, NULL);
+			general_error("env malloc failed.", 0, 1, NULL);
 		while (++i < count)
 			new_environ[i] = ft_strdup(environ[i]);
 		new_environ[count] = NULL;
@@ -83,20 +83,6 @@ void	free_subtokens(char **subtokens)
 		i++;
 	}
 	free(subtokens);
-}
-
-char *trim_spaces(char *str)
-{
-    char *end;
-    while (*str == ' ')
-		str++;
-    if (*str == 0)
-        return str;
-    end = str + strlen(str) - 1;
-    while (end > str && isspace((unsigned char)*end))
-		end--;
-    *(end + 1) = 0;
-    return str;
 }
 
 int cmd_check(t_env *cmds)
@@ -140,7 +126,8 @@ void pipes_handler(t_env *cmds, const char *input)
 		return ;
 	if(pipes[1] == NULL)
 	{
-		parsing(cmds, pipes[i]);
+		if(parsing(cmds, pipes[i]) == 1)
+			return ;
 		if(apply_fd(cmds) == 0)
 			pop(cmds, 0);
 		free_subtokens(pipes);
@@ -150,7 +137,8 @@ void pipes_handler(t_env *cmds, const char *input)
     {
 		new_cmd = (t_env *)malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
-        parsing(new_cmd, pipes[i]);
+        if(parsing(new_cmd, pipes[i]) == 1)
+			return ;
 		if(apply_fd(new_cmd) == 0)
 			pop(new_cmd, 1);
 		else
@@ -175,7 +163,43 @@ void pipes_handler(t_env *cmds, const char *input)
     free_subtokens(pipes);
 }
 
-void parsing(t_env *cmd, const char *input)
+char *correct_input(const char *input)
+{
+	int i = 0;
+	int j = 0;
+	int quote = 0;
+	int dquote = 0;
+	char *correct_input = (char *)malloc(ft_strlen(input));
+
+	while(input[i])
+	{
+		if(input[i] == '\t' && input[i] && !quote && !dquote)
+		{
+			correct_input[j++] = ' ';
+			i++;
+		}
+		else
+		{
+			if(input[i] == '\'' && ft_find_closing_quote(input, i, '\''))
+			{
+				while(input[i] != '\'')
+					i++;
+			}
+			if(input[i] == '\"' && ft_find_closing_quote(input, i, '\"'))
+			{
+				while(input[i] != '\"')
+					i++;
+			}
+			correct_input[j] = input[i];
+			j++;
+			i++;
+		}
+	}
+	correct_input[j] = '\0';
+	return correct_input;
+}
+
+int parsing(t_env *cmd, const char *input)
 {
 	char **subtokens;
 	int flag_count = 0;
@@ -187,7 +211,12 @@ void parsing(t_env *cmd, const char *input)
 
 	subtokens = ft_split_quotes(cmd, input, ' ', 1);
 	if(!subtokens)
-		return ;
+		return 1;
+	if(ft_strchr(subtokens[0], ' ') != NULL)
+	{
+		printf("command not found: %s\n", subtokens[0]);
+		return 1;
+	}
 	while (subtokens[j])
 	{
 		if (!command_set)
@@ -224,8 +253,10 @@ void parsing(t_env *cmd, const char *input)
 		}
 		j++;
 	}
+	free_subtokens(subtokens);
 	cmd->flag[flag_index] = NULL;
 	cmd->arg[arg_index] = NULL;
+	
 	ft_debug(cmd); //Remover antes de entregar (utils3.c)
-	free_subtokens(subtokens);
+	return 0;
 }

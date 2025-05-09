@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 12:55:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:33:58 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 static int is_separator(char ch, char c, int quote, int dquote)
 {
+	if(c == ' ')
+		return !quote && !dquote && (ch == c || ch == '\t' || ch == '\0');
 	return !quote && !dquote && (ch == c || ch == '\0');
 }
 
-static char *ft_find_closing_quote(const char *str, int start, char quote)
+char *ft_find_closing_quote(const char *str, int start, char quote)
 {
 	int i = start;
 	while (str[i] != '\0')
@@ -55,14 +57,14 @@ static int word_count(const char *s, char c)
             i++;
             continue;
         }
-        else if (!quote && !dquote && s[i] == c)
+        else if (is_separator(s[i], c, quote, dquote))
         {
-            if (s[i + 1] && s[i + 1] != c)
+            if (!is_separator(s[i + 1], c, quote, dquote))
                 count++;
         }
         i++;
     }
-    if (s[0] && s[0] != c)
+    if (s[0] && !is_separator(s[0], c, 0, 0))
         count++;
     return count;
 }
@@ -112,7 +114,7 @@ char **pipe_check(t_env *cmds, const char *input)
             else
                 pipe = 1;
         }
-        else if (input[i] != ' ' && input[i] != '|' && input[i] != '	' && input[i] != '\0')
+        else if (input[i] != ' ' && input[i] != '|' && input[i] != '\t' && input[i] != '\0')
             pipe = 0;
         i++;
     }
@@ -217,6 +219,7 @@ char **ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del)
     int index = 0;
     int words = word_count(s, delimiter);
 
+	printf("\n\n%d\n\n", words);
     if (!s)
         return (NULL);
     result = (char **)malloc((words + 1) * sizeof(char *));

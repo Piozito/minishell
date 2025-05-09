@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 16:15:13 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 19:08:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_exit(t_env *cmds);
 int	ft_unset(t_env *env);
 int	ft_export(t_env *env);
 int	ft_exec(t_env *command);
-void	parsing(t_env *cmd, const char *input);
+int parsing(t_env *cmd, const char *input);
 void	ft_free_tab(char **tab);
 void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i);
 char	*my_get_path(t_env *cmds);
@@ -73,6 +73,7 @@ int		cmd_check(t_env *cmds);
 void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int *i);
 void check_errors(t_env *cmds);
 char	*ft_strstr(const char *big, const char *little);
-void general_error(char *str, int i, t_env *cmds);
+void general_error(char *str, int free, int ex, t_env *cmds);
+char *ft_find_closing_quote(const char *str, int start, char quote);
 
 #endif
