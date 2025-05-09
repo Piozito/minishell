@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/09 11:04:22 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:07:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,23 @@
 static void	ft_putenv(t_env *cmds, char *var)
 {
 	int	i;
+	int size;
 
 	i = 0;
 	(void)cmds;
+	size = ft_strlen(var);
 	while(cmds->env[i])
 	{
 		if(ft_strncmp(var, "OLDPWD=", 7) == 0 && ft_strncmp(cmds->env[i], "OLDPWD=", 7) == 0)
-			cmds->env[i] = var;
+		{
+			free(cmds->env[i]);
+			cmds->env[i] = ft_strdup(var);
+		}
 		else if(ft_strncmp(var, "PWD=", 4) == 0 && ft_strncmp(cmds->env[i], "PWD=", 4) == 0)
-			cmds->env[i] = var;
+		{
+			free(cmds->env[i]);
+			cmds->env[i] = ft_strdup(var);
+		}
 		i++;
 	}
 }
@@ -72,13 +80,11 @@ int	ft_cd(t_env *cmds)
 {
 	char	old_pwd[1024];
 	char	*path;
+
 	if((cmds->arg[1] == NULL || cmds->arg[0] == NULL) && cmds->flag[0] == NULL)
 	{
 		if (!getcwd(old_pwd, 1024))
-		{
-			perror("getcwd");
-			return (1);
-		}
+			general_error("getcwd error.", 1, 1, cmds);
 		path = get_cd_path(cmds, cmds->arg[0]);
 		if (!path)
 			return(1);
@@ -88,14 +94,12 @@ int	ft_cd(t_env *cmds)
 			write(cmds->fd, path, ft_strlen(path));
 			return(2);
 		}
-		else
-			update_pwd(cmds, old_pwd);
+		update_pwd(cmds, old_pwd);
 	}
 	else
 	{
 		write(cmds->fd, "cd: cd doesn't accept flags or more than 1 argument.\n", 54);
 		return(2);
 	}
-
 	return(0);
 }
