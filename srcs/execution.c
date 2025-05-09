@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 09:32:19 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:15:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	ft_exec(t_env *command)
 		return (1);
 	}
 	init_exec(exec_args, command, arg_count);
-	command->path = my_get_path(command->cmd);
+	command->path = my_get_path(command);
 	if (command->path == NULL)
 	{
 		printf("command not found: \"%s\"\n", command->cmd);

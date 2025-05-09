@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/07 15:42:20 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 12:55:49 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ static char *extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 		return (NULL);
 	while (s[*index] && !is_separator(s[*index], delimiter, quote, dquote))	
     {
-		if (!quote && s[*index] == '$')
+		if (!quote && s[*index] == '$' && ft_isprint(s[*index + 1]) == 1)
         {
             ft_expand_variable(cmd, s, index, &result, &i);
 			(*index)++;

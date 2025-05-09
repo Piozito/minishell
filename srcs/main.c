@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 09:53:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:55:03 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	ft_handler(int sig)
 
 int	check_builtin(t_env *cmds)
 {
+	if(cmds->cmd == NULL)
+		return 127;
 	if (ft_strcmp(cmds->cmd, "echo") == 0)
 		return ft_echo(cmds);
 	else if (ft_strcmp(cmds->cmd, "pwd") == 0)
@@ -87,6 +89,24 @@ void general_error(char *str, int i, t_env *cmds)
 	exit(1);
 }
 
+void free_env(char **array, char **env)
+{
+	int i;
+
+	i = 0;
+	while(env[i] != NULL)
+		i++;
+	if(i == 0)
+		return (free(array));
+	else
+	{
+		i = 0;
+		while(array[i] != NULL)
+			free(array[i++]);
+		free(array);
+	}
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	char	*input;
@@ -120,19 +140,6 @@ int	main(int argc, char **argv, char **env)
 		free(input);
 		ft_cmds_free(cmds);
 	}
-	int i = 0;
-	if (cmds->env)
-	{
-		i = 0;
-		while (cmds->env[i])
-			free(cmds->env[i++]);
-		free(cmds->env);
-	}
-	if (cmds->exp)
-	{
-		i = 0;
-		while (cmds->exp[i])
-			free(cmds->exp[i++]);
-		free(cmds->exp);
-	}
+	free_env(cmds->env, env);
+	free_env(cmds->exp, env);
 }

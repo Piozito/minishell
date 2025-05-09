@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:19:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/03/31 16:03:14 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:12:23 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_free_tab(char **tab)
 	free(tab);
 }
 
-char	*my_get_path(char *cmd)
+char	*my_get_path(t_env *cmds)
 {
 	int		i;
 	char	*exec;
@@ -33,11 +33,11 @@ char	*my_get_path(char *cmd)
 	char	*path_part;
 	char	**s_cmd;
 
-	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
-		return (ft_strdup(cmd));
+	if (cmds->cmd[0] == '/' || (cmds->cmd[0] == '.' && cmds->cmd[1] == '/'))
+		return (ft_strdup(cmds->cmd));
 	i = -1;
-	allpath = ft_split(getenv("PATH"), ':');
-	s_cmd = ft_split(cmd, ' ');
+	allpath = ft_split(cmds->path, ':');
+	s_cmd = ft_split(cmds->cmd, ' ');
 	while (allpath[++i])
 	{
 		path_part = ft_strjoin(allpath[i], "/");

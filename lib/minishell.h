@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 09:55:12 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:04:37 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ typedef struct s_env
 	char			**exp;
 	int				exit_status;
 	struct s_env	*next;
-	int				fd;
 }				t_env;
 
 int	ft_echo(t_env *cmds);
@@ -59,9 +58,9 @@ int	ft_exec(t_env *command);
 void	parsing(t_env *cmd, const char *input);
 void	ft_free_tab(char **tab);
 void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i);
-char	*my_get_path(char *cmd);
+char	*my_get_path(t_env *cmds);
 void	pipes_handler(t_env *cmds, const char *input);
-void	ft_pipe(t_env *cmds);
+int	ft_pipe(t_env *cmds);
 int	check_builtin(t_env *cmds);
 char **ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del);
 char **pipe_check(t_env *cmds, const char *input);

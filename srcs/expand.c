@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/08 11:11:12 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 13:33:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,30 @@ void replace_variable(char *result, const char *str, char *start, char *end, cha
     result[len_before + len_expanded + len_after] = '\0';
 }
 
+char *env_expander(t_env *cmds, char *var_name)
+{
+	int i = 0;
+	int j = 0;
+	char *res = NULL;
+	while (cmds->env[i])
+	{
+		j = 0;
+		if(ft_strncmp(var_name, cmds->env[i], ft_strlen(var_name)) == 0)
+		{
+			res = ft_strtrim(ft_strchr(cmds->env[i], '='), "=");
+			while(cmds->env[i][j] != '=')
+				j++;
+			if(ft_strncmp(var_name, cmds->env[i], j) != 0)
+				return "";
+			if(res == NULL)
+				res = "";
+			return res;
+		}
+		i++;
+	}
+	return "";
+}
+
 void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int *i)
 {
     char var_name[256];
@@ -39,7 +63,7 @@ void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int
     start = (char *)src + *index;
     end = start + 1;
     while (*end && *end != ' ' && *end != '\"' && *end != '\'')
-    {
+	{
         (*index)++;
         end++;
     }
@@ -48,8 +72,8 @@ void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int
 	if(var_name[0] == '?' && var_name[1] == '\0')
 		expanded = ft_itoa(cmd->exit_status);
 	else
-    	expanded = getenv(var_name);
-    if (!expanded)
+    	expanded = env_expander(cmd, var_name);
+	if(!expanded)
 		expanded = "";
     len_expanded = ft_strlen(expanded);
     len_before = *i;

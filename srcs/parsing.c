@@ -6,27 +6,48 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 09:59:30 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:03:44 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
+char **fake_env_creator()
+{
+	char **new_environ;
+
+	new_environ = (char **)malloc(4 * sizeof(char *));
+	new_environ[0] = "PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin";
+	new_environ[1] = "HOME=/home/aaleixo-";
+	new_environ[2] = "SHELL=/bin/minishell";
+	new_environ[3] = ft_strjoin("PWD=", getcwd(NULL, 1024));
+	new_environ[4] = NULL;
+    if (!new_environ)
+		general_error("env malloc failed.", 0, NULL);
+	return new_environ;
+}
+
 char **deep_copy_environ(char **environ)
 {
+	char **new_environ;
 	int count;
 	int i;
 
 	i = -1;
 	count = 0;
     while (environ[count] != NULL)
-        count++;
-    char **new_environ = (char **)malloc((count + 1) * sizeof(char *));
-    if (!new_environ)
-		general_error("env malloc failed.", 0, NULL);
- 	while (++i < count)
-        new_environ[i] = ft_strdup(environ[i]);
-    new_environ[count] = NULL;
+		count++;
+	if(count == 0)
+		new_environ = fake_env_creator();
+	else
+	{
+    	new_environ = (char **)malloc((count + 1) * sizeof(char *));
+		if (!new_environ)
+			general_error("env malloc failed.", 0, NULL);
+		while (++i < count)
+			new_environ[i] = ft_strdup(environ[i]);
+		new_environ[count] = NULL;
+	}
     return new_environ;
 }
 
@@ -36,6 +57,8 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 	{
 		cmd->cmd = NULL;
 		cmd->path = getenv("PATH");
+		if(cmd->path == NULL)
+			cmd->path = cmd->env[0];
 		cmd->arg = NULL;
 		cmd->flag = NULL;
 		cmd->next = NULL;
@@ -78,7 +101,9 @@ char *trim_spaces(char *str)
 
 int cmd_check(t_env *cmds)
 {
-	if (ft_strstr(cmds->cmd, "echo") != NULL)
+	if (cmds->cmd == NULL)
+		return 1;
+	else if (ft_strstr(cmds->cmd, "echo") != NULL)
 		return 0;
 	else if (ft_strstr(cmds->cmd, "pwd") != NULL)
 		return 0;
@@ -94,7 +119,7 @@ int cmd_check(t_env *cmds)
 		return 0;
 	if (cmds->path == NULL)
 	{
-		cmds->path = my_get_path(cmds->cmd);
+		cmds->path = my_get_path(cmds);
 		if (cmds->path == NULL)
 			cmds->exit_status = 127;
 	}
@@ -106,20 +131,30 @@ void pipes_handler(t_env *cmds, const char *input)
     char **pipes;
     t_env *temp;
     t_env *new_cmd;
+	int error = 0;
     int i;
 
 	i = 0;
     pipes = pipe_check(cmds, input);
 	if(pipes == NULL)
 		return ;
+	if(pipes[1] == NULL)
+	{
+		parsing(cmds, pipes[i]);
+		if(apply_fd(cmds) == 0)
+			pop(cmds, 0);
+		free_subtokens(pipes);
+		return ;
+	}
     while (pipes[i] != NULL)
     {
 		new_cmd = (t_env *)malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
         parsing(new_cmd, pipes[i]);
-		if(apply_fd(new_cmd) == 1)
-			return ;
-		pop(new_cmd, 1);
+		if(apply_fd(new_cmd) == 0)
+			pop(new_cmd, 1);
+		else
+			error = 1;
         if (i == 0)
         {
             cmds = new_cmd;
@@ -135,7 +170,8 @@ void pipes_handler(t_env *cmds, const char *input)
     temp->next = NULL;
     temp = cmds;
     i = 0;
-    ft_pipe(cmds);
+	if (error == 0)
+    	cmds->exit_status = ft_pipe(cmds);
     free_subtokens(pipes);
 }
 
@@ -150,7 +186,8 @@ void parsing(t_env *cmd, const char *input)
 	int j = 0;
 
 	subtokens = ft_split_quotes(cmd, input, ' ', 1);
-
+	if(!subtokens)
+		return ;
 	while (subtokens[j])
 	{
 		if (!command_set)

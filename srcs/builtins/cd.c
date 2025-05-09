@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/07 12:15:54 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:04:22 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	ft_putenv(t_env *cmds, char *var)
 	}
 }
 
-static char	*get_cd_path(char *path)
+static char	*get_cd_path(t_env *cmds, char *path)
 {
 	char	*home;
 	char	*old_pwd;
@@ -36,11 +36,15 @@ static char	*get_cd_path(char *path)
 	if (!path || !*path)
 	{
 		home = getenv("HOME");
+		if(!home)
+			home = cmds->env[1];
 		return (home);
 	}
 	if (ft_strcmp(path, "-") == 0)
 	{
 		old_pwd = getenv("OLDPWD");
+		if(!old_pwd)
+			old_pwd = cmds->env[1];
 		return (old_pwd);
 	}
 	return (path);
@@ -75,7 +79,7 @@ int	ft_cd(t_env *cmds)
 			perror("getcwd");
 			return (1);
 		}
-		path = get_cd_path(cmds->arg[0]);
+		path = get_cd_path(cmds, cmds->arg[0]);
 		if (!path)
 			return(1);
 		if (chdir(path) != 0)
