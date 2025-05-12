@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/08 11:14:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:30:51 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,19 @@ char **update_env(char *arg, char **env)
     char **new_env;
 
     while (env[i] && ft_strncmp(env[i], arg, is_chr(arg, '=')))
-    	i++;
+        i++;
     if (env[i])
     {
         if (is_chr(arg, '='))
             env[i] = arg;
         else
             free(arg);
-	}
+    }
     else
     {
         new_env = malloc((i + 2) * sizeof(char *));
         if (!new_env)
-            return(0);
+            return (0);
         while (env[j])
         {
             new_env[j] = env[j];
@@ -64,26 +64,28 @@ char **update_env(char *arg, char **env)
         }
         new_env[j] = arg;
         new_env[j + 1] = NULL;
+
+        free(env);
         env = new_env;
     }
-	return (env);
+    return (env);
 }
 
 int ft_export(t_env *env)
 {
     int i;
 
-	if(env->flag[0] != NULL)
+	if(env->arg[0][0] == '-')
 	{
 		write(env->fd, "export: export doens't accepts flags.\n", 39);
 		return(2);
 	}
-    if (!env->arg[0])
+    if (env->arg[0] == NULL)
     {
         i = 0;
         while (env->exp[i])
 		{
-			write(env->fd, "declare -x ", 12);
+			write(env->fd, "declare -x ", 11);
 			write(env->fd, env->exp[i], ft_strlen(env->exp[i]));
 			write (env->fd, "\n", 1);
 			i++;

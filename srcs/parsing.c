@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 19:30:23 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:21:33 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 		if(cmd->path == NULL)
 			cmd->path = cmd->env[0];
 		cmd->arg = NULL;
-		cmd->flag = NULL;
 		cmd->next = NULL;
 		cmd->fd = 1;
 		return ;
@@ -202,9 +201,7 @@ char *correct_input(const char *input)
 int parsing(t_env *cmd, const char *input)
 {
 	char **subtokens;
-	int flag_count = 0;
 	int arg_count = 0;
-	int flag_index = 0;
 	int arg_index = 0;
 	int command_set = 0;
 	int j = 0;
@@ -221,16 +218,13 @@ int parsing(t_env *cmd, const char *input)
 	{
 		if (!command_set)
 			command_set = 1;
-		else if (subtokens[j][0] == '-')
-			flag_count++;
 		else if (command_set)
 			arg_count++;
 		j++;
 	}
-	cmd->flag = (char **)malloc((flag_count + 1) * sizeof(char *));
 	cmd->arg = (char **)malloc((arg_count + 1) * sizeof(char *));
 	command_set = 0;
-	if (!cmd->flag || !cmd->arg)
+	if (!cmd->arg)
 	{
 		perror("Memory allocation failed");
 		exit(EXIT_FAILURE);
@@ -243,18 +237,13 @@ int parsing(t_env *cmd, const char *input)
 			cmd->cmd = ft_strdup(subtokens[j]);
 			command_set = 1;
 		}
-		else if (subtokens[j][0] == '-' && flag_count > 0)
-		{
-			cmd->flag[flag_index++] = ft_strdup(subtokens[j]);
-		}
-		else if (arg_count > 0)
+		else
 		{
 			cmd->arg[arg_index++] = ft_strdup(subtokens[j]);
 		}
 		j++;
 	}
 	free_subtokens(subtokens);
-	cmd->flag[flag_index] = NULL;
 	cmd->arg[arg_index] = NULL;
 	
 	ft_debug(cmd); //Remover antes de entregar (utils3.c)

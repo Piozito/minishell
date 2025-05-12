@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 19:51:22 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:21:26 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,6 @@ void	ft_cmds_free(t_env *cmds)
 	{
 		if (cmds->cmd)
 			free(cmds->cmd);
-		if (cmds->flag)
-		{
-			i = 0;
-			while (cmds->flag[i])
-				free(cmds->flag[i++]);
-			free(cmds->flag);
-		}
 		if (cmds->arg)
 		{
 			i = 0;

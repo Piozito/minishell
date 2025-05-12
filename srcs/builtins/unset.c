@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/07 12:16:41 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:19:49 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_unset(t_env *cmds)
 	int	i;
 
 	i = 0;
-	if(cmds->flag[0] != NULL)
+	if(cmds->arg[0][0] != '-')
 	{
 		write(cmds->fd, "unset: unset doesn't accept flags.\n", 36);
 		return(2);

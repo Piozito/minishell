@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 13:10:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:21:42 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,6 @@ void ft_debug(t_env *cmd)
 		printf("\033[0;31mexport has failed.\033[0m\n");
     printf("-------------------------\n");
 	printf("Command: %s\n", cmd->cmd);
-    if (cmd->flag && cmd->flag[0] != NULL)
-    {
-        printf("Flags:\n");
-        for (int i = 0; cmd->flag[i] != NULL; i++)
-        {
-            printf("  Flag[%d]: %s\n", i, cmd->flag[i]);
-        }
-    }
-    else
-        printf("Flags: None\n");
     if (cmd->arg && cmd->arg[0] != NULL)
     {
         printf("Arguments:\n");

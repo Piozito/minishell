@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/09 20:07:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:24:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	ft_cd(t_env *cmds)
 	char	old_pwd[1024];
 	char	*path;
 
-	if((cmds->arg[1] == NULL || cmds->arg[0] == NULL) && cmds->flag[0] == NULL)
+	if((cmds->arg[1] == NULL || cmds->arg[0] == NULL))
 	{
 		if (!getcwd(old_pwd, 1024))
 			general_error("getcwd error.", 1, 1, cmds);
@@ -90,8 +90,9 @@ int	ft_cd(t_env *cmds)
 			return(1);
 		if (chdir(path) != 0)
 		{
-			write(cmds->fd, "cd: no such file or directory:\n", 32);
+			write(cmds->fd, "cd: no such file or directory: ", 32);
 			write(cmds->fd, path, ft_strlen(path));
+			write(cmds->fd, "\n", 1);
 			return(2);
 		}
 		update_pwd(cmds, old_pwd);
