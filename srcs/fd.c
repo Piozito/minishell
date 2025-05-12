@@ -111,8 +111,10 @@ int apply_fd(t_env *cmds)
         if ((ft_strcmp(cmds->arg[i], "<") == 0 ||
              ft_strcmp(cmds->arg[i], ">") == 0 ||
              ft_strcmp(cmds->arg[i], ">>") == 0 ||
-             ft_strcmp(cmds->arg[i], "<<") == 0) && cmds->arg[i + 1]) 
+             ft_strcmp(cmds->arg[i], "<<") == 0)) 
         {
+			if (!cmds->arg[i + 1])
+				return redir_error("no file to redirect.\n");
             if (ft_strcmp(cmds->arg[i], "<") == 0) 
             {
                 if (handle_fd_input(cmds->arg[i + 1]) == -1)

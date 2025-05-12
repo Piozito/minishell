@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/12 09:03:38 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:45:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int
         return;
     start = (char *)src + *index;
     end = start + 1;
-    while (*end && *end != ' ' && *end != '\t' && *end != '\"' && *end != '\'')
+    while (*end && *end != ' ' && *end != '$' && *end != '\t' && *end != '\"' && *end != '\'')
 	{
         (*index)++;
         end++;
