@@ -95,39 +95,63 @@ int handle_fd_input_heredoc(char *word)
     return 0;
 }
 
-void apply_fd(t_env *cmds)
+char *get_file(const char *s, int *index)
 {
-	int i = 0;
-	while (cmds->arg[i])
+    char *res = NULL;
+	int i;
+    int start;
+	int length;
+
+	i = 0;
+	(*index)++;
+	if(s[*index] == '>' || s[*index] == '<')
+		(*index)++;
+    while (s[*index] == ' ' || s[*index] == '\t')
+        (*index)++;
+    start = *index;
+    while (s[*index] && s[*index] != ' ' && s[*index] != '\t' && s[*index] != '\'' && s[*index] != '\"')
+        (*index)++;
+    length = *index - start;
+    res = (char *)malloc((length + 1) * sizeof(char));
+    if (!res)
+        return NULL;
+    while (i < length)
 	{
-		if ((ft_strcmp(cmds->arg[i], "<") == 0 ||
-			 ft_strcmp(cmds->arg[i], ">") == 0 ||
-			 ft_strcmp(cmds->arg[i], ">>") == 0 ||
-			 ft_strcmp(cmds->arg[i], "<<") == 0) && cmds->arg[i + 1])
+        res[i] = s[start + i];
+		i++;
+	}
+    res[length] = '\0';
+    return res;
+}
+
+void apply_fd(t_env *cmds, const char *s, int *index)
+{
+	(void)cmds;
+	if (s[*index] == '<' || s[*index] == '>')
+	{
+		if (s[*index] == '<' && s[*index + 1] == '<')
 		{
-			if (ft_strcmp(cmds->arg[i], "<") == 0)
-			{
-				if (handle_fd_input(cmds->arg[i + 1]) == -1)
-					perror("input redirection error");
-			}
-			else if (ft_strcmp(cmds->arg[i], ">") == 0)
-			{
-				if (handle_fd_output(cmds->arg[i + 1]) == -1)
-					perror("output redirection error");
-			}
-			else if (ft_strcmp(cmds->arg[i], ">>") == 0)
-			{
-				if (handle_fd_output_append(cmds->arg[i + 1]) == -1)
-					perror("append redirection error");
-			}
-			else if (ft_strcmp(cmds->arg[i], "<<") == 0)
-			{
-				if (handle_fd_input_heredoc(cmds->arg[i + 1]) == -1)
-					perror("heredoc error");
-			}
-			remove_args(cmds->arg, i);
+			if (handle_fd_input_heredoc(get_file(s, index)) == -1)
+				perror("heredoc error");
+			return ;
 		}
-		else
-			i++;
+		else if (s[*index] == '>' && s[*index + 1] == '>')
+		{
+			if (handle_fd_output_append(get_file(s, index)) == -1)
+				perror("append redirection error");
+			return ;
+		}
+		else if (s[*index] == '<')
+		{
+			if (handle_fd_input(get_file(s, index)) == -1)
+				perror("input redirection error");
+			return ;
+		}
+		else if (s[*index] == '>')
+		{
+			if (handle_fd_output(get_file(s, index)) == -1)
+				perror("output redirection error");
+			return ;
+		}
 	}
 }

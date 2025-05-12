@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 12:28:56 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:06:04 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef struct s_env
 	int				exit_status;
 	struct s_env	*next;
 	int				fd;
+	int				in;
+	int				out;
 }				t_env;
 
 int	ft_echo(t_env *cmds);
@@ -66,7 +68,7 @@ char **ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del);
 char **pipe_check(t_env *cmds, const char *input);
 void	ft_debug(t_env *cmd);
 char	**deep_copy_environ();
-void	apply_fd(t_env *cmds);
+void apply_fd(t_env *cmds, const char *s, int *index);
 void	pop(t_env *cmds, int i);
 int		cmd_check(t_env *cmds);
 void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int *i);
@@ -74,5 +76,6 @@ void check_errors(t_env *cmds);
 char	*ft_strstr(const char *big, const char *little);
 void general_error(char *str, int free, int ex, t_env *cmds);
 char *ft_find_closing_quote(const char *str, int start, char quote);
+int	is_separator(char ch, char c, int quote, int dquote);
 
 #endif

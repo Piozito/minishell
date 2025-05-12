@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 12:30:40 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:38:32 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 			cmd->path = cmd->env[0];
 		cmd->arg = NULL;
 		cmd->next = NULL;
+		cmd->in = dup(0);
+		cmd->out = dup(1);
 		cmd->fd = 1;
 		return ;
 	}
@@ -68,6 +70,8 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 	new_cmd->env = cmd->env;
 	new_cmd->exp = cmd->exp;
 	new_cmd->exit_status = cmd->exit_status;
+	new_cmd->in = dup(0);
+	new_cmd->out = dup(1);
 	new_cmd->fd = 1;
 }
 
@@ -116,7 +120,6 @@ void pipes_handler(t_env *cmds, const char *input)
     char **pipes;
     t_env *temp;
     t_env *new_cmd;
-	int error = 0;
     int i;
 
 	i = 0;
@@ -126,7 +129,7 @@ void pipes_handler(t_env *cmds, const char *input)
 	if(pipes[1] == NULL)
 	{
 		parsing(cmds, pipes[i]);
-		pop(cmds, 0);
+		check_builtin(cmds);
 		free_subtokens(pipes);
 		return ;
 	}
@@ -134,10 +137,7 @@ void pipes_handler(t_env *cmds, const char *input)
     {
 		new_cmd = (t_env *)malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
-        if(parsing(new_cmd, pipes[i]) == 1)
-			return ;
-		else
-			error = 1;
+        parsing(new_cmd, pipes[i]);
         if (i == 0)
         {
             cmds = new_cmd;
@@ -153,7 +153,6 @@ void pipes_handler(t_env *cmds, const char *input)
     temp->next = NULL;
     temp = cmds;
     i = 0;
-
 	ft_pipe(cmds);
     free_subtokens(pipes);
 }
@@ -171,7 +170,7 @@ int parsing(t_env *cmd, const char *input)
 		return 1;
 	if(ft_strchr(subtokens[0], ' ') != NULL)
 	{
-		printf("command not found: %s\n", subtokens[0]);
+		printf("command not found: \"%s\"\n", subtokens[0]);
 		return 1;
 	}
 	while (subtokens[j])
@@ -205,6 +204,6 @@ int parsing(t_env *cmd, const char *input)
 	}
 	free_subtokens(subtokens);
 	cmd->arg[arg_index] = NULL;
-	ft_debug(cmd); //Remover antes de entregar (utils3.c)
+	//ft_debug(cmd); //Remover antes de entregar (utils3.c)
 	return 0;
 }

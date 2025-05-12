@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 12:30:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 17:27:41 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ int	main(int argc, char **argv, char **env)
 	cmds->exit_status = 0;
 	while (1)
 	{
+		
 		initialize_cmd(cmds, NULL, 1);
 		input = readline("./minishell: ");
 		if (input == NULL)

@@ -6,13 +6,13 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 10:55:57 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:29:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-static int	is_separator(char ch, char c, int quote, int dquote)
+int	is_separator(char ch, char c, int quote, int dquote)
 {
 	if (c == ' ')
 		return (!quote && !dquote && (ch == c || ch == '\t' || ch == '\0'));
@@ -135,6 +135,8 @@ char	**pipe_check(t_env *cmds, const char *input)
 	return (ft_split_quotes(cmds, input, '|', 0));
 }
 
+
+
 static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter, int del)
 {
 	char	*result;
@@ -158,6 +160,10 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 			ft_expand_variable(cmd, s, index, &result, &i);
 			(*index)++;
 			continue ;
+		}
+		if (!quote && !dquote)
+		{
+			apply_fd(cmd, s, index);
 		}
 		if (s[*index] == '\'' && !dquote)
 		{

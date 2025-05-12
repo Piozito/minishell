@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 12:36:32 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:45:42 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	pop(t_env *cmds, int i)
 	{
 		saved_stdin = dup(0);
 		saved_stdout = dup(1);
-		apply_fd(cmds);
 		if (i == 0)
 			check_builtin(cmds);
 		dup2(saved_stdin, 0);
@@ -66,7 +65,6 @@ void	pop(t_env *cmds, int i)
 	pid = fork();
 	if (pid == 0)
 	{
-		apply_fd(cmds);
 		if (i == 0)
 			check_builtin(cmds);
 		exit(1);
