@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 17:27:04 by aaleixo-          #+#    #+#             */
-/*   Updated: 2024/05/07 13:01:12 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:02:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 
 	i = 0;
 	j = ft_strlen(s1);
+	if(!s1)
+		return NULL;
 	while (s1[i] != '\0' && (set_verify(s1[i], set) == 1))
 		i++;
 	while (s1[j - 1] != '\0' && (set_verify(s1[j - 1], set) == 1))

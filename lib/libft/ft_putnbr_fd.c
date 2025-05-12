@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 11:12:48 by aaleixo-          #+#    #+#             */
-/*   Updated: 2024/04/22 19:59:26 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:56:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ void	ft_putnbr_fd(int nb, int fd)
 	else
 		ft_write((nb + 48), fd);
 }
-/*
+/* 
 #include <fcntl.h>
 
 int	main(void)
 {
 	int fd = open("test3.txt", O_WRONLY | O_CREAT, 0644);
 
-	ft_putnbr_fd(-2147483648, fd);
+	ft_putnbr_fd(3000000, fd);
 	close(fd);
-}*/
+} */

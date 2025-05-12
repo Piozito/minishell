@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 13:37:03 by aaleixo-          #+#    #+#             */
-/*   Updated: 2024/04/24 10:26:14 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 08:07:40 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,14 @@ char	*ft_itoa(int n)
 		str[0] = '-';
 	return (str);
 }
-/*
+/* 
 #include <stdio.h>
 
 int	main(void)
 {
-	int nbr = -2147483648;
 
-	char *result = ft_itoa(nbr);
+	char *result = ft_itoa(-2147483649);
 	printf("%s\n", result);
 	free(result);
 	return (0);
-}*/
+} */

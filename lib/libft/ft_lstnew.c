@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 15:47:31 by aaleixo-          #+#    #+#             */
-/*   Updated: 2024/11/14 15:22:47 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 08:07:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_list	*ft_lstnew(int value)
 	new->next = NULL;
 	return (new);
 }
-/*
+/* 
 #include <stdio.h>
 
 int	main(void)
@@ -40,4 +40,4 @@ int	main(void)
 	printf("Str content: %s\n", (char *)node->content);
 
 	return (0);
-}*/
+} */

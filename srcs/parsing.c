@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 20:21:33 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:09:20 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ int parsing(t_env *cmd, const char *input)
 	int j = 0;
 
 	subtokens = ft_split_quotes(cmd, input, ' ', 1);
-	if(!subtokens)
+	if(subtokens[0] == NULL)
 		return 1;
 	if(ft_strchr(subtokens[0], ' ') != NULL)
 	{
@@ -226,8 +226,8 @@ int parsing(t_env *cmd, const char *input)
 	command_set = 0;
 	if (!cmd->arg)
 	{
-		perror("Memory allocation failed");
-		exit(EXIT_FAILURE);
+		perror("Memory allocation failed.");
+		exit(1);
 	}
 	j = 0;
 	while (subtokens[j] != NULL)
@@ -245,7 +245,6 @@ int parsing(t_env *cmd, const char *input)
 	}
 	free_subtokens(subtokens);
 	cmd->arg[arg_index] = NULL;
-	
 	ft_debug(cmd); //Remover antes de entregar (utils3.c)
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/09 20:30:51 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 08:42:41 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int is_valid(char *str)
     return (1);
 }
 
-char **update_env(char *arg, char **env)
+char **update_env(char *arg, char **env, int flag)
 {
     int i = 0;
     int j = 0;
@@ -47,14 +47,14 @@ char **update_env(char *arg, char **env)
         i++;
     if (env[i])
     {
-        if (is_chr(arg, '='))
+        if (is_chr(arg, '=') && flag == 1)
             env[i] = arg;
         else
-            free(arg);
+            return env;
     }
     else
     {
-        new_env = malloc((i + 2) * sizeof(char *));
+        new_env = (char **)malloc((i + 2) * sizeof(char *));
         if (!new_env)
             return (0);
         while (env[j])
@@ -64,7 +64,6 @@ char **update_env(char *arg, char **env)
         }
         new_env[j] = arg;
         new_env[j + 1] = NULL;
-
         free(env);
         env = new_env;
     }
@@ -75,11 +74,6 @@ int ft_export(t_env *env)
 {
     int i;
 
-	if(env->arg[0][0] == '-')
-	{
-		write(env->fd, "export: export doens't accepts flags.\n", 39);
-		return(2);
-	}
     if (env->arg[0] == NULL)
     {
         i = 0;
@@ -92,6 +86,11 @@ int ft_export(t_env *env)
 		}
         return (0);
     }
+	if(env->arg[0][0] == '-')
+	{
+		write(env->fd, "export: export doens't accepts flags.\n", 39);
+		return(2);
+	}
     i = 0;
     while (env->arg[i])
     {
@@ -99,14 +98,14 @@ int ft_export(t_env *env)
         {
             if (ft_strchr(env->arg[i], '='))
 			{
-                env->env = update_env(ft_strdup(env->arg[i]), env->env);
-				env->exp = update_env(ft_strdup(env->arg[i]), env->exp);
+				env->exp = update_env(ft_strdup(env->arg[i]), env->exp, 1);
+                env->env = update_env(ft_strdup(env->arg[i]), env->env, 1);
 			}
             else
             {
                 char *tmp = ft_strjoin(env->arg[i], "=");
                 if (tmp)
-                    env->exp = update_env(tmp, env->exp);
+                    env->exp = update_env(tmp, env->exp, 0);
             }
 			i++;
         }

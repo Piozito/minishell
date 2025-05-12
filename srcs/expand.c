@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/09 17:17:42 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:03:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ char *env_expander(t_env *cmds, char *var_name)
 			while(cmds->env[i][j] != '=')
 				j++;
 			if(ft_strncmp(var_name, cmds->env[i], j) != 0)
-				return "";
+				return ft_strdup("");
 			if(res == NULL)
-				res = "";
+				return ft_strdup("");
 			return res;
 		}
 		i++;
 	}
-	return "";
+	return ft_strdup("");
 }
 
 void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int *i)
@@ -62,7 +62,7 @@ void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int
         return;
     start = (char *)src + *index;
     end = start + 1;
-    while (*end && *end != ' ' && *end != '\"' && *end != '\'')
+    while (*end && *end != ' ' && *end != '\t' && *end != '\"' && *end != '\'')
 	{
         (*index)++;
         end++;
@@ -74,8 +74,13 @@ void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int
 	else
     	expanded = env_expander(cmd, var_name);
 	if(!expanded)
-		expanded = "";
+		return ;
     len_expanded = ft_strlen(expanded);
+	if(len_expanded == 0)
+	{
+		free(expanded);
+		return ;
+	}
     len_before = *i;
     new_size = len_before + len_expanded + 1;
     char *new_dst = (char *)malloc(new_size * sizeof(char));

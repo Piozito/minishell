@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 19:08:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:16:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 typedef struct s_env
 {
 	char			*cmd;
-	char			**flag;
 	char			**arg;
 	char			*path;
 	char			**env;
