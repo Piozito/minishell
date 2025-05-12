@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/12 09:42:24 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 11:52:35 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
     	    exit(1);
    	 	close(p_fd[1]);
 	}
-	if(apply_fd(cmd) == 1)	
+	if(apply_fd(cmd) == 1)
 		exit(1);
-	
+
     exit(check_builtin(cmd));
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 09:42:32 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:13:07 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char **ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del);
 char **pipe_check(t_env *cmds, const char *input);
 void	ft_debug(t_env *cmd);
 char	**deep_copy_environ();
-int	apply_fd(t_env *cmds);
+void	apply_fd(t_env *cmds);
 void	pop(t_env *cmds, int i);
 int		cmd_check(t_env *cmds);
 void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int *i);

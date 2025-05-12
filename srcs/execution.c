@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 09:35:01 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:06:51 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	init_exec(char **exec_args, t_env *command, int arg_count)
 void	handle_fork_execution(char *path, char **exec_args, t_env *command)
 {
 	pid_t	pid;
-	int status = 0;
 
 	pid = fork();
 	if (pid == -1)
@@ -54,7 +53,7 @@ void	handle_fork_execution(char *path, char **exec_args, t_env *command)
 		}
 	}
 	else
-		waitpid(pid, &status, 0);
+		waitpid(pid, &command->exit_status, 0);
 }
 
 int	counter(t_env *command)

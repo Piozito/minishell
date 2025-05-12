@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 09:42:35 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:22:27 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,8 @@ void pipes_handler(t_env *cmds, const char *input)
 		return ;
 	if(pipes[1] == NULL)
 	{
-		if(parsing(cmds, pipes[i]) == 1)
-			return ;
-		if(apply_fd(cmds) == 0)
-			pop(cmds, 0);
+		parsing(cmds, pipes[i]);
+		pop(cmds, 0);
 		free_subtokens(pipes);
 		return ;
 	}
@@ -138,8 +136,6 @@ void pipes_handler(t_env *cmds, const char *input)
 		initialize_cmd(cmds, new_cmd, 0);
         if(parsing(new_cmd, pipes[i]) == 1)
 			return ;
-		if(apply_fd(new_cmd) == 0)
-			pop(new_cmd, 1);
 		else
 			error = 1;
         if (i == 0)
@@ -157,45 +153,9 @@ void pipes_handler(t_env *cmds, const char *input)
     temp->next = NULL;
     temp = cmds;
     i = 0;
-	if (error == 0)
-    	cmds->exit_status = ft_pipe(cmds);
+
+	ft_pipe(cmds);
     free_subtokens(pipes);
-}
-
-char *correct_input(const char *input)
-{
-	int i = 0;
-	int j = 0;
-	int quote = 0;
-	int dquote = 0;
-	char *correct_input = (char *)malloc(ft_strlen(input));
-
-	while(input[i])
-	{
-		if(input[i] == '\t' && input[i] && !quote && !dquote)
-		{
-			correct_input[j++] = ' ';
-			i++;
-		}
-		else
-		{
-			if(input[i] == '\'' && ft_find_closing_quote(input, i, '\''))
-			{
-				while(input[i] != '\'')
-					i++;
-			}
-			if(input[i] == '\"' && ft_find_closing_quote(input, i, '\"'))
-			{
-				while(input[i] != '\"')
-					i++;
-			}
-			correct_input[j] = input[i];
-			j++;
-			i++;
-		}
-	}
-	correct_input[j] = '\0';
-	return correct_input;
 }
 
 int parsing(t_env *cmd, const char *input)
