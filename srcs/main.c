@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 13:35:01 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:45:47 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,7 @@ int	main(int argc, char **argv, char **env)
 		if (input == NULL)
 		{
 			free(input);
-			rl_clear_history();
-			printf("BATATA\n");
+			printf("exit.\n");
 			break;
 		}
 		check_input(input);
@@ -143,6 +142,8 @@ int	main(int argc, char **argv, char **env)
 	}
 	if(env[0] == NULL)
 		write(1, "\n", 1);
+	rl_clear_history();
 	free_env(cmds->env, env);
 	free_env(cmds->exp, env);
+	free(cmds);
 }

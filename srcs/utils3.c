@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 14:10:51 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:06:59 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	ft_debug(t_env *cmd)
 		printf("\033[0;32mexport is available.\033[0m\n");
 	else
 		printf("\033[0;31mexport has failed.\033[0m\n");
-	printf("-------------------------\nCommand: %s\n", cmd->cmd);
-	if (cmd->arg && cmd->arg[0] != NULL)
+	printf("-------------------------\nCommand: \"%s\"\n", cmd->cmd);
+	if (cmd->arg[0] != NULL)
 	{
 		printf("Arguments:\n");
 		while (cmd->arg[i] != NULL)
 		{
-			printf("	Arg[%d]: %s\n", i, cmd->arg[i]);
+			printf("	Arg[%d]: \"%s\"\n", i, cmd->arg[i]);
 			i++;
 		}
 	}

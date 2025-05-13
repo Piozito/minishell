@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 14:04:44 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/13 18:54:21 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ void pipes_handler(t_env *cmds, const char *input)
     temp->next = NULL;
     temp = cmds;
     i = 0;
-
 	cmds->exit_status = ft_pipe(cmds);
     free_subtokens(pipes);
 }
@@ -163,48 +162,66 @@ int parsing(t_env *cmd, const char *input)
 	char **subtokens;
 	int arg_count = 0;
 	int arg_index = 0;
-	int command_set = 0;
+	int command_set = -1;
 	int j = 0;
+	int k = 0;
 
 	subtokens = ft_split_quotes(cmd, input, ' ', 1);
-	if(subtokens[0] == NULL)
+	if (subtokens[0] == NULL)
 		return 1;
-	if(ft_strchr(subtokens[0], ' ') != NULL)
+	if (ft_strchr(subtokens[0], ' ') != NULL)
 	{
 		printf("command not found: %s\n", subtokens[0]);
+		free_subtokens(subtokens);
 		return 1;
 	}
 	while (subtokens[j])
 	{
-		if (!command_set)
-			command_set = 1;
-		else if (command_set)
+		if (command_set == -1 && !ft_strchr(subtokens[j], '<') && !ft_strchr(subtokens[j], '>'))
+		{
+			if (j >= 1)
+			{
+				if (!ft_strchr(subtokens[j - 1], '<') && !ft_strchr(subtokens[j - 1], '>'))
+					command_set = j;
+			}
+			else
+				command_set = j;
+		}
+		else
+		{
+			while(subtokens[j][k])
+			{
+				if(subtokens[j][k] == '<' || subtokens[j][k] == '>')
+					arg_count++;
+				k++;
+			}
 			arg_count++;
+		}
 		j++;
 	}
 	cmd->arg = (char **)malloc((arg_count + 1) * sizeof(char *));
-	command_set = 0;
 	if (!cmd->arg)
 	{
 		perror("Memory allocation failed.");
+		free_subtokens(subtokens);
 		exit(1);
 	}
 	j = 0;
 	while (subtokens[j] != NULL)
 	{
-		if (!command_set)
-		{
+		if (j == command_set)
 			cmd->cmd = ft_strdup(subtokens[j]);
-			command_set = 1;
-		}
-		else
-		{
+		else if (j > command_set)
 			cmd->arg[arg_index++] = ft_strdup(subtokens[j]);
-		}
 		j++;
 	}
-	free_subtokens(subtokens);
+	j = 0;
+	while (j < command_set)
+	{
+		cmd->arg[arg_index++] = ft_strdup(subtokens[j++]);
+	}
 	cmd->arg[arg_index] = NULL;
-	ft_debug(cmd); //Remover antes de entregar (utils3.c)
+	free_subtokens(subtokens);
+	ft_debug(cmd);
 	return 0;
 }

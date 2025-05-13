@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 18:39:52 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 19:17:25 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,20 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 			continue ;
 		}
 		if(!quote && !dquote)
+		{
 			check_heredoc(cmd, s, index);
+			if(delimiter == '|')
+			{
+				if(s[*index] == '<' || s[*index] == '>')
+				{
+					result[i++] = ' ';
+					result[i++] = s[(*index)++];
+					if(s[*index] == '<' || s[*index] == '>')
+						result[i++] = s[(*index)++];
+					result[i++] = ' ';
+				}
+			}
+		}
 		if (s[*index] == '\'' && !dquote)
 		{
 			if (quote)

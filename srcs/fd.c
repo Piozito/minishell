@@ -12,6 +12,7 @@
 
 #include "../lib/minishell.h"
 
+
 void remove_args(char **args, int pos)
 {
     int j = pos;
