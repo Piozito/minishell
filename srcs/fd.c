@@ -27,6 +27,8 @@ void remove_args(char **args, int pos)
 
 int handle_fd_input(char *file)
 {
+	if(ft_strchr(file, '<') || ft_strchr(file, '>'))
+		return -1;
     int fd_in = open(file, O_RDONLY);
     if (fd_in == -1)
         return -1;
@@ -41,6 +43,8 @@ int handle_fd_input(char *file)
 
 int handle_fd_output(char *file)
 {
+	if(ft_strchr(file, '<') || ft_strchr(file, '>'))
+		return -1;
     int fd_out = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
     if (fd_out == -1)
         return -1;
@@ -55,6 +59,8 @@ int handle_fd_output(char *file)
 
 int handle_fd_output_append(char *file)
 {
+	if(ft_strchr(file, '<') || ft_strchr(file, '>'))
+		return -1;
     int fd_out = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
     if (fd_out == -1)
         return -1;
@@ -124,20 +130,31 @@ char *get_file(const char *s, int *index)
     res[length] = '\0';
     return res;
 }
-
-void check_heredoc(t_env *cmds, const char *s, int *index)
+int fd_error(char *str)
 {
-	(void)cmds;
-	if (s[*index] == '<' && s[*index + 1] == '<')
-	{
-		if (handle_fd_input_heredoc(get_file(s, index)) == -1)
-			perror("heredoc error");
-		return ;
-	}
+	ft_putstr_fd(str, 2);
+	write(2, " redirection error.", 19);
+	write(2, "\n", 1);
+	return 1;
 }
 
+int check_heredoc(t_env *cmds, const char *s, int *index)
+{
+	(void)cmds;
+	char *word;
+	
+	if (s[*index] == '<' && s[*index + 1] == '<')
+	{
+		word = get_file(s, index);
+		if(!word || ft_strcmp(word, "<") == 0 || ft_strcmp(word, ">") == 0)
+			return (fd_error("heredoc"));
+		if (handle_fd_input_heredoc(word) == -1)
+			return (fd_error("heredoc"));
+	}
+	return 0;
+}
 
-void apply_fd(t_env *cmds)
+int apply_fd(t_env *cmds)
 {
 	int i = 0;
 	while (cmds->arg[i])
@@ -149,21 +166,22 @@ void apply_fd(t_env *cmds)
 			if (ft_strncmp(cmds->arg[i], "<", 1) == 0)
 			{
 				if (handle_fd_input(cmds->arg[i + 1]) == -1)
-					perror("input redirection error");
+					return (fd_error("input"));
 			}
 			else if (ft_strncmp(cmds->arg[i], ">", 1) == 0)
 			{
 				if (handle_fd_output(cmds->arg[i + 1]) == -1)
-					perror("output redirection error");
+					return (fd_error("output"));
 			}
 			else if (ft_strncmp(cmds->arg[i], ">>", 2) == 0)
 			{
 				if (handle_fd_output_append(cmds->arg[i + 1]) == -1)
-					perror("append redirection error");
+					return (fd_error("append"));
 			}
 			remove_args(cmds->arg, i);
 		}
 		else
 			i++;
 	}
+	return 0;
 } 

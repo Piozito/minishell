@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/13 20:00:52 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:09:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
     	    exit(1);
    	 	close(p_fd[1]);
 	}
-	apply_fd(cmd);
+	if(apply_fd(cmd) == 1)
+		exit(1);
     exit(check_builtin(cmd));
 }
 

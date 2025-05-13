@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 19:17:25 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:47:28 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,13 +155,15 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 	{
 		if (!quote && s[*index] == '$' && ft_isprint(s[*index + 1]) == 1)
 		{
+
 			ft_expand_variable(cmd, s, index, &result, &i);
 			(*index)++;
 			continue ;
 		}
-		if(!quote && !dquote)
+		if(!quote && !dquote && (s[*index] == '<' || s[*index] == '>'))
 		{
-			check_heredoc(cmd, s, index);
+			if(check_heredoc(cmd, s, index))
+				return NULL;
 			if(delimiter == '|')
 			{
 				if(s[*index] == '<' || s[*index] == '>')
@@ -261,7 +263,12 @@ char	**ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del)
 		while (s[index] && is_separator(s[index], delimiter, 0, 0))
 			index++;
 		if (s[index] && !is_separator(s[index], delimiter, 0, 0))
-			result[i++] = extract_word(cmd, s, &index, delimiter, del);
+		{
+			result[i] = extract_word(cmd, s, &index, delimiter, del);
+			if(!result[i])
+				return NULL;
+		}
+		i++;
 	}
 	result[i] = NULL;
 	return (result);
