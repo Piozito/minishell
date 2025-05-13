@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 18:10:59 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:04:44 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void pipes_handler(t_env *cmds, const char *input)
     temp = cmds;
     i = 0;
 
-	ft_pipe(cmds);
+	cmds->exit_status = ft_pipe(cmds);
     free_subtokens(pipes);
 }
 

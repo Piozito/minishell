@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 13:31:32 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:10:51 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	pop(t_env *cmds, int i)
 	{
 		apply_fd(cmds);
 		if (i == 0)
-			check_builtin(cmds);
+			cmds->exit_status = check_builtin(cmds);
 		return ;
 	}
 	pid = fork();
@@ -60,11 +60,18 @@ void	pop(t_env *cmds, int i)
 	{
 		apply_fd(cmds);
 		if (i == 0)
-			check_builtin(cmds);
+			exit(check_builtin(cmds));
 		exit(1);
 	}
 	else if (pid > 0)
-		waitpid(pid, NULL, 0);
+	{
+		int status;
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			cmds->exit_status = WEXITSTATUS(status);
+		else
+			cmds->exit_status = 1;
+	}
 	else
 		perror("fork failed");
 	return ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 18:10:41 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 14:21:38 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_exec(char **exec_args, t_env *command, int arg_count)
 	exec_args[arg_count + 1] = NULL;
 }
 
-void	handle_fork_execution(char *path, char **exec_args, t_env *command)
+int	handle_fork_execution(char *path, char **exec_args, t_env *command)
 {
 	pid_t	pid;
 
@@ -35,7 +35,7 @@ void	handle_fork_execution(char *path, char **exec_args, t_env *command)
 	{
 		perror("fork");
 		free(exec_args);
-		exit(1);
+		command->exit_status = 1;
 	}
 	else if (pid == 0)
 	{
@@ -43,17 +43,25 @@ void	handle_fork_execution(char *path, char **exec_args, t_env *command)
 		{
 			printf("command not found: \"%s\"\n", command->cmd);
 			free(exec_args);
-			exit(127);
+			command->exit_status = 127;
 		}
 		else if (execve(path, exec_args, command->env) == -1)
 		{
 			printf("command not found: \"%s\"\n", command->cmd);
 			free(exec_args);
-			exit(127);
+			command->exit_status = 127;
 		}
 	}
 	else
-		waitpid(pid, &command->exit_status, 0);
+	{
+		int status;
+    	waitpid(pid, &status, 0);
+    	if (WIFEXITED(status))
+        	command->exit_status = WEXITSTATUS(status);
+    	else
+        	command->exit_status = 1;
+	}
+	return(command->exit_status);
 }
 
 int	counter(t_env *command)
@@ -84,9 +92,10 @@ int	ft_exec(t_env *command)
 	{
 		printf("command not found: \"%s\"\n", command->cmd);
 		free(exec_args);
-		return (127);
+		command->exit_status = 127;
+		return (command->exit_status);
 	}
-	handle_fork_execution(command->path, exec_args, command);
+	command->exit_status = handle_fork_execution(command->path, exec_args, command);
 	free(exec_args);
-	return (0);
+	return (command->exit_status);
 }
