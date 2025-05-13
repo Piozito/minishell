@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 17:27:59 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:02:13 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ char	*ft_strstr(const char *big, const char *little);
 void general_error(char *str, int free, int ex, t_env *cmds);
 void check_heredoc(t_env *cmds, const char *s, int *index);
 char *ft_find_closing_quote(const char *str, int start, char quote);
+void command_not_found(char *cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 18:06:59 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:02:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	check_errors(t_env *cmds)
 	{
 		temp->path = my_get_path(temp);
 		if (temp->path == NULL)
-			printf("command not found: \"%s\"\n", temp->cmd);
+			command_not_found(cmds->cmd);
 		temp = temp->next;
 	}
 }
@@ -111,4 +111,11 @@ char	*ft_strstr(const char *big, const char *little)
 		i++;
 	}
 	return (NULL);
+}
+
+void command_not_found(char *cmd)
+{
+	write(2, "command not found: \"", 20);
+	ft_putstr_fd(cmd, 2);
+	write(2, "\"\n", 2);
 }

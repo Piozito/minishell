@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 18:54:21 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 20:01:08 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,16 @@ int parsing(t_env *cmd, const char *input)
 		return 1;
 	if (ft_strchr(subtokens[0], ' ') != NULL)
 	{
-		printf("command not found: %s\n", subtokens[0]);
+		command_not_found(cmd->cmd);
 		free_subtokens(subtokens);
+		cmd->exit_status = 127;
+		return 1;
+	}
+	if(cmd_check(cmd) == 0 && ft_isalpha(cmd->cmd[0]) == 0)
+	{
+		command_not_found(cmd->cmd);
+		free_subtokens(subtokens);
+		cmd->exit_status = 127;
 		return 1;
 	}
 	while (subtokens[j])
