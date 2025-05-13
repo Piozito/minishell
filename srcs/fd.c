@@ -127,18 +127,12 @@ char *get_file(const char *s, int *index)
 void check_heredoc(t_env *cmds, const char *s, int *index)
 {
 	(void)cmds;
-	int saved_stdin = dup(0);
-	int saved_stdout = dup(1);
 	if (s[*index] == '<' && s[*index + 1] == '<')
 	{
 		if (handle_fd_input_heredoc(get_file(s, index)) == -1)
 			perror("heredoc error");
 		return ;
 	}
-	dup2(saved_stdin, 0);
-	dup2(saved_stdout, 1);
-	close(saved_stdin);
-	close(saved_stdout);
 }
 
 
@@ -147,21 +141,21 @@ void apply_fd(t_env *cmds)
 	int i = 0;
 	while (cmds->arg[i])
 	{
-		if ((ft_strcmp(cmds->arg[i], "<") == 0 ||
-			 ft_strcmp(cmds->arg[i], ">") == 0 ||
-			 ft_strcmp(cmds->arg[i], ">>") == 0) && cmds->arg[i + 1])
+		if ((ft_strncmp(cmds->arg[i], "<", 1) == 0 ||
+			 ft_strncmp(cmds->arg[i], ">", 1) == 0 ||
+			 ft_strncmp(cmds->arg[i], ">>", 2) == 0) && cmds->arg[i + 1])
 		{
-			if (ft_strcmp(cmds->arg[i], "<") == 0)
+			if (ft_strncmp(cmds->arg[i], "<", 1) == 0)
 			{
 				if (handle_fd_input(cmds->arg[i + 1]) == -1)
 					perror("input redirection error");
 			}
-			else if (ft_strcmp(cmds->arg[i], ">") == 0)
+			else if (ft_strncmp(cmds->arg[i], ">", 1) == 0)
 			{
 				if (handle_fd_output(cmds->arg[i + 1]) == -1)
 					perror("output redirection error");
 			}
-			else if (ft_strcmp(cmds->arg[i], ">>") == 0)
+			else if (ft_strncmp(cmds->arg[i], ">>", 2) == 0)
 			{
 				if (handle_fd_output_append(cmds->arg[i + 1]) == -1)
 					perror("append redirection error");

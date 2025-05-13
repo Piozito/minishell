@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/12 18:41:53 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/13 13:35:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,12 +117,15 @@ int	main(int argc, char **argv, char **env)
 	cmds->exit_status = 0;
 	while (1)
 	{
+		int saved_stdout = dup(1);
+		int saved_stdin = dup(0);
 		initialize_cmd(cmds, NULL, 1);
 		input = readline("./minishell: ");
 		if (input == NULL)
 		{
 			free(input);
 			rl_clear_history();
+			printf("BATATA\n");
 			break;
 		}
 		check_input(input);
@@ -133,6 +136,10 @@ int	main(int argc, char **argv, char **env)
 		}
 		free(input);
 		ft_cmds_free(cmds);
+		dup2(saved_stdin, 0);
+		dup2(saved_stdout, 1);
+		close(saved_stdin);
+		close(saved_stdout);
 	}
 	if(env[0] == NULL)
 		write(1, "\n", 1);
