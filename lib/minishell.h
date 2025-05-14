@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 10:31:16 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:16:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,5 @@ char *get_file(const char *s, int *index);
 void	command_not_found(char *cmd);
 int fd_error(char *str);
 char *env_expander(t_env *cmds, char *var_name);
-void free_env(char **array, int flag);
 
 #endif

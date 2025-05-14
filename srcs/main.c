@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 10:38:05 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:18:13 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,10 @@ void general_error(char *str, int free, int ex, t_env *cmds)
 		exit(1);
 }
 
-void free_env(char **array, int flag)
+void free_env(char **array)
 {
 	int i;
 
-	(void)flag;
 	i = 0;
 	while(array[i] != NULL)
 		free(array[i++]);
@@ -136,19 +135,12 @@ int	main(int argc, char **argv, char **env)
 		close(saved_stdin);
 		close(saved_stdout);
 	}
-	rl_clear_history();
 	if(env[0] == NULL)
-	{
-		free_env(cmds->env, 1);
-		free_env(cmds->exp, 1);
 		write(1, "\n", 1);
-	}
-	else
-	{
-		free_env(cmds->env, 0);
-		free_env(cmds->exp, 0);
-	}
-	printf("exit.\n");
+	free_env(cmds->env);
+	free_env(cmds->exp);
+	printf("exit\n");
 	free(input);
 	ft_cmds_free(cmds);
+	rl_clear_history();
 }
