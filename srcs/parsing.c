@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 20:12:14 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:59:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,76 @@
 
 char **fake_env_creator()
 {
-	char **new_environ;
+    char **new_environ;
+    char *cwd;
 
-	new_environ = (char **)malloc(4 * sizeof(char *));
-	new_environ[0] = "PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin";
-	new_environ[1] = "HOME=/home/aaleixo-";
-	new_environ[2] = "SHELL=/bin/minishell";
-	new_environ[3] = ft_strjoin("PWD=", getcwd(NULL, 1024));
-	new_environ[4] = NULL;
+    new_environ = (char **)malloc(4 * sizeof(char *));
     if (!new_environ)
-		general_error("env malloc failed.", 0, 1, NULL);
-	return new_environ;
+        general_error("env malloc failed.", 0, 1, NULL);
+    new_environ[0] = strdup("PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
+    if (!new_environ[0])
+        general_error("env malloc failed.", 0, 1, NULL);
+    new_environ[1] = strdup("SHLVL=1");
+    if (!new_environ[1])
+        general_error("env malloc failed.", 0, 1, NULL);
+    cwd = getcwd(NULL, 0);
+    if (!cwd)
+        general_error("getcwd failed.", 0, 1, NULL);
+    new_environ[2] = (char *)malloc(strlen("PWD=") + strlen(cwd) + 1);
+    if (!new_environ[2])
+    {
+        free(cwd);
+        general_error("env malloc failed.", 0, 1, NULL);
+    }
+    strcpy(new_environ[2], "PWD=");
+    strcat(new_environ[2], cwd);
+    free(cwd);
+    new_environ[3] = NULL;
+    return new_environ;
 }
 
 char **deep_copy_environ(char **environ)
 {
 	char **new_environ;
 	int count;
+	int num;
 	int i;
 
 	i = -1;
+	num = -1;
 	count = 0;
-    while (environ[count] != NULL)
+	while (environ[count] != NULL)
 		count++;
-	if(count == 0)
+
+	if (count == 0)
 		new_environ = fake_env_creator();
 	else
 	{
-    	new_environ = (char **)malloc((count + 1) * sizeof(char *));
+		new_environ = (char **)malloc((count + 2) * sizeof(char *));
 		if (!new_environ)
 			general_error("env malloc failed.", 0, 1, NULL);
+
 		while (++i < count)
-			new_environ[i] = ft_strdup(environ[i]);
-		new_environ[count] = NULL;
+		{
+			if (strncmp(environ[i], "SHLVL=", 6) == 0)
+			{
+				num = ft_atoi(ft_strtrim(ft_strchr(environ[i], '='), "="));
+				if(num < 0)
+					num = 0;
+				else
+					num++;
+				new_environ[i] = ft_strjoin("SHLVL=", ft_itoa(num));
+			}
+			else
+				new_environ[i] = ft_strdup(environ[i]);
+		}
+		if (num == -1)
+		{
+			new_environ[i++] = ft_strdup("SHLVL=1");
+		}
+		new_environ[i] = NULL;
 	}
-    return new_environ;
+	return new_environ;
 }
 
 void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
@@ -56,7 +91,7 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 	if(new_cmd == NULL && i == 1)
 	{
 		cmd->cmd = NULL;
-		cmd->path = getenv("PATH");
+		cmd->path = env_expander(cmd, "PATH=");
 		if(cmd->path == NULL)
 			cmd->path = cmd->env[0];
 		cmd->arg = NULL;
@@ -64,9 +99,9 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 		cmd->fd = 1;
 		return ;
 	}
-	new_cmd->path = cmd->path;
 	new_cmd->env = cmd->env;
 	new_cmd->exp = cmd->exp;
+	new_cmd->path = env_expander(new_cmd, "PATH=");
 	new_cmd->exit_status = cmd->exit_status;
 	new_cmd->fd = 1;
 }
@@ -176,13 +211,6 @@ int parsing(t_env *cmd, const char *input)
 		cmd->exit_status = 127;
 		return 1;
 	}
-	if(cmd_check(cmd) == 0 && ft_isalpha(cmd->cmd[0]) == 0)
-	{
-		command_not_found(cmd->cmd);
-		free_subtokens(subtokens);
-		cmd->exit_status = 127;
-		return 1;
-	}
 	while (subtokens[j])
 	{
 		if (command_set == -1 && !ft_strchr(subtokens[j], '<') && !ft_strchr(subtokens[j], '>'))
@@ -200,7 +228,10 @@ int parsing(t_env *cmd, const char *input)
 			while(subtokens[j][k])
 			{
 				if(subtokens[j][k] == '<' || subtokens[j][k] == '>')
+				{
 					arg_count++;
+					break;
+				}
 				k++;
 			}
 			arg_count++;
@@ -215,20 +246,27 @@ int parsing(t_env *cmd, const char *input)
 		exit(1);
 	}
 	j = 0;
-	while (subtokens[j] != NULL)
+	while (subtokens[j])
 	{
 		if (j == command_set)
 			cmd->cmd = ft_strdup(subtokens[j]);
-		else if (j > command_set)
+		else if (j < command_set)
 			cmd->arg[arg_index++] = ft_strdup(subtokens[j]);
 		j++;
 	}
-	j = 0;
-	while (j < command_set)
+	j = command_set + 1;
+	while (j > command_set && subtokens[j])
 	{
 		cmd->arg[arg_index++] = ft_strdup(subtokens[j++]);
 	}
 	cmd->arg[arg_index] = NULL;
+	if(cmd_check(cmd) == 0 && ft_isalpha(cmd->cmd[0]) == 0)
+	{
+		command_not_found(cmd->cmd);
+		free_subtokens(subtokens);
+		cmd->exit_status = 127;
+		return 1;
+	}
 	free_subtokens(subtokens);
 	ft_debug(cmd);
 	return 0;

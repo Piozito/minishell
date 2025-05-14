@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/12 09:36:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 09:51:36 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ int	ft_exit(t_env *cmds)
 {
 	int	exit_status;
 
-	if (cmds->arg[1] == NULL && !is_numeric(cmds->arg[0]))
+	if(cmds->arg[0] == NULL)
+		exit(0);
+	if (!is_numeric(cmds->arg[0]))
 	{
 		if (cmds->arg[0])
 		{

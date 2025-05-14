@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/12 08:42:41 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:20:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,24 @@ char **update_env(char *arg, char **env, int flag)
     if (env[i])
     {
         if (is_chr(arg, '=') && flag == 1)
-            env[i] = arg;
-        else
-            return env;
-    }
-    else
-    {
-        new_env = (char **)malloc((i + 2) * sizeof(char *));
-        if (!new_env)
-            return (0);
-        while (env[j])
         {
-            new_env[j] = env[j];
-            j++;
+            free(env[i]); // Free the old value before overwriting
+            env[i] = ft_strdup(arg); // Always make a copy
         }
-        new_env[j] = arg;
-        new_env[j + 1] = NULL;
-        free(env);
-        env = new_env;
+        return env;
     }
-    return (env);
+    new_env = (char **)malloc((i + 2) * sizeof(char *));
+    if (!new_env)
+        return NULL;
+    while (j < i)
+    {
+        new_env[j] = env[j]; // Reuse existing pointers
+        j++;
+    }
+    new_env[j] = ft_strdup(arg); // Always make a copy
+    new_env[j + 1] = NULL;
+    free(env); // Free the old array (not individual strings)
+    return new_env;
 }
 
 int ft_export(t_env *env)

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 19:30:51 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 10:38:05 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,28 +83,22 @@ void general_error(char *str, int free, int ex, t_env *cmds)
 		exit(1);
 }
 
-void free_env(char **array, char **env)
+void free_env(char **array, int flag)
 {
 	int i;
 
+	(void)flag;
 	i = 0;
-	while(env[i] != NULL)
-		i++;
-	if(i == 0)
-		return (free(array));
-	else
-	{
-		i = 0;
-		while(array[i] != NULL)
-			free(array[i++]);
-		free(array);
-	}
+	while(array[i] != NULL)
+		free(array[i++]);
+	free(array);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_env	*cmds;
+	char	*prev_input = NULL;
 
 	(void)argv;
 	if(argc != 1)
@@ -122,16 +116,18 @@ int	main(int argc, char **argv, char **env)
 		initialize_cmd(cmds, NULL, 1);
 		input = readline("./minishell: ");
 		if (input == NULL)
-		{
-			free(input);
-			printf("exit.\n");
 			break;
-		}
 		check_input(input);
 		if (*input != '\0')
 		{
 			pipes_handler(cmds, input);
-			add_history(input);
+			if(ft_strcmp(prev_input, input) != 0 || prev_input == NULL)
+			{
+				if(prev_input != NULL)
+					free(prev_input);
+				prev_input = ft_strdup(input);
+				add_history(input);
+			}
 		}
 		free(input);
 		ft_cmds_free(cmds);
@@ -140,10 +136,19 @@ int	main(int argc, char **argv, char **env)
 		close(saved_stdin);
 		close(saved_stdout);
 	}
-	if(env[0] == NULL)
-		write(1, "\n", 1);
 	rl_clear_history();
-	free_env(cmds->env, env);
-	free_env(cmds->exp, env);
-	free(cmds);
+	if(env[0] == NULL)
+	{
+		free_env(cmds->env, 1);
+		free_env(cmds->exp, 1);
+		write(1, "\n", 1);
+	}
+	else
+	{
+		free_env(cmds->env, 0);
+		free_env(cmds->exp, 0);
+	}
+	printf("exit.\n");
+	free(input);
+	ft_cmds_free(cmds);
 }

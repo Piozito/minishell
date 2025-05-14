@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/13 20:09:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 08:46:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
     	    exit(1);
    	 	close(p_fd[1]);
 	}
-	if(apply_fd(cmd) == 1)
-		exit(1);
     exit(check_builtin(cmd));
 }
 
@@ -57,6 +55,8 @@ static pid_t handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_
 			command_not_found(cmds->cmd);
 			exit(127);
 		}
+		if(apply_fd(cmds) == 1)
+			exit(1);
         execute_command(cmds, prev_fd, p_fd, is_last);
 	}
 	return pid;
