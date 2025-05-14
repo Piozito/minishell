@@ -147,12 +147,17 @@ int check_heredoc(t_env *cmds, const char *s, int *index)
 	char *word;
 	if (s[*index] == '<' && s[*index + 1] == '<')
 	{
-		word = get_file(s, index);
-		if(!word)
-			return (fd_error("heredoc"));
-		if(ft_strchr(word, '<') || ft_strchr(word, '>'))
-			return (fd_error("heredoc"));
-		if (handle_fd_input_heredoc(word) == -1)
+		if(s[*index + 2] && s[*index + 2] != '<')
+		{
+			word = get_file(s, index);
+			if(!word)
+				return (fd_error("heredoc"));
+			if(ft_strchr(word, '<') || ft_strchr(word, '>'))
+				return (fd_error("heredoc"));
+			if (handle_fd_input_heredoc(word) == -1)
+				return (fd_error("heredoc"));
+		}
+		else
 			return (fd_error("heredoc"));
 	}
 	return 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 16:47:10 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:36:14 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,15 +162,20 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 		}
 		if(!quote && !dquote && (s[*index] == '<' || s[*index] == '>'))
 		{
-			check_heredoc(cmd, s, index);
 			if(delimiter == '|')
 			{
+				check_heredoc(cmd, s, index);
 				if(s[*index] == '<' || s[*index] == '>')
 				{
 					result[i++] = ' ';
 					result[i++] = s[(*index)++];
 					if(s[*index] == '<' || s[*index] == '>')
 						result[i++] = s[(*index)++];
+					if(s[*index] == '<' || s[*index] == '>')
+					{
+						write(2, "redirectiong parsing error.\n", 28);
+						return NULL;
+					}
 					result[i++] = ' ';
 				}
 			}
