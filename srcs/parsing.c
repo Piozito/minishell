@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 11:14:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 17:57:44 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 	{
 		cmd->cmd = NULL;
 		cmd->path = env_expander(cmd, "PATH=");
+		cmd->saved_stdout = dup(1);
+		cmd->saved_stdin = dup(0);
 		if(cmd->path == NULL)
 			cmd->path = cmd->env[0];
 		cmd->arg = NULL;
@@ -101,6 +103,8 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 	}
 	new_cmd->env = cmd->env;
 	new_cmd->exp = cmd->exp;
+	new_cmd->saved_stdout = cmd->saved_stdout;
+	new_cmd->saved_stdin = cmd->saved_stdin;
 	new_cmd->path = env_expander(new_cmd, "PATH=");
 	new_cmd->exit_status = cmd->exit_status;
 	new_cmd->fd = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 11:18:13 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:03:04 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,21 +83,28 @@ void general_error(char *str, int free, int ex, t_env *cmds)
 		exit(1);
 }
 
-void free_env(char **array)
+void free_env(char **array, char **env)
 {
 	int i;
 
 	i = 0;
-	while(array[i] != NULL)
-		free(array[i++]);
-	free(array);
+	while(env[i] != NULL)
+		i++;
+	if(i == 0)
+		return (free(array));
+	else
+	{
+		i = 0;
+		while(array[i] != NULL)
+			free(array[i++]);
+		free(array);
+	}
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_env	*cmds;
-	char	*prev_input = NULL;
 
 	(void)argv;
 	if(argc != 1)
@@ -110,37 +117,34 @@ int	main(int argc, char **argv, char **env)
 	cmds->exit_status = 0;
 	while (1)
 	{
-		int saved_stdout = dup(1);
-		int saved_stdin = dup(0);
 		initialize_cmd(cmds, NULL, 1);
 		input = readline("./minishell: ");
 		if (input == NULL)
+		{
+			free(input);
+			rl_clear_history();
+			printf("BATATA\n");
 			break;
+		}
 		check_input(input);
 		if (*input != '\0')
 		{
 			pipes_handler(cmds, input);
-			if(ft_strcmp(prev_input, input) != 0 || prev_input == NULL)
-			{
-				if(prev_input != NULL)
-					free(prev_input);
-				prev_input = ft_strdup(input);
-				add_history(input);
-			}
+			add_history(input);
 		}
 		free(input);
 		ft_cmds_free(cmds);
-		dup2(saved_stdin, 0);
-		dup2(saved_stdout, 1);
-		close(saved_stdin);
-		close(saved_stdout);
+		dup2(cmds->saved_stdin, 0);
+		dup2(cmds->saved_stdout, 1);
+		close(cmds->saved_stdin);
+		close(cmds->saved_stdout);
 	}
 	if(env[0] == NULL)
 		write(1, "\n", 1);
-	free_env(cmds->env);
-	free_env(cmds->exp);
-	printf("exit\n");
-	free(input);
-	ft_cmds_free(cmds);
-	rl_clear_history();
+	free_env(cmds->env, env);
+	free_env(cmds->exp, env);
+	dup2(cmds->saved_stdin, 0);
+	dup2(cmds->saved_stdout, 1);
+	close(cmds->saved_stdin);
+	close(cmds->saved_stdout);
 }

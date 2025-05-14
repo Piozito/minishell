@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/13 20:47:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 16:47:10 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,8 +162,7 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 		}
 		if(!quote && !dquote && (s[*index] == '<' || s[*index] == '>'))
 		{
-			if(check_heredoc(cmd, s, index))
-				return NULL;
+			check_heredoc(cmd, s, index);
 			if(delimiter == '|')
 			{
 				if(s[*index] == '<' || s[*index] == '>')

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/18 16:13:04 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/04/28 11:24:05 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/05/13 19:00:01 by fragarc2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,3 +49,7 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+fcount:
+	@VAR1=$$(cat $(SOURCES) | wc -l); \
+	echo "You have written $$VAR1 lines of code!"
