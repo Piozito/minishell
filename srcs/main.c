@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 18:03:04 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:15:27 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,9 +121,7 @@ int	main(int argc, char **argv, char **env)
 		input = readline("./minishell: ");
 		if (input == NULL)
 		{
-			free(input);
-			rl_clear_history();
-			printf("BATATA\n");
+			
 			break;
 		}
 		check_input(input);
@@ -141,10 +139,13 @@ int	main(int argc, char **argv, char **env)
 	}
 	if(env[0] == NULL)
 		write(1, "\n", 1);
+	printf("exit\n");
 	free_env(cmds->env, env);
 	free_env(cmds->exp, env);
 	dup2(cmds->saved_stdin, 0);
 	dup2(cmds->saved_stdout, 1);
 	close(cmds->saved_stdin);
 	close(cmds->saved_stdout);
+	free(input);
+	rl_clear_history();
 }

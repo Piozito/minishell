@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 18:01:44 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:54:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	pop(t_env *cmds, int i)
 
 	if (cmd_check(cmds) == 0)
 	{
-		apply_fd(cmds);
+		if(apply_fd(cmds) == 1)
+			return(1);
 		if (i == 0)
 			cmds->exit_status = check_builtin(cmds);
 		return 0;
@@ -58,7 +59,8 @@ int	pop(t_env *cmds, int i)
 	pid = fork();
 	if (pid == 0)
 	{
-		apply_fd(cmds);
+		if(apply_fd(cmds) == 1)
+			exit(1);
 		if (i == 0)
 			exit(check_builtin(cmds));
 		exit(1);
@@ -122,4 +124,16 @@ void command_not_found(char *cmd)
 	write(2, "command not found: \"", 20);
 	ft_putstr_fd(cmd, 2);
 	write(2, "\"\n", 2);
+}
+
+int executable_check(char *cmd)
+{
+	int i = 0;
+	while(cmd[i])
+	{
+		if(ft_isalpha(cmd[i]) == 1)
+			return 0;
+		i++;
+	}
+	return 1;
 }

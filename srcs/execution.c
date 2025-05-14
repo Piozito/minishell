@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 18:00:15 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:02:11 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,9 @@ int	handle_fork_execution(char *path, char **exec_args, t_env *command)
 	}
 	else if (pid == 0)
 	{
-		if(cmd_check(command) == 0 && ft_isalpha(command->cmd[0]) == 0)
+		if (execve(path, exec_args, command->env) == -1)
 		{
-			printf("command not found: \"%s\"\n", command->cmd);
-			free(exec_args);
-			command->exit_status = 127;
-		}
-		else if (execve(path, exec_args, command->env) == -1)
-		{
-			printf("command not found: \"%s\"\n", command->cmd);
+			command_not_found(command->cmd);
 			free(exec_args);
 			command->exit_status = 127;
 		}
@@ -94,7 +88,7 @@ int	ft_exec(t_env *command)
 	command->path = my_get_path(command);
 	if (command->path == NULL)
 	{
-		printf("command not found: \"%s\"\n", command->cmd);
+		command_not_found(command->cmd);
 		free(exec_args);
 		command->exit_status = 127;
 		return (command->exit_status);

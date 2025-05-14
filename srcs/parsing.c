@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 17:57:44 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:05:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,12 @@ int cmd_check(t_env *cmds)
 	{
 		cmds->path = my_get_path(cmds);
 		if (cmds->path == NULL)
+		{
 			cmds->exit_status = 127;
+			return 1;
+		}
 	}
-	return 1;
+	return 0;
 }
 
 void pipes_handler(t_env *cmds, const char *input)
@@ -155,7 +158,6 @@ void pipes_handler(t_env *cmds, const char *input)
     char **pipes;
     t_env *temp;
     t_env *new_cmd;
-	int error = 0;
     int i;
 
 	i = 0;
@@ -164,7 +166,8 @@ void pipes_handler(t_env *cmds, const char *input)
 		return ;
 	if(pipes[1] == NULL)
 	{
-		parsing(cmds, pipes[i]);
+		if(parsing(cmds, pipes[i]) == 1)
+			return ;
 		pop(cmds, 0);
 		free_subtokens(pipes);
 		return ;
@@ -174,9 +177,7 @@ void pipes_handler(t_env *cmds, const char *input)
 		new_cmd = (t_env *)malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
         if(parsing(new_cmd, pipes[i]) == 1)
-			return ;
-		else
-			error = 1;
+			continue;
         if (i == 0)
         {
             cmds = new_cmd;
@@ -208,13 +209,6 @@ int parsing(t_env *cmd, const char *input)
 	subtokens = ft_split_quotes(cmd, input, ' ', 1);
 	if (subtokens[0] == NULL)
 		return 1;
-	if (ft_strchr(subtokens[0], ' ') != NULL)
-	{
-		command_not_found(cmd->cmd);
-		free_subtokens(subtokens);
-		cmd->exit_status = 127;
-		return 1;
-	}
 	while (subtokens[j])
 	{
 		if (command_set == -1 && !ft_strchr(subtokens[j], '<') && !ft_strchr(subtokens[j], '>'))
@@ -242,6 +236,12 @@ int parsing(t_env *cmd, const char *input)
 		}
 		j++;
 	}
+	if(command_set == -1)
+	{
+		command_not_found(subtokens[0]);
+		free_subtokens(subtokens);
+		return 1;
+	}
 	cmd->arg = (char **)malloc((arg_count + 1) * sizeof(char *));
 	if (!cmd->arg)
 	{
@@ -264,7 +264,7 @@ int parsing(t_env *cmd, const char *input)
 		cmd->arg[arg_index++] = ft_strdup(subtokens[j++]);
 	}
 	cmd->arg[arg_index] = NULL;
-	if(cmd_check(cmd) == 0 && ft_isalpha(cmd->cmd[0]) == 0)
+	if(executable_check(cmd->cmd) == 1 || ft_strchr(cmd->cmd, ' ') != NULL)
 	{
 		command_not_found(cmd->cmd);
 		free_subtokens(subtokens);

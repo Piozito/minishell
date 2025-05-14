@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/14 17:59:29 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:02:23 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
     	    exit(1);
    	 	close(p_fd[1]);
 	}
-	apply_fd(cmd);
-	int exita = check_builtin(cmd);
+	if(apply_fd(cmd) == 1)
+		exit(1);
+	cmd->exit_status = check_builtin(cmd);
 	dup2(cmd->saved_stdin, 0);
 	dup2(cmd->saved_stdout, 1);
 	close(cmd->saved_stdin);
 	close(cmd->saved_stdout);
-    exit(exita);
+    exit(cmd->exit_status);
 }
 
 
@@ -59,7 +60,7 @@ static pid_t handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_
 	{
 		if((ft_isalpha(cmds->cmd[0]) == 0 && cmd_check(cmds) == 0) || cmds->cmd[0] == ' ')
 		{
-			printf("command not found: \"%s\"\n", cmds->cmd);
+			command_not_found(cmds->cmd);
 			exit(127);
 		}
         execute_command(cmds, prev_fd, p_fd, is_last);
