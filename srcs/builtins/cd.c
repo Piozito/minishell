@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/14 11:30:59 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/14 11:38:23 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ static char	*get_cd_path(t_env *cmds, char *path)
 	if (!path || !*path)
 	{
 		home = env_expander(cmds, "HOME=");
-		if(!home)
+		if(home[0] == '\0')
 		{
-			ft_putstr_fd("HOME is not set.", 2);
+			free(home);
+			ft_putstr_fd("HOME is not set.\n", 2);
 			return NULL;
 		}
 		return home;
@@ -54,9 +55,10 @@ static char	*get_cd_path(t_env *cmds, char *path)
 	if (ft_strcmp(path, "-") == 0)
 	{
 		old_pwd = env_expander(cmds, "OLDPWD=");
-		if(!old_pwd)
+		if(old_pwd[0] == '\0')
 		{
-			ft_putstr_fd("OLDPWD is not set.", 2);
+			free(old_pwd);
+			ft_putstr_fd("OLDPWD is not set.\n", 2);
 			return NULL;
 		}
 		return old_pwd;
