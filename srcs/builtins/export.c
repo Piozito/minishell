@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/12 08:42:41 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:56:55 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-static int is_chr(const char *str, int c)
+int is_chr(const char *str, int c)
 {
     int i = 0;
     while (str[i])
@@ -37,37 +37,48 @@ static int is_valid(char *str)
     return (1);
 }
 
-char **update_env(char *arg, char **env, int flag)
+static int find_env_index(char *arg, char **env)
 {
     int i = 0;
+    int key_len = is_chr(arg, '=');
+    if (key_len != 0)
+		key_len = key_len - 1;
+	else
+		key_len = strlen(arg);
+	while (env && env[i])
+	{
+		if (!ft_strncmp(env[i], arg, key_len))
+		{
+			if (env[i][key_len] == '=' || env[i][key_len] == '\0')
+				break;
+		}
+		i++;
+	}
+    return i;
+}
+
+char **update_env(char *arg, char **env)
+{
+    int i = find_env_index(arg, env);
     int j = 0;
     char **new_env;
 
-    while (env[i] && ft_strncmp(env[i], arg, is_chr(arg, '=')))
-        i++;
-    if (env[i])
+    if (env && env[i])
     {
-        if (is_chr(arg, '=') && flag == 1)
-            env[i] = arg;
-        else
-            return env;
-    }
-    else
-    {
-        new_env = (char **)malloc((i + 2) * sizeof(char *));
-        if (!new_env)
-            return (0);
-        while (env[j])
+        if (is_chr(arg, '='))
         {
-            new_env[j] = env[j];
-            j++;
+            free(env[i]);
+            env[i] = arg;
         }
-        new_env[j] = arg;
-        new_env[j + 1] = NULL;
-        free(env);
-        env = new_env;
+        else
+            free(arg);
+        return env;
     }
-    return (env);
+    while (env && env[j])
+		j++;
+	new_env = new_env_maker(env, j, arg);
+    free(env);
+    return new_env;
 }
 
 int ft_export(t_env *env)
@@ -76,14 +87,7 @@ int ft_export(t_env *env)
 
     if (env->arg[0] == NULL)
     {
-        i = 0;
-        while (env->exp[i])
-		{
-			write(env->fd, "declare -x ", 11);
-			write(env->fd, env->exp[i], ft_strlen(env->exp[i]));
-			write (env->fd, "\n", 1);
-			i++;
-		}
+		export_print(env);
         return (0);
     }
 	if(env->arg[0][0] == '-')
@@ -91,24 +95,11 @@ int ft_export(t_env *env)
 		write(env->fd, "export: export doens't accepts flags.\n", 39);
 		return(2);
 	}
-    i = 0;
-    while (env->arg[i])
+    i = -1;
+    while (env->arg[++i])
     {
         if (is_valid(env->arg[i]))
-        {
-            if (ft_strchr(env->arg[i], '='))
-			{
-				env->exp = update_env(ft_strdup(env->arg[i]), env->exp, 1);
-                env->env = update_env(ft_strdup(env->arg[i]), env->env, 1);
-			}
-            else
-            {
-                char *tmp = ft_strjoin(env->arg[i], "=");
-                if (tmp)
-                    env->exp = update_env(tmp, env->exp, 0);
-            }
-			i++;
-        }
+			ex_refresh(env, i);
         else
 		{
             write(env->fd, "export:: not a valid identifier\n", 33);
