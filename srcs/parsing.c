@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 19:22:59 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:00:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void pipes_handler(t_env *cmds, const char *input)
 			continue;
         if (i == 0)
         {
-            cmds = new_cmd;
+			cmds = new_cmd;
             temp = cmds;
         }
         else
@@ -238,14 +238,14 @@ int parsing(t_env *cmd, const char *input)
 	}
 	if(command_set == -1)
 	{
-		write(2, "redirectiong parsing error.\n", 28);
+		ft_putstr_fd("redirectiong parsing error.\n", 2);
 		free_subtokens(subtokens);
 		return 1;
 	}
 	cmd->arg = (char **)malloc((arg_count + 1) * sizeof(char *));
 	if (!cmd->arg)
 	{
-		perror("Memory allocation failed.");
+		ft_putstr_fd("Memory allocation failed.\n", 2);
 		free_subtokens(subtokens);
 		exit(1);
 	}

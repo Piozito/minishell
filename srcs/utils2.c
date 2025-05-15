@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 19:36:14 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/15 13:00:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,11 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 		}
 		if (s[*index] == '\'' && !dquote)
 		{
+			if (!quote && s[*index + 1] == '\'' && s[*index + 2] != '\0')
+			{
+				(*index) += 2;
+				continue;
+			}
 			if (quote)
 			{
 				quote = 0;
@@ -204,6 +209,11 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 		}
 		else if (s[*index] == '\"' && !quote)
 		{
+			if (!dquote && s[*index + 1] == '\"' && s[*index + 2] != '\0')
+			{
+				(*index) += 2;
+				continue;
+			}
 			if (dquote)
 			{
 				dquote = 0;
