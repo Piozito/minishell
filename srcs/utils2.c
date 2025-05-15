@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/15 13:00:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/15 16:41:20 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 			(*index)++;
 			continue ;
 		}
-		if(!quote && !dquote && (s[*index] == '<' || s[*index] == '>'))
+		if(!quote && !dquote && (s[*index] == '<' || s[*index] == '>') && delimiter != 27)
 		{
 			if(delimiter == '|')
 			{
@@ -180,7 +180,7 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 				}
 			}
 		}
-		if (s[*index] == '\'' && !dquote)
+		if (s[*index] == '\'' && !dquote && delimiter != 27)
 		{
 			if (!quote && s[*index + 1] == '\'' && s[*index + 2] != '\0')
 			{
@@ -207,7 +207,7 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 			}
 			result[i++] = s[(*index)++];
 		}
-		else if (s[*index] == '\"' && !quote)
+		else if (s[*index] == '\"' && !quote && delimiter != 27)
 		{
 			if (!dquote && s[*index + 1] == '\"' && s[*index + 2] != '\0')
 			{

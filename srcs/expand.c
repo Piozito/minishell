@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/15 11:01:32 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/15 14:38:22 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int
 	if(var_name[0] == '?' && var_name[1] == '\0')
 		expanded = ft_itoa(cmd->exit_status);
 	else
-    	expanded = env_expander(cmd, var_name);
+    	expanded = ft_strdup(env_expander(cmd, var_name));
 	if(!expanded)
 		return ;
     len_expanded = ft_strlen(expanded);

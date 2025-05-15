@@ -72,15 +72,56 @@ int handle_fd_output_append(char *file)
     return 0;
 }
 
-int handle_fd_input_heredoc(char *word)
+int ft_counter(char *line, int c)
+{
+	int i = 0;
+	int counter = 0;
+	if(line[i])
+	{
+		if(line[i] == c)
+			counter++;
+		i++;
+	}
+	return counter;
+}
+
+char *concatenate_strings(char **strings)
+{
+    if (strings == NULL)
+        return NULL;
+    size_t total_length = 0;
+    size_t i = 0;
+    while (strings[i] != NULL)
+    {
+        total_length += ft_strlen(strings[i]);
+        i++;
+    }
+    char *result = (char *)malloc(total_length + 1);
+    if (result == NULL)
+        return NULL;
+    result[0] = '\0';
+    i = 0;
+    while (strings[i] != NULL)
+    {
+        ft_strlcat(result, strings[i], total_length + 1);
+        i++;
+    }
+    return result;
+}
+
+int handle_fd_input_heredoc(t_env *cmds, char *word)
 {
     int fds[2];
     char *line;
+	char *expanded_line;
+	char **str;
 
     if (pipe(fds) == -1)
         return -1;
     while (1)
     {
+		expanded_line = NULL;
+		str = NULL;
         line = readline("> ");
         if (!line || ft_strcmp(line, word) == 0)
         {
@@ -88,9 +129,15 @@ int handle_fd_input_heredoc(char *word)
 			free(word);
             break;
         }
-        write(fds[1], line, ft_strlen(line));
+		str = ft_split_quotes(cmds, line, 27, 0);
+		expanded_line = concatenate_strings(str);
+		if(!expanded_line)
+			expanded_line = ft_strdup(line);
+		ft_putstr_fd(expanded_line, fds[1]);
         write(fds[1], "\n", 1);
         free(line);
+		free(str);
+		free(expanded_line);
     }
     close(fds[1]);
     if (dup2(fds[0], 0) == -1)
@@ -154,7 +201,7 @@ int check_heredoc(t_env *cmds, const char *s, int *index)
 				return (fd_error("heredoc"));
 			if(ft_strchr(word, '<') || ft_strchr(word, '>'))
 				return (fd_error("heredoc"));
-			if (handle_fd_input_heredoc(word) == -1)
+			if (handle_fd_input_heredoc(cmds, word) == -1)
 				return (fd_error("heredoc"));
 		}
 		else
