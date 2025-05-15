@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/15 17:01:38 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/15 17:22:22 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_env
 	int 		saved_stdin;
 }				t_env;
 
+
 int	ft_echo(t_env *cmds);
 int	ft_pwd(t_env *cmds);
 int	ft_cd(t_env *cmds);
@@ -81,5 +82,10 @@ char *env_expander(t_env *cmds, char *var_name);
 int check_heredoc(t_env *cmds, const char *s, int *index);
 void free_env(char **array, char **env);
 int executable_check(char *cmd);
+void export_print(t_env *env);
+int is_chr(const char *str, int c);
+void ex_refresh(t_env *env, int i);
+char **update_env(char *arg, char **env);
+char **new_env_maker(char **env, int j, char *arg);
 
 #endif
