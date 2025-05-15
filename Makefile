@@ -6,7 +6,7 @@
 #    By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/18 16:13:04 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/05/13 19:00:01 by fragarc2         ###   ########.fr        #
+#    Updated: 2025/05/15 13:20:12 by fragarc2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SOURCES = \
 	srcs/builtins/unset.c srcs/builtins/export.c \
 	srcs/parsing.c srcs/execution.c srcs/utils.c \
 	srcs/pipes.c srcs/utils2.c srcs/utils3.c \
-	srcs/fd.c srcs/expand.c
+	srcs/fd.c srcs/expand.c \
+	srcs/builtins/export_utils.c
 OBJECTS = $(SOURCES:.c=.o)
 
 MAKE_LIBFT = make -C ./lib/libft/
