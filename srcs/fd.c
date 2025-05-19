@@ -113,39 +113,39 @@ int handle_fd_input_heredoc(t_env *cmds, char *word)
 {
     int fds[2];
     char *line;
-	char *expanded_line;
-	char **str;
+    char *expanded_line;
+    char **str;
 
+    if (cmds->heredoc != -1)
+	{
+        close(cmds->heredoc);
+        cmds->heredoc = -1;
+    }
     if (pipe(fds) == -1)
         return -1;
     while (1)
     {
-		expanded_line = NULL;
-		str = NULL;
+        expanded_line = NULL;
+        str = NULL;
         line = readline("> ");
         if (!line || ft_strcmp(line, word) == 0)
         {
             free(line);
-			free(word);
+            free(word);
             break;
         }
-		str = ft_split_quotes(cmds, line, 27, 0);
-		expanded_line = concatenate_strings(str);
-		if(!expanded_line)
-			expanded_line = ft_strdup(line);
-		ft_putstr_fd(expanded_line, fds[1]);
+        str = ft_split_quotes(cmds, line, 27, 0);
+        expanded_line = concatenate_strings(str);
+        if(!expanded_line)
+            expanded_line = ft_strdup(line);
+        ft_putstr_fd(expanded_line, fds[1]);
         write(fds[1], "\n", 1);
         free(line);
-		free(str);
-		free(expanded_line);
+        free(str);
+        free(expanded_line);
     }
     close(fds[1]);
-    if (dup2(fds[0], 0) == -1)
-    {
-        close(fds[0]);
-        return -1;
-    }
-    close(fds[0]);
+    cmds->heredoc = fds[0];
     return 0;
 }
 
@@ -157,15 +157,16 @@ char *get_file(const char *s, int *index)
 	int length;
 
 	i = 0;
-	(*index)++;
-	if(s[*index] == '>' || s[*index] == '<')
-		(*index)++;
-    while (s[*index] == ' ' || s[*index] == '\t')
-        (*index)++;
-    start = *index;
-    while (s[*index] && s[*index] != ' ' && s[*index] != '\t' && s[*index] != '\'' && s[*index] != '\"')
-        (*index)++;
-    length = *index - start;
+	int j = *index;
+	j++;
+	if(s[j] == '>' || s[j] == '<')
+		j++;
+    while (s[j] == ' ' || s[j] == '\t')
+        j++;
+    start = j;
+    while (s[j] && s[j] != ' ' && s[j] != '\t' && s[j] != '\'' && s[j] != '\"')
+        j++;
+    length = j - start;
     res = (char *)malloc((length + 1) * sizeof(char));
     if (!res)
         return NULL;
@@ -210,35 +211,53 @@ int check_heredoc(t_env *cmds, const char *s, int *index)
 	return 0;
 }
 
+int apply_heredoc(t_env *cmds)
+{
+    if (cmds->heredoc != -1)
+	{
+        if (dup2(cmds->heredoc, 0) == -1) {
+            close(cmds->heredoc);
+            cmds->heredoc = -1;
+            return -1;
+        }
+        close(cmds->heredoc);
+        cmds->heredoc = -1;
+    }
+    return 0;
+}
 
 int apply_fd(t_env *cmds)
 {
-	int i = 0;
-	while (cmds->arg[i])
-	{
-		if ((ft_strncmp(cmds->arg[i], "<", 1) == 0 ||
-			 ft_strncmp(cmds->arg[i], ">", 1) == 0 ||
-			 ft_strncmp(cmds->arg[i], ">>", 2) == 0) && cmds->arg[i + 1])
-		{
-			if (ft_strncmp(cmds->arg[i], ">>", 2) == 0)
-			{
+    int i = 0;
+	if (cmds->heredoc != -1)
+        apply_heredoc(cmds);
+    while (cmds->arg[i])
+    {
+		if ((ft_strncmp(cmds->arg[i], "<", 2) == 0 ||
+		ft_strncmp(cmds->arg[i], ">", 2) == 0 ||
+		ft_strncmp(cmds->arg[i], ">>", 3) == 0 ||
+		ft_strncmp(cmds->arg[i], "<<", 3) == 0) && cmds->arg[i + 1])
+        {
+			if (ft_strncmp(cmds->arg[i], ">>", 3) == 0)
+            {
 				if (handle_fd_output_append(cmds->arg[i + 1]) == -1)
-					return (fd_error("append"));
-			}
-			else if (ft_strncmp(cmds->arg[i], "<", 1) == 0)
-			{
+				return (fd_error("append"));
+            }
+            else if (ft_strncmp(cmds->arg[i], "<", 2) == 0)
+            {
 				if (handle_fd_input(cmds->arg[i + 1]) == -1)
-					return (fd_error("input"));
-			}
-			else if (ft_strncmp(cmds->arg[i], ">", 1) == 0)
-			{
+				return (fd_error("input"));
+            }
+            else if (ft_strncmp(cmds->arg[i], ">", 2) == 0)
+            {
 				if (handle_fd_output(cmds->arg[i + 1]) == -1)
-					return (fd_error("output"));
+				return (fd_error("output"));
 			}
 			remove_args(cmds->arg, i);
 		}
 		else
-			i++;
-	}
-	return 0;
-} 
+		i++;
+    }
+	
+    return 0;
+}

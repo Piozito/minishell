@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/19 12:12:10 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:22:13 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int handle_fork_execution(char *path, char **exec_args, t_env *command)
     else
         return handle_parent(pid, command);
 }
-
 
 int	counter(t_env *command)
 {

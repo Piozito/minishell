@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:19:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/19 12:25:02 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:01:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int handle_parent(pid_t pid, t_env *cmds)
 		duping(cmds);
     return cmds->exit_status;
 }
+
 void duping(t_env *cmds)
 {
 	dup2(cmds->saved_stdin, 0);

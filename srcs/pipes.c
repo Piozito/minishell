@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/19 12:23:27 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:03:18 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
-
 
 static void create_pipe(int p_fd[2])
 {

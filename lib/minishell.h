@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/19 12:21:23 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:11:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,10 @@ typedef struct s_env
 	int				exit_status;
 	struct s_env	*next;
 	int				fd;
-	int saved_stdout;
-	int 		saved_stdin;
-
+	int				heredoc;
+	int 			saved_stdout;
+	int 			saved_stdin;
 }				t_env;
-
 
 int	ft_echo(t_env *cmds);
 int	ft_pwd(t_env *cmds);

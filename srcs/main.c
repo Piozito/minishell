@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/19 12:30:30 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:02:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,6 @@ int	main(int argc, char **argv, char **env)
 		ft_cmds_free(cmds);
 		duping(cmds);
 	}
-	if(env[0] == NULL)
-		write(1, "\n", 1);
 	printf("exit\n");
 	free_env(cmds->env, env);
 	free_env(cmds->exp, env);
