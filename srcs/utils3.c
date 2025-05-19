@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 18:54:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:25:51 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ int	pop(t_env *cmds, int i)
 	}
 	else
 		perror("fork failed");
-	dup2(cmds->saved_stdin, 0);
-	dup2(cmds->saved_stdout, 1);
-	close(cmds->saved_stdin);
-	close(cmds->saved_stdout);
+	duping(cmds);
 	return cmds->exit_status;
 }
 

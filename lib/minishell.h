@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/15 17:22:22 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:21:23 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_env
 	int				fd;
 	int saved_stdout;
 	int 		saved_stdin;
+
 }				t_env;
 
 
@@ -87,5 +88,8 @@ int is_chr(const char *str, int c);
 void ex_refresh(t_env *env, int i);
 char **update_env(char *arg, char **env);
 char **new_env_maker(char **env, int j, char *arg);
+int handle_parent(pid_t pid, t_env *command);
+void execute_child(char *path, char **exec_args, t_env *command);
+void duping(t_env *cmds);
 
 #endif

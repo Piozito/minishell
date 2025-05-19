@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/14 19:02:23 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:23:27 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
 	if(apply_fd(cmd) == 1)
 		exit(1);
 	cmd->exit_status = check_builtin(cmd);
-	dup2(cmd->saved_stdin, 0);
-	dup2(cmd->saved_stdout, 1);
-	close(cmd->saved_stdin);
-	close(cmd->saved_stdout);
+	duping(cmd);
     exit(cmd->exit_status);
 }
 
