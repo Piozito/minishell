@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/14 19:02:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:12:10 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,41 +26,26 @@ void	init_exec(char **exec_args, t_env *command, int arg_count)
 	exec_args[arg_count + 1] = NULL;
 }
 
-int	handle_fork_execution(char *path, char **exec_args, t_env *command)
+int handle_fork_execution(char *path, char **exec_args, t_env *command)
 {
-	pid_t	pid;
+    pid_t pid = fork();
 
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		free(exec_args);
-		command->exit_status = 1;
-	}
-	else if (pid == 0)
-	{
-		if (execve(path, exec_args, command->env) == -1)
-		{
-			command_not_found(command->cmd);
-			free(exec_args);
-			command->exit_status = 127;
-		}
-	}
-	else
-	{
-		int status;
-    	waitpid(pid, &status, 0);
-    	if (WIFEXITED(status))
-        	command->exit_status = WEXITSTATUS(status);
-    	else
-        	command->exit_status = 1;
-	}
-	dup2(command->saved_stdin, 0);
-	dup2(command->saved_stdout, 1);
-	close(command->saved_stdin);
-	close(command->saved_stdout);
-	return(command->exit_status);
+    if (pid == -1)
+    {
+        write(0, "fork", 5);
+        free(exec_args);
+        command->exit_status = 1;
+        return command->exit_status;
+    }
+    else if (pid == 0)
+    {
+        execute_child(path, exec_args, command);
+        exit(127);
+    }
+    else
+        return handle_parent(pid, command);
 }
+
 
 int	counter(t_env *command)
 {
