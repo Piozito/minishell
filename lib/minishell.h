@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/19 15:11:48 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:11:56 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void command_not_found(char *cmd);
 char *env_expander(t_env *cmds, char *var_name);
 int check_heredoc(t_env *cmds, const char *s, int *index);
 void free_env(char **array, char **env);
-int executable_check(char *cmd);
+int executable_check(t_env *cmds);
 void export_print(t_env *env);
 int is_chr(const char *str, int c);
 void ex_refresh(t_env *env, int i);

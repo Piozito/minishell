@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/19 14:32:43 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:12:50 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,12 +238,6 @@ int parsing(t_env *cmd, const char *input)
 		}
 		j++;
 	}
-	if(command_set == -1)
-	{
-		ft_putstr_fd("redirectiong parsing error.\n", 2);
-		free_subtokens(subtokens);
-		return 1;
-	}
 	cmd->arg = (char **)malloc((arg_count + 1) * sizeof(char *));
 	if (!cmd->arg)
 	{
@@ -266,7 +260,9 @@ int parsing(t_env *cmd, const char *input)
 		cmd->arg[arg_index++] = ft_strdup(subtokens[j++]);
 	}
 	cmd->arg[arg_index] = NULL;
-	if(executable_check(cmd->cmd) == 1 || ft_strchr(cmd->cmd, ' ') != NULL)
+	if(executable_check(cmd) == 1)
+		return 0;
+	if(ft_strchr(cmd->cmd, ' ') != NULL)
 	{
 		command_not_found(cmd->cmd);
 		free_subtokens(subtokens);

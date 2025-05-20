@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 15:26:40 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/19 15:10:04 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:15:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,18 @@ void command_not_found(char *cmd)
 	write(2, "\"\n", 2);
 }
 
-int executable_check(char *cmd)
+int executable_check(t_env *cmds)
 {
 	int i = 0;
-	while(cmd[i])
+	if(!cmds->cmd)
 	{
-		if(ft_isalpha(cmd[i]) == 1)
+		if(ft_strncmp(cmds->arg[0], ">", 1) == 0 || ft_strncmp(cmds->arg[1], "<", 1) == 0)
+			apply_fd(cmds);
+		return 1;
+	}
+	while(cmds->cmd[i])
+	{
+		if(ft_isalpha(cmds->cmd[i]) == 1)
 			return 0;
 		i++;
 	}

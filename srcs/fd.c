@@ -28,6 +28,8 @@ int handle_fd_input(char *file)
 {
 	if(ft_strchr(file, '<') || ft_strchr(file, '>'))
         return -1;
+	if(access(file, R_OK) == -1)
+		return -1;
     int fd_in = open(file, O_RDONLY);
     if (fd_in == -1)
         return -1;
