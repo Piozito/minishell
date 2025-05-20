@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
+#    By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/18 16:13:04 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/05/19 15:13:35 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/05/20 14:08:23 by fragarc2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SOURCES = \
 	srcs/builtins/unset.c srcs/builtins/export.c \
 	srcs/parsing.c srcs/execution.c srcs/utils.c \
 	srcs/pipes.c srcs/utils2.c srcs/utils3.c \
-	srcs/fd.c srcs/expand.c srcs/builtins/export_utils.c
+	srcs/fd.c srcs/expand.c srcs/builtins/export_utils.c \
+	srcs/utils4.c srcs/fd_heredoc.c
 OBJECTS = $(SOURCES:.c=.o)
 
 MAKE_LIBFT = make -C ./lib/libft/

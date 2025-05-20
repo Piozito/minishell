@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/19 15:22:13 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:15:39 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_exec(t_env *command)
 	exec_args = malloc((arg_count + 2) * sizeof(char *));
 	if (!exec_args)
 	{
-		perror("malloc");
+		write(command->fd, "malloc", 7);
 		return (1);
 	}
 	init_exec(exec_args, command, arg_count);

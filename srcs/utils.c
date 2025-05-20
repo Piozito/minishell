@@ -3,26 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:19:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/19 15:01:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/20 12:35:08 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-void	ft_free_tab(char **tab)
+void free_more(char **str, char **str2)
 {
-	size_t	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
+	free_subtokens(str);
+	free_subtokens(str2);
 }
 
 char	*my_get_path(t_env *cmds)
@@ -45,14 +38,12 @@ char	*my_get_path(t_env *cmds)
 		free(path_part);
 		if (access(exec, F_OK | X_OK) == 0)
 		{
-			ft_free_tab(s_cmd);
-			ft_free_tab(allpath);
+			free_more(s_cmd, allpath);
 			return (exec);
 		}
 		free(exec);
 	}
-	ft_free_tab(allpath);
-	ft_free_tab(s_cmd);
+	free_more(s_cmd, allpath);
 	return (NULL);
 }
 
