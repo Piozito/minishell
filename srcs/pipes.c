@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/19 15:03:18 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:18:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ int ft_pipe(t_env *cmds)
     while (i < num_cmds)
 	{
 		if (cmd_check(cmds) == 0 && num_cmds == 1)
+		{
+			apply_fd(cmds);
     		return check_builtin(cmds);
+		}
         if (i < num_cmds - 1)
             create_pipe(p_fd);
         else

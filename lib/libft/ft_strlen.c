@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:31:03 by aaleixo-          #+#    #+#             */
-/*   Updated: 2024/04/08 13:44:49 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:17:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	ft_strlen(const char *s)
 {
-	unsigned int	i;
+	size_t	i;
 
 	i = 0;
 	while (s[i] != '\0')

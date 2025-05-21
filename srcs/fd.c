@@ -77,8 +77,7 @@ int handle_fd_output_append(char *file)
 int apply_fd(t_env *cmds)
 {
 	int i = 0;
-	if (cmds->heredoc != -1)
-		apply_heredoc(cmds);
+	apply_heredoc(cmds);
 	while (cmds->arg[i])
 	{
 		if ((ft_strncmp(cmds->arg[i], "<", 2) == 0 ||

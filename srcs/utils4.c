@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:39:09 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/20 15:35:40 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:01:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ int executable_check(t_env *cmds)
 	if(!cmds->cmd)
 	{
 		if(ft_strncmp(cmds->arg[0], ">", 1) == 0 || ft_strncmp(cmds->arg[1], "<", 1) == 0)
+		{
 			apply_fd(cmds);
+		}
 		return 1;
 	}
 	while(cmds->cmd[i])
@@ -73,15 +75,15 @@ int executable_check(t_env *cmds)
 	return 1;
 }
 
-char *get_file(const char *s, int *index)
+char *get_file(const char *s, size_t *index)
 {
     char *res = NULL;
-	int i;
-    int start;
-	int length;
+	size_t i;
+    size_t start;
+	size_t length;
 
 	i = -1;
-	int j = *index;
+	size_t j = *index;
 	j++;
 	if(s[j] == '>' || s[j] == '<')
 		j++;

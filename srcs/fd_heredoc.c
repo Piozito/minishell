@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:07:44 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/20 15:40:43 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:39:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,11 @@ char *concatenate_strings(char **strings)
 void heredoctor(char *word, int *fds,  t_env *cmds)
 {
 	char *expanded_line;
-	char **str;
 	char *line;
 
 	while(1)
 	{
 	    expanded_line = NULL;
-        str = NULL;
         line = readline("> ");
         if (!line || ft_strcmp(line, word) == 0)
         {
@@ -53,14 +51,12 @@ void heredoctor(char *word, int *fds,  t_env *cmds)
             free(word);
 			return ;
         }
-        str = ft_split_quotes(cmds, line, 27, 0);
-        expanded_line = concatenate_strings(str);
+		expanded_line = expand_string_variables(cmds, line);
         if(!expanded_line)
             expanded_line = ft_strdup(line);
         ft_putstr_fd(expanded_line, fds[1]);
         write(fds[1], "\n", 1);
         free(line);
-        free(str);
         free(expanded_line);
 	}
 }
@@ -82,7 +78,7 @@ int handle_fd_input_heredoc(t_env *cmds, char *word)
     return 0;
 }
 
-int check_heredoc(t_env *cmds, const char *s, int *index)
+int check_heredoc(t_env *cmds, const char *s, size_t *index)
 {
 	(void)cmds;
 	char *word;
@@ -108,7 +104,8 @@ int apply_heredoc(t_env *cmds)
 {
     if (cmds->heredoc != -1)
 	{
-        if (dup2(cmds->heredoc, 0) == -1) {
+        if (dup2(cmds->heredoc, 0) == -1)
+		{
             close(cmds->heredoc);
             cmds->heredoc = -1;
             return -1;

@@ -6,13 +6,13 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 16:14:37 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/03/10 19:44:39 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:21:17 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strcmp(char *s1, char *s2)
+size_t	ft_strcmp(char *s1, char *s2)
 {
 	size_t	i;
 

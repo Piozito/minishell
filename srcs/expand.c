@@ -1,28 +1,16 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/07 13:22:32 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/15 14:38:22 by aaleixo-         ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   expand.c										   :+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com	+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/04/07 13:22:32 by fragarc2		  #+#	#+#			 */
+/*   Updated: 2025/05/20 16:06:28 by aaleixo-		 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
-
-void replace_variable(char *result, const char *str, char *start, char *end, char *expanded)
-{
-    int len_before = start - str;
-    int len_expanded = ft_strlen(expanded);
-    int len_after = ft_strlen(end);
-
-    ft_strlcpy(result, str, len_before + 1);
-    ft_strlcpy(result + len_before, expanded, len_expanded + 1);
-    ft_strlcpy(result + len_before + len_expanded, end, len_after + 1);
-    result[len_before + len_expanded + len_after] = '\0';
-}
 
 char *env_expander(t_env *cmds, char *var_name)
 {
@@ -48,53 +36,84 @@ char *env_expander(t_env *cmds, char *var_name)
 	return ft_strdup("");
 }
 
-void ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int *i)
+char *expand_string_variables(t_env *cmd, const char *input)
 {
-    char var_name[256];
-    char *start;
-    char *end;
-    char *expanded;
-    int len_before;
-    int len_expanded;
-    int new_size;
-
-    if (src[*index] != '$')
-        return;
-    start = (char *)src + *index;
-    end = start + 1;
-    while (*end && *end != ' ' && *end != '$' && *end != '\t' && *end != '\"' && *end != '\'')
+	size_t result_capacity = ft_strlen(input) + 1024;
+	char *result = malloc(result_capacity);
+	size_t result_len = 0;
+	char *expanded;
+	size_t i = 0;
+	int quote = 0;
+	int dquote = 0;
+	char *var_name = NULL;
+	size_t var_index = 0;
+	
+	if (!result)
+		return NULL;
+	while (input[i])
 	{
-        (*index)++;
-        end++;
-    }
-    ft_strlcpy(var_name, start + 1, end - (start + 1) + 1);
-    var_name[end - (start + 1)] = '\0';
-	if(var_name[0] == '?' && var_name[1] == '\0')
-		expanded = ft_itoa(cmd->exit_status);
-	else
-    	expanded = ft_strdup(env_expander(cmd, var_name));
-	if(!expanded)
-		return ;
-    len_expanded = ft_strlen(expanded);
-	if(len_expanded == 0)
-	{
-		free(expanded);
-		return ;
+		if (input[i] == '\'' && !dquote)
+			quote = !quote;
+		else if (input[i] == '\"' && !quote)
+			dquote = !dquote;
+		else if (!quote && input[i] == '$' && input[i + 1] && ft_isprint(input[i + 1]))
+		{
+			i++;
+			var_index = 0;
+			while (input[i + var_index] && input[i + var_index] != ' ' && input[i + var_index] != '$' && 
+				   input[i + var_index] != '\t' && input[i + var_index] != '\"' && input[i + var_index] != '\'')
+				var_index++;
+			var_name = (char *)malloc((var_index + 1) * sizeof(char));
+			if (!var_name)
+			{
+				free(result);
+				return NULL;
+			}
+			var_index = 0;
+			while (input[i] && input[i] != ' ' && input[i] != '$' && 
+				   input[i] != '\t' && input[i] != '\"' && input[i] != '\'')
+				var_name[var_index++] = input[i++];
+			var_name[var_index] = '\0';
+			if (var_name[0] == '?' && var_name[1] == '\0')
+				expanded = ft_itoa(cmd->exit_status);
+			else
+				expanded = env_expander(cmd, var_name);
+			free(var_name);
+			if (expanded)
+			{
+				if (result_len + ft_strlen(expanded) + 1 >= result_capacity)
+					result = ft_strrealloc(result, &result_capacity);
+				ft_strlcpy(result + result_len, expanded, ft_strlen(expanded) + 1);
+				result_len += ft_strlen(expanded);
+				free(expanded);
+			}
+		}
+		else	
+		{
+			if (result_len + 2 >= result_capacity)
+				result = ft_strrealloc(result, &result_capacity);
+			result[result_len++] = input[i++];
+		}
 	}
-    len_before = *i;
-    new_size = len_before + len_expanded + 1;
-    char *new_dst = (char *)malloc(new_size * sizeof(char));
-    if (!new_dst)
-    {
-        write(1, "Memory allocation failed\n", 26);
-        exit(127);
-    }
-    if (*dst)
-    {
-        ft_strlcpy(new_dst, *dst, len_before + 1);
-        free(*dst);
-    }
-    ft_strlcpy(new_dst + len_before, expanded, len_expanded + 1);
-    *dst = new_dst;
-    *i += len_expanded;
+	result[result_len] = '\0';
+	return result;
+}
+
+void expand_variables(t_env *cmd, char **result)
+{
+	int i = 0;
+	char *expanded;
+
+	if (!result)
+		return;
+	while (result[i] != NULL)
+	{
+		expanded = expand_string_variables(cmd, result[i]);
+		if (expanded)
+		{
+			free(result[i]);
+			result[i] = expanded;
+		}
+		i++;
+	}
 }

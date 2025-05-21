@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/20 15:36:50 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:03:56 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ typedef struct s_env
 	char			*path;
 	char			**env;
 	char			**exp;
-	int				exit_status;
-	struct s_env	*next;
 	int				fd;
 	int				heredoc;
-	int				saved_stdout;
-	int				saved_stdin;
+	int 			saved_stdout;
+	int 			saved_stdin;
+	int				exit_status;
+	struct s_env	*next;
 }				t_env;
 
 int		ft_cd(t_env *cmds);
@@ -69,16 +69,17 @@ int		executable_check(t_env *cmds);
 int		is_chr(const char *str, int c);
 int		parsing(t_env *cmd, const char *input);
 int		handle_parent(pid_t pid, t_env *command);
-int		check_heredoc(t_env *cmds, const char *s, int *index);
+int		check_heredoc(t_env *cmds, const char *s, size_t *index);
 char	*my_get_path(t_env *cmds);
 char	**deep_copy_environ(char **environ);
 char	**update_env(char *arg, char **env);
-char	*get_file(const char *s, int *index);
+char	*get_file(const char *s, size_t *index);
 char	*env_expander(t_env *cmds, char *var_name);
 char	**pipe_check(t_env *cmds, const char *input);
 char	**new_env_maker(char **env, int j, char *arg);
+char	*ft_strrealloc(char *result, size_t *size_ptr);
 char	*ft_strstr(const char *big, const char *little);
-char	*ft_strstr(const char *big, const char *little);
+char	*expand_string_variables(t_env *cmd, const char *input);
 char	*ft_find_closing_quote(const char *str, int start, char quote);
 char	**ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del);
 void	duping(t_env *cmds);
@@ -89,10 +90,12 @@ void	command_not_found(char *cmd);
 void	ex_refresh(t_env *env, int i);
 void	free_subtokens(char **subtokens);
 void	free_env(char **array, char **env);
+void	expand_variables(t_env *cmd, char **result);
 void	pipes_handler(t_env *cmds, const char *input);
 void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i);
 void	general_error(char *str, int free, int ex, t_env *cmds);
 void	execute_child(char *path, char **exec_args, t_env *command);
 void	ft_expand_variable(t_env *cmd, const char *src, int *index, char **dst, int *i);
+
 
 #endif

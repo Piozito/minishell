@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 17:39:06 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/15 16:41:20 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:03:16 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,27 @@ char	*ft_find_closing_quote(const char *str, int start, char quote)
 	return (NULL);
 }
 
+char *ft_strrealloc(char *result, size_t *size_ptr)
+{
+    char *new_result;
+    size_t new_size = (*size_ptr) * 2;
+
+    new_result = (char *)malloc(new_size * sizeof(char));
+    if (!new_result)
+    {
+        free(result);
+        return (NULL);
+    }
+    ft_strlcpy(new_result, result, *size_ptr);
+    free(result);
+    *size_ptr = new_size;
+    return new_result;
+}
+
 static int	word_count(const char *s, char c)
 {
-	int	i;
-	int	count;
+	size_t	i;
+	size_t	count;
 	int	quote;
 	int	dquote;
 
@@ -78,7 +95,7 @@ static int	word_count(const char *s, char c)
 
 char	**pipe_check(t_env *cmds, const char *input)
 {
-	int	i;
+	size_t	i;
 	int	pipe;
 
 	i = 0;
@@ -135,31 +152,23 @@ char	**pipe_check(t_env *cmds, const char *input)
 	return (ft_split_quotes(cmds, input, '|', 0));
 }
 
-static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter, int del)
+static char	*extract_word(t_env *cmd, const char *s, size_t *index, char delimiter, int del)
 {
 	char	*result;
-	char	*new_result;
-	int		allocated_size;
-	int		i;
+	size_t		i;
 	int		quote;
 	int		dquote;
+	size_t		size;
 
-	allocated_size = 1024;
 	i = 0;
 	quote = 0;
 	dquote = 0;
-	result = (char *)malloc(allocated_size * sizeof(char));
+	size = 1024;
+	result = (char *)malloc(size * sizeof(char));
 	if (!result)
 		return (NULL);
 	while (s[*index] && !is_separator(s[*index], delimiter, quote, dquote))
 	{
-		if (!quote && s[*index] == '$' && ft_isprint(s[*index + 1]) == 1)
-		{
-
-			ft_expand_variable(cmd, s, index, &result, &i);
-			(*index)++;
-			continue ;
-		}
 		if(!quote && !dquote && (s[*index] == '<' || s[*index] == '>') && delimiter != 27)
 		{
 			if(delimiter == '|')
@@ -183,107 +192,84 @@ static char	*extract_word(t_env *cmd, const char *s, int *index, char delimiter,
 		if (s[*index] == '\'' && !dquote && delimiter != 27)
 		{
 			if (!quote && s[*index + 1] == '\'' && s[*index + 2] != '\0')
-			{
 				(*index) += 2;
-				continue;
-			}
-			if (quote)
+			else if (quote)
 			{
 				quote = 0;
 				if (del == 0)
 					result[i++] = s[(*index)++];
 				else if (del == 1)
 					(*index)++;
-				continue ;
 			}
-			if (ft_find_closing_quote(s, *index + 1, '\''))
+			else if (ft_find_closing_quote(s, *index + 1, '\''))
 			{
 				quote = 1;
 				if (del == 0)
 					result[i++] = s[(*index)++];
 				else if (del == 1)
 					(*index)++;
-				continue ;
 			}
 			result[i++] = s[(*index)++];
 		}
 		else if (s[*index] == '\"' && !quote && delimiter != 27)
 		{
 			if (!dquote && s[*index + 1] == '\"' && s[*index + 2] != '\0')
-			{
 				(*index) += 2;
-				continue;
-			}
-			if (dquote)
+			else if (dquote)
 			{
 				dquote = 0;
 				if (del == 0)
 					result[i++] = s[(*index)++];
 				else if (del == 1)
 					(*index)++;
-				continue ;
 			}
-			if (ft_find_closing_quote(s, *index + 1, '\"'))
+			else if (ft_find_closing_quote(s, *index + 1, '\"'))
 			{
 				dquote = 1;
 				if (del == 0)
 					result[i++] = s[(*index)++];
 				else if (del == 1)
 					(*index)++;
-				continue ;
 			}
 			result[i++] = s[(*index)++];
 		}
 		else
-		{
-			result[i++] = s[*index];
-			(*index)++;
-		}
-		if (i >= allocated_size - 1)
-		{
-			new_result = (char *)malloc(2 * allocated_size * sizeof(char));
-			if (!new_result)
-			{
-				free(result);
-				return (NULL);
-			}
-			ft_strlcpy(new_result, result, allocated_size);
-			free(result);
-			result = new_result;
-			allocated_size *= 2;
-		}
+			result[i++] = s[(*index)++];
+		if (i >= size - 1)
+			result = ft_strrealloc(result, &size);
 	}
 	result[i] = '\0';
 	return (result);
 }
 
-char	**ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del)
+char **ft_split_quotes(t_env *cmd, const char *s, char delimiter, int del)
 {
-	char	**result;
-	int		i;
-	int		index;
-	int		words;
+    char **result;
+    size_t i;
+    size_t index;
+    size_t words;
 
-	i = 0;
-	index = 0;
-	words = word_count(s, delimiter);
-	if (!s)
-		return (NULL);
-	result = (char **)malloc((words + 1) * sizeof(char *));
-	if (!result)
-		return (NULL);
-	while (i < words)
-	{
-		while (s[index] && is_separator(s[index], delimiter, 0, 0))
-			index++;
-		if (s[index] && !is_separator(s[index], delimiter, 0, 0))
-		{
-			result[i] = extract_word(cmd, s, &index, delimiter, del);
-			if(!result[i])
-				return NULL;
-		}
-		i++;
-	}
-	result[i] = NULL;
-	return (result);
+    i = 0;
+    index = 0;
+    words = word_count(s, delimiter);
+    if (!s)
+        return (NULL);
+    result = (char **)malloc((words + 1) * sizeof(char *));
+    if (!result)
+        return (NULL);
+    while (i < words)
+    {
+        while (s[index] && is_separator(s[index], delimiter, 0, 0))
+            index++;
+        if (s[index] && !is_separator(s[index], delimiter, 0, 0))
+        {
+            result[i] = extract_word(cmd, s, &index, delimiter, del);
+            if(!result[i])
+                return NULL;
+        }
+        i++;
+    }
+    result[i] = NULL;
+    expand_variables(cmd, result);
+    return (result);
 }
