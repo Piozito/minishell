@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fd_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:07:44 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/21 12:39:02 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/22 15:56:59 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ char *concatenate_strings(char **strings)
     size_t total_length = 0;
     size_t i = 0;
     while (strings[i] != NULL)
-    {
+
+	{
         total_length += ft_strlen(strings[i]);
         i++;
     }
@@ -29,7 +30,8 @@ char *concatenate_strings(char **strings)
     result[0] = '\0';
     i = 0;
     while (strings[i] != NULL)
-    {
+
+	{
         ft_strlcat(result, strings[i], total_length + 1);
         i++;
     }
@@ -46,7 +48,8 @@ void heredoctor(char *word, int *fds,  t_env *cmds)
 	    expanded_line = NULL;
         line = readline("> ");
         if (!line || ft_strcmp(line, word) == 0)
-        {
+
+		{
             free(line);
             free(word);
 			return ;
@@ -54,7 +57,7 @@ void heredoctor(char *word, int *fds,  t_env *cmds)
 		expanded_line = expand_string_variables(cmds, line);
         if(!expanded_line)
             expanded_line = ft_strdup(line);
-        ft_putstr_fd(expanded_line, fds[1]);
+        write(fds[1], expanded_line, ft_strlen(expanded_line));
         write(fds[1], "\n", 1);
         free(line);
         free(expanded_line);
@@ -67,7 +70,7 @@ int handle_fd_input_heredoc(t_env *cmds, char *word)
 
     if (cmds->heredoc != -1)
 	{
-        close(cmds->heredoc);
+		close(cmds->heredoc);
         cmds->heredoc = -1;
     }
     if (pipe(fds) == -1)
@@ -77,6 +80,7 @@ int handle_fd_input_heredoc(t_env *cmds, char *word)
     cmds->heredoc = fds[0];
     return 0;
 }
+
 
 int check_heredoc(t_env *cmds, const char *s, size_t *index)
 {

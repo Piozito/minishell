@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/14 15:24:42 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:50:18 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ int num_ex(t_env *cmds)
 
 int	ft_exit(t_env *cmds)
 {
-	if (cmds->arg[1] == NULL && is_numeric(cmds->arg[0]) == 1)
+	if(!cmds->arg[0])
+		exit (0);
+	else if (cmds->arg[1] == NULL && is_numeric(cmds->arg[0]) == 1)
 	{
 		if (cmds->arg[0])
 			exit(num_ex(cmds));
@@ -49,6 +51,9 @@ int	ft_exit(t_env *cmds)
 	else if(!cmds->arg[0])
 		exit(0);
 	else
+	{
 		write(cmds->fd, "too many arguments \n", 20);
+		return (1);
+	}
 	return (128);
 }

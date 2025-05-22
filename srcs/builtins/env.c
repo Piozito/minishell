@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:58 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/09 20:27:06 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:58:51 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int ft_env(t_env *cmds)
 	if(cmds->arg[0] != NULL)
 	{
 		write(cmds->fd, "env: env doesn't accept flags or arguments.\n", 45);
-		return(2);
+		return(127);
 	}
     while (cmds->env[i] != NULL)
 	{
