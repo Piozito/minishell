@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:09:23 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/21 13:14:45 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:13:03 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,15 @@ char **new_env_maker(char **env, int j, char *arg)
 	char **new_env;
 
 	new_env = malloc((j + 2) * sizeof(char *));
-	if (!new_env)
-		return NULL;
-	j = 0;
-	while (env && env[j])
-	{
-		new_env[j] = env[j];
-		j++;
-	}
-	new_env[j] = arg;
-	new_env[j + 1] = NULL;
+    if (!new_env)
+        return NULL;
+    j = 0;
+    while (env && env[j])
+    {
+        new_env[j] = env[j];
+        j++;
+    }
+    new_env[j] = arg;
+    new_env[j + 1] = NULL;
 	return (new_env);
 }

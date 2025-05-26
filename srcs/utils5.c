@@ -3,25 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   utils5.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 13:17:27 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/22 15:46:51 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:56:12 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-void remove_args(char **args, int pos)
+void	remove_args(char **args, int pos)
 {
-    int j = pos;
-    while (args[j + 2])
-    {
-        args[j] = args[j + 2];
-        j++;
-    }
-    args[j] = NULL;
-    args[j + 1] = NULL;
+	int	j;
+
+	j = pos;
+	while (args[j + 2])
+	{
+		args[j] = args[j + 2];
+		j++;
+	}
+	args[j] = NULL;
+	args[j + 1] = NULL;
 }
 
 void create_pipe(int p_fd[2])

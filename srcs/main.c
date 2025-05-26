@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/21 11:58:26 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:12:39 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	check_input(char *input)
 		input[0] = '\0';
 }
 
-void general_error(char *str, int free, int ex, t_env *cmds)
+int general_error(char *str, int free, int ex, t_env *cmds)
 {
 	if(free == 1)
 		ft_cmds_free(cmds);
@@ -81,6 +81,7 @@ void general_error(char *str, int free, int ex, t_env *cmds)
 	ft_putstr_fd("\n", 1);
 	if(ex == 1)
 		exit(1);
+	return 1;
 }
 
 void free_env(char **array, char **env)

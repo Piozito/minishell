@@ -42,21 +42,27 @@ char *expand_string_variables(t_env *cmd, const char *input)
 	char *result = malloc(result_capacity);
 	size_t result_len = 0;
 	char *expanded;
+
 	size_t i = 0;
 	int quote = 0;
 	int dquote = 0;
 	char *var_name = NULL;
 	size_t var_index = 0;
-	
 	if (!result)
 		return NULL;
 	while (input[i])
 	{
-		if (input[i] == '\'' && !dquote)
+		if (input[i] == '\'' && !dquote && ft_find_closing_quote(input, i + 1, '\''))
+		{
 			quote = !quote;
-		else if (input[i] == '\"' && !quote)
+			result[result_len++] = input[i++];
+		}
+		else if (input[i] == '\"' && !quote  && ft_find_closing_quote(input, i + 1, '\"'))
+		{
 			dquote = !dquote;
-		else if (!quote && input[i] == '$' && input[i + 1] && ft_isprint(input[i + 1]))
+			result[result_len++] = input[i++];
+		}
+		else if (!quote && input[i] == '$' && input[i + 1] && ft_isprint(input[i + 1]) && input[i + 1] != ' ' && input[i + 1] != '\t')
 		{
 			i++;
 			var_index = 0;
@@ -88,12 +94,10 @@ char *expand_string_variables(t_env *cmd, const char *input)
 				free(expanded);
 			}
 		}
-		else	
-		{
-			if (result_len + 2 >= result_capacity)
-				result = ft_strrealloc(result, &result_capacity);
+		else if(result_len + 2 >= result_capacity)
+			result = ft_strrealloc(result, &result_capacity);
+		else
 			result[result_len++] = input[i++];
-		}
 	}
 	result[result_len] = '\0';
 	return result;
@@ -101,7 +105,7 @@ char *expand_string_variables(t_env *cmd, const char *input)
 
 void expand_variables(t_env *cmd, char **result)
 {
-	int i = 0;
+	size_t i = 0;
 	char *expanded;
 
 	if (!result)

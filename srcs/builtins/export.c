@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/19 15:12:15 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:46:12 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int is_chr(const char *str, int c)
     return (0);
 }
 
-static int is_valid(char *str)
+static int is_valid_env(char *str)
 {
     if (!str || (!ft_isalpha(*str) && *str != '_'))
         return (0);
@@ -98,7 +98,7 @@ int ft_export(t_env *env)
     i = -1;
     while (env->arg[++i])
     {
-        if (is_valid(env->arg[i]))
+        if (is_valid_env(env->arg[i]))
 			ex_refresh(env, i);
         else
 		{

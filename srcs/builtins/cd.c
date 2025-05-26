@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/15 08:23:26 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:15:03 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	ft_putenv(t_env *cmds, char *var)
 	int size;
 
 	i = 0;
-	(void)cmds;
 	size = ft_strlen(var);
 	while(cmds->env[i])
 	{
@@ -36,22 +35,26 @@ static void	ft_putenv(t_env *cmds, char *var)
 	}
 }
 
-static char	*get_cd_path(t_env *cmds, char *path)
+static char *homer(t_env *cmds)
 {
 	char	*home;
+
+	home = env_expander(cmds, "HOME=");
+	if (home[0] == '\0')
+	{
+		free(home);
+		ft_putstr_fd("HOME is not set.\n", 2);
+		return (NULL);
+	}
+	return (home);
+}
+
+static char	*get_cd_path(t_env *cmds, char *path)
+{
 	char	*old_pwd;
 
 	if (!path || !*path)
-	{
-		home = env_expander(cmds, "HOME=");
-		if(home[0] == '\0')
-		{
-			free(home);
-			ft_putstr_fd("HOME is not set.\n", 2);
-			return NULL;
-		}
-		return home;
-	}
+		return (homer(cmds));
 	if (ft_strcmp(path, "-") == 0)
 	{
 		old_pwd = env_expander(cmds, "OLDPWD=");
@@ -101,7 +104,7 @@ int	ft_cd(t_env *cmds)
 			write(cmds->fd, "cd: no such file or directory: ", 32);
 			write(cmds->fd, path, ft_strlen(path));
 			write(cmds->fd, "\n", 1);
-			return(2);
+			return(1);
 		}
 		update_pwd(cmds, old_pwd);
 	}

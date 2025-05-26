@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:10:40 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/09 20:19:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:52:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 int	ft_pwd(t_env *cmds)
 {
 	char	cwd[1024];
-	if (cmds->arg[0] != NULL)
+
+	if (cmds->arg[0][0] == '-')
 	{
 		write(cmds->fd, "pwd: pwd doesn't accept flags or arguments.\n", 45);
 		return(2);

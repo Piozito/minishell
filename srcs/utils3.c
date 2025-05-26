@@ -17,19 +17,19 @@ void	ft_debug(t_env *cmd)
 	int	i;
 
 	i = -1;
-	if (cmd->path)
-		printf("\033[0;32mpath is available.\033[0m\n");
-	else
-		printf("\033[0;31mpath has failed.\033[0m\n");
 	if (cmd->env)
-		printf("\033[0;32menv is available.\033[0m\n");
+	printf("\033[0;32menv is available.\033[0m\n");
 	else
-		printf("\033[0;31menv has failed.\033[0m\n");
+	printf("\033[0;31menv has failed.\033[0m\n");
 	if (cmd->exp)
-		printf("\033[0;32mexport is available.\033[0m\n");
+	printf("\033[0;32mexport is available.\033[0m\n");
 	else
-		printf("\033[0;31mexport has failed.\033[0m\n");
-	printf("-------------------------\nCommand: \"%s\"\n", cmd->cmd);
+	printf("\033[0;31mexport has failed.\033[0m\n");
+	if (cmd->path)
+		printf("-------------------------\nPATH: %s\n", cmd->path);
+	else
+		printf("-------------------------\n\033[0;31mpath has failed.\033[0m\n");
+	printf("Command: \"%s\"\n", cmd->cmd);
 	if (cmd->arg[0] != NULL)
 	{
 		printf("Arguments:\n");
@@ -38,6 +38,11 @@ void	ft_debug(t_env *cmd)
 	}
 	else
 		printf("Arguments: None\n");
+	printf("-------------------------\n");
+	if (cmd->heredoc != -1)
+		printf("\033[0;32mheredoc is available.\033[0m\n");
+	else
+		printf("\033[0;31mheredoc has failed.\033[0m\n");
 	printf("-------------------------\n");
 }
 

@@ -6,272 +6,149 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/20 17:02:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/26 14:18:07 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-char **fake_env_creator()
+t_env	*pipes_maker(t_env *cmds, char **pipes)
 {
-    char **new_environ;
-    char *cwd;
-
-    new_environ = (char **)malloc(4 * sizeof(char *));
-    if (!new_environ)
-        general_error("env malloc failed.", 0, 1, NULL);
-    new_environ[0] = strdup("PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin");
-    if (!new_environ[0])
-        general_error("env malloc failed.", 0, 1, NULL);
-    new_environ[1] = strdup("SHLVL=1");
-    if (!new_environ[1])
-        general_error("env malloc failed.", 0, 1, NULL);
-    cwd = getcwd(NULL, 0);
-    if (!cwd)
-        general_error("getcwd failed.", 0, 1, NULL);
-    new_environ[2] = (char *)malloc(strlen("PWD=") + strlen(cwd) + 1);
-    if (!new_environ[2])
-    {
-        free(cwd);
-        general_error("env malloc failed.", 0, 1, NULL);
-    }
-    strcpy(new_environ[2], "PWD=");
-    strcat(new_environ[2], cwd);
-    free(cwd);
-    new_environ[3] = NULL;
-    return new_environ;
-}
-
-char **deep_copy_environ(char **environ)
-{
-	char **new_environ;
-	int count;
-	int num;
-	int i;
-
-	i = -1;
-	num = -1;
-	count = 0;
-	while (environ[count] != NULL)
-		count++;
-
-	if (count == 0)
-		new_environ = fake_env_creator();
-	else
-	{
-		new_environ = (char **)malloc((count + 2) * sizeof(char *));
-		if (!new_environ)
-			general_error("env malloc failed.", 0, 1, NULL);
-
-		while (++i < count)
-		{
-			if (strncmp(environ[i], "SHLVL=", 6) == 0)
-			{
-				num = ft_atoi(ft_strtrim(ft_strchr(environ[i], '='), "="));
-				if(num < 0)
-					num = 0;
-				else
-					num++;
-				new_environ[i] = ft_strjoin("SHLVL=", ft_itoa(num));
-			}
-			else
-				new_environ[i] = ft_strdup(environ[i]);
-		}
-		if (num == -1)
-		{
-			new_environ[i++] = ft_strdup("SHLVL=1");
-		}
-		new_environ[i] = NULL;
-	}
-	return new_environ;
-}
-
-void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
-{
-	if(new_cmd == NULL && i == 1)
-	{
-		cmd->cmd = NULL;
-		cmd->path = env_expander(cmd, "PATH=");
-		cmd->saved_stdout = dup(1);
-		cmd->saved_stdin = dup(0);
-		if(cmd->path == NULL)
-			cmd->path = cmd->env[0];
-		cmd->arg = NULL;
-		cmd->next = NULL;
-		cmd->heredoc = -1;
-		cmd->fd = 1;
-		return ;
-	}
-	new_cmd->env = cmd->env;
-	new_cmd->exp = cmd->exp;
-	new_cmd->saved_stdout = cmd->saved_stdout;
-	new_cmd->saved_stdin = cmd->saved_stdin;
-	new_cmd->path = env_expander(new_cmd, "PATH=");
-	new_cmd->exit_status = cmd->exit_status;
-	new_cmd->heredoc = cmd->heredoc;
-	new_cmd->fd = 1;
-}
-
-void	free_subtokens(char **subtokens)
-{
-	int	i;
+	int		i;
+	t_env	*temp;
+	t_env	*new_cmd;
 
 	i = 0;
-	if(!subtokens)
-		return ;
-	while (subtokens[i] != NULL)
+	while (pipes[i] != NULL)
 	{
-		free(subtokens[i]);
+		new_cmd = malloc(sizeof(t_env));
+		initialize_cmd(cmds, new_cmd, 0);
+		if (parsing(new_cmd, pipes[i]) == 1)
+			return (NULL);
+		if (i == 0)
+		{
+			cmds = new_cmd;
+			temp = cmds;
+		}
+		else
+		{
+			temp->next = new_cmd;
+			temp = temp->next;
+		}
 		i++;
 	}
-	free(subtokens);
+	temp->next = NULL;
+	return (cmds);
 }
 
-int cmd_check(t_env *cmds)
+void	pipes_handler(t_env *cmds, const char *input)
 {
-	if (cmds->cmd == NULL)
-		return 1;
-	else if (ft_strstr(cmds->cmd, "echo") != NULL)
-		return 0;
-	else if (ft_strstr(cmds->cmd, "pwd") != NULL)
-		return 0;
-	else if (ft_strstr(cmds->cmd, "cd") != NULL)
-		return 0;
-	else if (ft_strstr(cmds->cmd, "env") != NULL)
-		return 0;
-	else if (ft_strstr(cmds->cmd, "exit") != NULL)
-		return 0;
-	else if (ft_strstr(cmds->cmd, "unset") != NULL)
-		return 0;
-	else if (ft_strstr(cmds->cmd, "export") != NULL)
-		return 0;
-	if (cmds->path == NULL)
-	{
-		cmds->path = my_get_path(cmds);
-		if (cmds->path == NULL)
-		{
-			cmds->exit_status = 127;
-			return 1;
-		}
-	}
-	return 0;
-}
+	char	**pipes;
 
-void pipes_handler(t_env *cmds, const char *input)
-{
-    char **pipes;
-    t_env *temp;
-    t_env *new_cmd;
-    int i;
-
-	i = 0;
-    pipes = pipe_check(cmds, input);
-	if(pipes == NULL)
+	pipes = pipe_check(cmds, input);
+	if (pipes == NULL || pipes[0] == NULL)
 		return ;
-	if(pipes[1] == NULL)
+	if (pipes[1] == NULL)
 	{
-		if(parsing(cmds, pipes[i]) == 1)
+		if (parsing(cmds, pipes[0]) == 1)
 			return ;
 		pop(cmds, 0);
 		free_subtokens(pipes);
 		return ;
 	}
-    while (pipes[i] != NULL)
-    {
-		new_cmd = (t_env *)malloc(sizeof(t_env));
-		initialize_cmd(cmds, new_cmd, 0);
-        if(parsing(new_cmd, pipes[i]) == 1)
-			continue;
-        if (i == 0)
-        {
-			cmds = new_cmd;
-            temp = cmds;
-        }
-        else
-        {
-            temp->next = new_cmd;
-            temp = temp->next;
-        }
-        i++;
-    }
-    temp->next = NULL;
-    temp = cmds;
-    i = 0;
+	cmds = pipes_maker(cmds, pipes);
+	if (cmds == NULL)
+	{
+		free_subtokens(pipes);
+		return ;
+	}
 	cmds->exit_status = ft_pipe(cmds);
-    free_subtokens(pipes);
+	free_subtokens(pipes);
 }
 
-int parsing(t_env *cmd, const char *input)
+void	command_finder(char **subtokens, int *command_set)
 {
-	char **subtokens;
-	int arg_count = 0;
-	int arg_index = 0;
-	int command_set = -1;
-	int j = 0;
-	int k = 0;
+	int	j;
 
-	subtokens = ft_split_quotes(cmd, input, ' ', 1);
-	if (subtokens[0] == NULL)
-		return 1;
-	while (subtokens[j])
+	j = 0;
+	if ((*command_set) == -1 && !ft_strchr(subtokens[j], '<')
+		&& !ft_strchr(subtokens[j], '>'))
 	{
-		if (command_set == -1 && !ft_strchr(subtokens[j], '<') && !ft_strchr(subtokens[j], '>'))
+		if (j >= 1)
 		{
-			if (j >= 1)
-			{
-				if (!ft_strchr(subtokens[j - 1], '<') && !ft_strchr(subtokens[j - 1], '>'))
-					command_set = j;
-			}
-			else
-				command_set = j;
+			if (!ft_strchr(subtokens[j - 1], '<')
+				&& !ft_strchr(subtokens[j - 1], '>'))
+				(*command_set) = j;
 		}
 		else
-		{
-			while(subtokens[j][k])
-			{
-				if(subtokens[j][k] == '<' || subtokens[j][k] == '>')
-				{
-					arg_count++;
-					break;
-				}
-				k++;
-			}
-			arg_count++;
-		}
-		j++;
+			(*command_set) = j;
 	}
-	cmd->arg = (char **)malloc((arg_count + 1) * sizeof(char *));
-	if (!cmd->arg)
-	{
-		ft_putstr_fd("Memory allocation failed.\n", 2);
-		free_subtokens(subtokens);
-		exit(1);
-	}
+}
+
+int	arg_counter(char **subtokens, int *command_set)
+{
+	int	arg_count;
+	int	j;
+	int	k;
+
 	j = 0;
+	arg_count = 0;
 	while (subtokens[j])
 	{
-		if (j == command_set)
-			cmd->cmd = ft_strdup(subtokens[j]);
-		else if (j < command_set)
-			cmd->arg[arg_index++] = ft_strdup(subtokens[j]);
+		k = 0;
+		command_finder(subtokens, command_set);
+		while (subtokens[j][k])
+		{
+			if (subtokens[j][k] == '<' || subtokens[j][k] == '>')
+			{
+				arg_count++;
+				break ;
+			}
+			k++;
+		}
+		arg_count++;
 		j++;
 	}
-	j = command_set + 1;
-	while (j > command_set && subtokens[j])
-	{
-		cmd->arg[arg_index++] = ft_strdup(subtokens[j++]);
-	}
-	cmd->arg[arg_index] = NULL;
-	if(executable_check(cmd) == 1)
-		return 0;
-	if(ft_strchr(cmd->cmd, ' ') != NULL)
+	return (arg_count);
+}
+
+int parsing_help(t_env *cmd, char **subtokens)
+{
+	if (ft_strchr(cmd->cmd, ' ') != NULL)
 	{
 		command_not_found(cmd->cmd);
 		free_subtokens(subtokens);
 		cmd->exit_status = 127;
-		return 1;
+		return (1);
 	}
-	free_subtokens(subtokens);
+	return (0);
+}
+
+int	parsing(t_env *cmd, const char *input)
+{
+	char	**subtokens;
+	int		command_set;
+	int		j;
+
+	command_set = -1;
+	j = 0;
+	subtokens = ft_split_quotes(cmd, input, ' ');
+	if (!subtokens)
+		return (1);
+	cmd->arg = malloc((arg_counter(subtokens, &command_set) + 1) * 8);
+	if (!cmd->arg)
+		malloc_fail(subtokens);
+	set_args(cmd, subtokens, command_set);
+	if (command_set == -1)
+	{
+		apply_fd(cmd);
+		return (1);
+	}
+	if(parsing_help(cmd, subtokens) == 1)
+		return (1);
+	cmd->path = my_get_path(cmd);
 	ft_debug(cmd);
-	return 0;
+	apply_heredoc(cmd);
+	free_subtokens(subtokens);
+	return (0);
 }

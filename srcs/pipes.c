@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/22 15:45:21 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:31:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
     exit(cmd->exit_status);
 }
 
-
 pid_t handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_last)
 {
     pid_t pid = fork();
@@ -45,7 +44,8 @@ pid_t handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_last)
     }
     if (pid == 0)
 	{
-		if((ft_isalpha(cmds->cmd[0]) == 0 && cmd_check(cmds) == 0) || cmds->cmd[0] == ' ')
+		if((ft_isalpha(cmds->cmd[0]) == 0 && cmd_check(cmds) == 0)
+			|| cmds->cmd[0] == ' ')
 		{
 			command_not_found(cmds->cmd);
 			exit(127);

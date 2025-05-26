@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/21 16:50:18 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:50:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static int	is_numeric(const char *str)
 	}
 	return (1);
 }
-int num_ex(t_env *cmds)
+
+int	num_ex(t_env *cmds)
 {
 	int	exit_status;
 
@@ -35,8 +36,8 @@ int num_ex(t_env *cmds)
 
 int	ft_exit(t_env *cmds)
 {
-	if(!cmds->arg[0])
-		exit (0);
+	if (!cmds->arg[0])
+		exit(0);
 	else if (cmds->arg[1] == NULL && is_numeric(cmds->arg[0]) == 1)
 	{
 		if (cmds->arg[0])
@@ -46,9 +47,9 @@ int	ft_exit(t_env *cmds)
 	else if (cmds->arg[0] && cmds->arg[1] == NULL)
 	{
 		write(cmds->fd, "non numeric arg \n", 18);
-		exit (2);
+		exit(2);
 	}
-	else if(!cmds->arg[0])
+	else if (!cmds->arg[0])
 		exit(0);
 	else
 	{
