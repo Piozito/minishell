@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/12 08:41:38 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:23:47 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ int	ft_unset(t_env *cmds)
 	int	i;
 
 	i = 0;
-	if(cmds->arg[0][0] == '-')
+	if (cmds->arg[0][0] == '-')
 	{
 		write(cmds->fd, "unset: unset doesn't accept flags.\n", 36);
-		return(2);
+		return (2);
 	}
 	while (cmds->arg[i])
 	{
@@ -54,5 +54,5 @@ int	ft_unset(t_env *cmds)
 		}
 		i++;
 	}
-	return(0);
+	return (0);
 }

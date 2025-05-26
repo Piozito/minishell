@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:00:22 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/12 08:17:45 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:04:36 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ int	ft_echo(t_env *cmds)
 	}
 	if (n)
 		write(cmds->fd, "\n", 1);
-	return(0);
+	return (0);
 }
