@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/26 13:56:41 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:26:30 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i);
 void	set_args(t_env *cmd, char **subtokens, int command_set);
 void	check_shlvl(char **new_environ, char **environ, int count);
 void	execute_child(char *path, char **exec_args, t_env *command);
-pid_t	handle_child_process(t_env *cmds, int prev_fd, int p_fd[2], int is_last);
+pid_t	handle_child(t_env *cmds, int prev_fd, int p_fd[2], int is_last);
 
 #endif
