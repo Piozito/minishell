@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/27 15:25:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:16:32 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int		is_chr(const char *str, int c);
 int		word_count_m(const char *s, char c);
 int		parsing(t_env *cmd, const char *input);
 int		handle_parent(pid_t pid, t_env *command);
+int		var_quote(const char *input, size_t *i, int quote);
 int		is_separator(char ch, char c, int quote, int dquote);
 int		general_error(char *str, int free, int ex, t_env *cmds);
 int		handle_quote(const char *s, size_t *index, int *quote_flag);
@@ -84,6 +85,7 @@ char	*my_get_path(t_env *cmds);
 char	*get_file(t_env *cmds, size_t i);
 char	**deep_copy_environ(char **environ);
 char	**update_env(char *arg, char **env);
+char	*var_getter(const char *input, size_t *i);
 char	*env_expander(t_env *cmds, char *var_name);
 char	**pipe_check(t_env *cmds, const char *input);
 char	**new_env_maker(char **env, int j, char *arg);
@@ -91,6 +93,7 @@ char	*ft_strrealloc(char *result, size_t *size_ptr);
 char	*ft_strstr(const char *big, const char *little);
 char	*extract_word(const char *s, size_t *index, char del);
 char	*expand_string_variables(t_env *cmd, const char *input);
+char	*var_expander(const char *input, size_t *i, t_env *cmd);
 char	**ft_split_quotes(t_env *cmd, const char *s, char delimiter);
 char	*ft_find_closing_quote(const char *str, int start, char quote);
 void	duping(t_env *cmds);
@@ -110,6 +113,7 @@ void	handle_parent_process(int p_fd[2], int *prev_fd);
 void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i);
 void	set_args(t_env *cmd, char **subtokens, int command_set);
 void	check_shlvl(char **new_environ, char **environ, int count);
+void	var_joiner(char *exp, char **res, size_t *cap, size_t *len);
 void	execute_child(char *path, char **exec_args, t_env *command);
 pid_t	handle_child(t_env *cmds, int prev_fd, int p_fd[2], int is_last);
 
