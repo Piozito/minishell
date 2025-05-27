@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:36:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/26 13:37:48 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/27 11:05:17 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	heredoctor(char *word, int *fds, t_env *cmds)
 		if (!line || ft_strcmp(line, word) == 0)
 		{
 			free(line);
-			free(word);
 			return ;
 		}
 		expanded_line = expand_string_variables(cmds, line);
@@ -82,15 +81,19 @@ int	handle_fd_input_heredoc(t_env *cmds, char *word)
 	return (0);
 }
 
-int	check_heredoc(t_env *cmds, const char *s, size_t *index)
+int	check_heredoc(t_env *cmds)
 {
 	char	*word;
+	int 	i;
 
-	if (s[*index] == '<' && s[*index + 1] == '<')
+	i = 0;
+	if (!cmds->arg)
+		return (1);
+	while (cmds->arg[i])
 	{
-		if (s[*index + 2] && s[*index + 2] != '<')
+		if (ft_strncmp(cmds->arg[i], "<<", 3) == 0 && cmds->arg[i + 1])
 		{
-			word = get_file(s, index);
+			word = get_file(cmds, i);
 			if (!word || is_valid(word))
 				return (fd_error("heredoc"));
 			if (ft_strchr(word, '<') || ft_strchr(word, '>'))
@@ -98,8 +101,7 @@ int	check_heredoc(t_env *cmds, const char *s, size_t *index)
 			if (handle_fd_input_heredoc(cmds, word) == -1)
 				return (fd_error("heredoc"));
 		}
-		else
-			return (fd_error("heredoc"));
+		i++;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:26:00 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/26 14:12:06 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:44:42 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,11 @@ int	is_valid(char *str)
 		i++;
 	}
 	return (0);
+}
+
+int	is_separator(char ch, char c, int quote, int dquote)
+{
+	if (c == ' ')
+		return (!quote && !dquote && (ch == c || ch == '\t' || ch == '\0'));
+	return (!quote && !dquote && (ch == c || ch == '\0'));
 }

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:39:09 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/26 12:50:21 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/27 11:03:43 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,31 +66,22 @@ int executable_check(t_env *cmds)
 	return 1;
 }
 
-char *get_file(const char *s, size_t *index)
+char *get_file(t_env *cmds, size_t i)
 {
-    char *res = NULL;
-	size_t i;
-    size_t start;
-	size_t length;
+	size_t j;
 
-	i = -1;
-	(*index)++;
-	if(s[(*index)] == '>' || s[(*index)] == '<')
-		(*index)++;
-    while (s[(*index)] == ' ' || s[(*index)] == '\t')
-        (*index)++;
-    start = (*index);
-    while (s[(*index)] && s[(*index)] != ' ' && s[(*index)] != '\t' 
-	&& s[(*index)] != '\'' && s[(*index)] != '\"' && s[(*index)] != '<' && s[(*index)] != '>')
-        (*index)++;
-    length = (*index) - start;
-    res = (char *)malloc((length + 1) * sizeof(char));
-    if (!res)
-        return NULL;
-    while (++i < length)
-        res[i] = s[start + i];
-    res[length] = '\0';
-	if(res[0] == '\0')
+	j = 0;
+	if(ft_strncmp(cmds->arg[i], "<<", 3) == 0)
+		i++;
+	else
 		return NULL;
-    return res;
+	if(ft_strchr(cmds->arg[i], '<') || ft_strchr(cmds->arg[i], '>'))
+		return NULL;
+	while(cmds->arg[i][j])
+	{
+		if(ft_isalnum(cmds->arg[i][j]) == 0)
+			return NULL;
+		j++;
+	}
+	return cmds->arg[i];
 }

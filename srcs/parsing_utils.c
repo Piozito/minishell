@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:24:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/26 14:20:13 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:22:25 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,8 @@ void	free_subtokens(char **subtokens)
 		return ;
 	while (subtokens[i] != NULL)
 	{
-		free(subtokens[i]);
+		if(subtokens[i][0])
+			free(subtokens[i]);
 		i++;
 	}
 	free(subtokens);

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/26 14:18:07 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:24:06 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ int	parsing(t_env *cmd, const char *input)
 	if (!cmd->arg)
 		malloc_fail(subtokens);
 	set_args(cmd, subtokens, command_set);
+	check_heredoc(cmd);
 	if (command_set == -1)
 	{
 		apply_fd(cmd);
@@ -149,6 +150,5 @@ int	parsing(t_env *cmd, const char *input)
 	cmd->path = my_get_path(cmd);
 	ft_debug(cmd);
 	apply_heredoc(cmd);
-	free_subtokens(subtokens);
 	return (0);
 }
