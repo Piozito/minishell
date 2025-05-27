@@ -6,7 +6,7 @@
 #    By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/18 16:13:04 by aaleixo-          #+#    #+#              #
-#    Updated: 2025/05/27 13:43:35 by aaleixo-         ###   ########.fr        #
+#    Updated: 2025/05/27 17:12:00 by aaleixo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SOURCES = \
 	srcs/fd.c srcs/expand.c srcs/builtins/export_utils.c \
 	srcs/fd_heredoc.c srcs/utils4.c srcs/parsing_utils.c \
 	srcs/parsing_utils2.c srcs/utils5.c srcs/word_extract.c \
-	srcs/split_checks.c
+	srcs/split_checks.c srcs/expand_utils.c
 OBJECTS = $(SOURCES:.c=.o)
 
 MAKE_LIBFT = make -C ./lib/libft/
