@@ -74,18 +74,18 @@ int	handle_fd_output_append(char *file)
 	return (0);
 }
 
-int	fd_checker(t_env *cmds, int i, int j)
+int	fd_checker(t_env *cmds, int i, int *j)
 {
 	if (ft_strncmp(cmds->arg[i], ">>", 3) == 0)
 		if (handle_fd_output_append(cmds->arg[i + 1]) == -1)
-			j = 1;
+			(*j) = 1;
 	if (ft_strncmp(cmds->arg[i], "<", 2) == 0)
 		if (handle_fd_input(cmds->arg[i + 1]) == -1)
-			j = 2;
+			(*j) = 2;
 	if (ft_strncmp(cmds->arg[i], ">", 2) == 0)
 		if (handle_fd_output(cmds->arg[i + 1]) == -1)
-			j = 3;
-	return (j);
+			(*j) = 3;
+	return (0);
 }
 
 int	apply_fd(t_env *cmds)
@@ -97,12 +97,8 @@ int	apply_fd(t_env *cmds)
 	while (cmds->arg[i])
 	{
 		j = 0;
-		if ((ft_strncmp(cmds->arg[i], "<", 2) == 0
-			|| ft_strncmp(cmds->arg[i], ">", 2) == 0
-			|| ft_strncmp(cmds->arg[i], ">>", 3) == 0
-			|| ft_strncmp(cmds->arg[i], "<<", 3) == 0) && cmds->arg[i + 1])
+		if (fd_checker(cmds, i, &j) == 0 && cmds->arg[i + 1])
 		{
-			j = fd_checker(cmds, i, j);
 			if (j == 1)
 				return (fd_error("append"));
 			else if (j == 2)
