@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/27 17:16:32 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:59:54 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,11 @@ char	*var_expander(const char *input, size_t *i, t_env *cmd);
 char	**ft_split_quotes(t_env *cmd, const char *s, char delimiter);
 char	*ft_find_closing_quote(const char *str, int start, char quote);
 void	duping(t_env *cmds);
+void	ft_handler(int sig);
 void	ft_debug(t_env *cmd);
 void	export_print(t_env *env);
+void	ft_noint_handler(int sig);
+void	ft_cmds_free(t_env *cmds);
 void	malloc_fail(char **tokens);
 void	command_not_found(char *cmd);
 void	ex_refresh(t_env *env, int i);
