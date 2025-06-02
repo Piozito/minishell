@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/27 13:24:06 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:17:38 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ t_env	*pipes_maker(t_env *cmds, char **pipes)
 	t_env	*temp;
 	t_env	*new_cmd;
 
-	i = 0;
-	while (pipes[i] != NULL)
+	i = -1;
+	while (pipes[++i] != NULL)
 	{
 		new_cmd = malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
@@ -35,7 +35,6 @@ t_env	*pipes_maker(t_env *cmds, char **pipes)
 			temp->next = new_cmd;
 			temp = temp->next;
 		}
-		i++;
 	}
 	temp->next = NULL;
 	return (cmds);
@@ -66,6 +65,18 @@ void	pipes_handler(t_env *cmds, const char *input)
 	free_subtokens(pipes);
 }
 
+int	parsing_help(t_env *cmd, char **subtokens)
+{
+	if (ft_strchr(cmd->cmd, ' ') != NULL)
+	{
+		command_not_found(cmd->cmd);
+		free_subtokens(subtokens);
+		cmd->exit_status = 127;
+		return (1);
+	}
+	return (0);
+}
+
 void	command_finder(char **subtokens, int *command_set)
 {
 	int	j;
@@ -83,45 +94,6 @@ void	command_finder(char **subtokens, int *command_set)
 		else
 			(*command_set) = j;
 	}
-}
-
-int	arg_counter(char **subtokens, int *command_set)
-{
-	int	arg_count;
-	int	j;
-	int	k;
-
-	j = 0;
-	arg_count = 0;
-	while (subtokens[j])
-	{
-		k = 0;
-		command_finder(subtokens, command_set);
-		while (subtokens[j][k])
-		{
-			if (subtokens[j][k] == '<' || subtokens[j][k] == '>')
-			{
-				arg_count++;
-				break ;
-			}
-			k++;
-		}
-		arg_count++;
-		j++;
-	}
-	return (arg_count);
-}
-
-int parsing_help(t_env *cmd, char **subtokens)
-{
-	if (ft_strchr(cmd->cmd, ' ') != NULL)
-	{
-		command_not_found(cmd->cmd);
-		free_subtokens(subtokens);
-		cmd->exit_status = 127;
-		return (1);
-	}
-	return (0);
 }
 
 int	parsing(t_env *cmd, const char *input)
@@ -145,10 +117,10 @@ int	parsing(t_env *cmd, const char *input)
 		apply_fd(cmd);
 		return (1);
 	}
-	if(parsing_help(cmd, subtokens) == 1)
+	if (parsing_help(cmd, subtokens) == 1)
 		return (1);
 	cmd->path = my_get_path(cmd);
-	ft_debug(cmd);
 	apply_heredoc(cmd);
+	free_subtokens(subtokens);
 	return (0);
 }

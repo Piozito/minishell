@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:09:23 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/26 15:11:41 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:53:30 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	export_print(t_env *env)
 	j = 0;
 	while (env->exp[j])
 		j++;
-	**new_env = malloc(sizeof(char *) * (j + 1));
+	new_env = malloc(sizeof(char *) * (j + 1));
 	if (!new_env)
 		return ;
 	while (++i < j)

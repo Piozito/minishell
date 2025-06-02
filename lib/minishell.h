@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/30 13:59:54 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:02:48 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int		is_chr(const char *str, int c);
 int		word_count_m(const char *s, char c);
 int		parsing(t_env *cmd, const char *input);
 int		handle_parent(pid_t pid, t_env *command);
+int		arg_counter(char **subtokens, int *command_set);
 int		var_quote(const char *input, size_t *i, int quote);
 int		is_separator(char ch, char c, int quote, int dquote);
 int		general_error(char *str, int free, int ex, t_env *cmds);
@@ -111,9 +112,10 @@ void	free_env(char **array, char **env);
 void	remove_closed_quotes(char **result);
 void	expand_variables(t_env *cmd, char **result);
 void	pipes_handler(t_env *cmds, const char *input);
-void	pipo(t_env *cmd, int num_cmds, pid_t last_pid);
+void	pipo(t_env *cmd, int num_cmds, pid_t *last_pid);
 void	handle_parent_process(int p_fd[2], int *prev_fd);
 void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i);
+void	command_finder(char **subtokens, int *command_set);
 void	set_args(t_env *cmd, char **subtokens, int command_set);
 void	check_shlvl(char **new_environ, char **environ, int count);
 void	var_joiner(char *exp, char **res, size_t *cap, size_t *len);

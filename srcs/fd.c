@@ -77,14 +77,24 @@ int	handle_fd_output_append(char *file)
 int	fd_checker(t_env *cmds, int i, int *j)
 {
 	if (ft_strncmp(cmds->arg[i], ">>", 3) == 0)
+	{
 		if (handle_fd_output_append(cmds->arg[i + 1]) == -1)
 			(*j) = 1;
-	if (ft_strncmp(cmds->arg[i], "<", 2) == 0)
+	}
+	else if (ft_strncmp(cmds->arg[i], "<<", 3) == 0)
+		return (0);
+	else if (ft_strncmp(cmds->arg[i], "<", 2) == 0)
+	{
 		if (handle_fd_input(cmds->arg[i + 1]) == -1)
 			(*j) = 2;
-	if (ft_strncmp(cmds->arg[i], ">", 2) == 0)
+	}
+	else if (ft_strncmp(cmds->arg[i], ">", 2) == 0)
+	{
 		if (handle_fd_output(cmds->arg[i + 1]) == -1)
 			(*j) = 3;
+	}
+	else
+		return (1);
 	return (0);
 }
 

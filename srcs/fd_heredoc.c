@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:36:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/27 11:05:17 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:57:00 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	handle_fd_input_heredoc(t_env *cmds, char *word)
 int	check_heredoc(t_env *cmds)
 {
 	char	*word;
-	int 	i;
+	int		i;
 
 	i = 0;
 	if (!cmds->arg)

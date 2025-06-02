@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/30 14:02:27 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 11:27:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,7 @@ int	main(int argc, char **argv, char **env)
 	free_env(cmds->env, env);
 	free_env(cmds->exp, env);
 	duping(cmds);
+	ft_cmds_free(cmds);
+	free(cmds);
 	rl_clear_history();
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils5.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 13:17:27 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/27 15:18:13 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/02 10:58:11 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,31 @@ void	pipo(t_env *cmd, int num_cmds, pid_t *last_pid)
 	}
 	if (prev_fd != 0)
 		close(prev_fd);
+}
+
+int	arg_counter(char **subtokens, int *command_set)
+{
+	int	arg_count;
+	int	j;
+	int	k;
+
+	j = 0;
+	arg_count = 0;
+	while (subtokens[j])
+	{
+		k = 0;
+		command_finder(subtokens, command_set);
+		while (subtokens[j][k])
+		{
+			if (subtokens[j][k] == '<' || subtokens[j][k] == '>')
+			{
+				arg_count++;
+				break ;
+			}
+			k++;
+		}
+		arg_count++;
+		j++;
+	}
+	return (arg_count);
 }

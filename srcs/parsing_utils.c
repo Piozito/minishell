@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:24:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/27 13:22:25 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 12:13:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ char	**fake_env_creator(void)
 
 void	check_shlvl(char **new_environ, char **environ, int count)
 {
-	int	i;
-	int	num;
+	int		i;
+	int		num;
+	char	*str;
 
 	num = -1;
 	i = -1;
@@ -50,12 +51,16 @@ void	check_shlvl(char **new_environ, char **environ, int count)
 	{
 		if (ft_strncmp(environ[i], "SHLVL=", 6) == 0)
 		{
-			num = ft_atoi(ft_strtrim(ft_strchr(environ[i], '='), "="));
+			str = ft_strtrim(ft_strchr(environ[i], '='), "=");
+			num = ft_atoi(str);
+			free(str);
 			if (num < 0)
 				num = 0;
 			else
 				num++;
-			new_environ[i] = ft_strjoin("SHLVL=", ft_itoa(num));
+			str = ft_itoa(num);
+			new_environ[i] = ft_strjoin("SHLVL=", str);
+			free(str);
 		}
 		else
 			new_environ[i] = ft_strdup(environ[i]);
@@ -92,7 +97,7 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 	if (new_cmd == NULL && i == 1)
 	{
 		cmd->cmd = NULL;
-		cmd->path = env_expander(cmd, "PATH=");
+		cmd->path = NULL;
 		cmd->saved_stdout = dup(1);
 		cmd->saved_stdin = dup(0);
 		if (cmd->path == NULL)
@@ -107,7 +112,7 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 	new_cmd->exp = cmd->exp;
 	new_cmd->saved_stdout = cmd->saved_stdout;
 	new_cmd->saved_stdin = cmd->saved_stdin;
-	new_cmd->path = env_expander(new_cmd, "PATH=");
+	new_cmd->path = NULL;
 	new_cmd->exit_status = cmd->exit_status;
 	new_cmd->heredoc = cmd->heredoc;
 	new_cmd->fd = 1;
@@ -122,9 +127,10 @@ void	free_subtokens(char **subtokens)
 		return ;
 	while (subtokens[i] != NULL)
 	{
-		if(subtokens[i][0])
+		if (subtokens[i])
 			free(subtokens[i]);
 		i++;
 	}
-	free(subtokens);
+	if (subtokens)
+		free(subtokens);
 }
