@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 11:02:48 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:07:41 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int		ft_unset(t_env *env);
 int		ft_export(t_env *env);
 int		apply_fd(t_env *cmds);
 int		cmd_check(t_env *cmds);
+int		env_tester(t_env *cmd);
 int		ft_exec(t_env *command);
 int		pop(t_env *cmds, int i);
 int		check_heredoc(t_env *cmds);
