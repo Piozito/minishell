@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:19:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 14:48:43 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:40:58 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@ void	free_more(char **str, char **str2)
 {
 	free_subtokens(str);
 	free_subtokens(str2);
+}
+
+int	check_exec(char *exec, char **allpath)
+{
+	if (access(exec, F_OK | X_OK) == 0)
+	{
+		free_subtokens(allpath);
+		return (0);
+	}
+	return (1);
 }
 
 char	*my_get_path(t_env *cmds)
@@ -37,11 +47,8 @@ char	*my_get_path(t_env *cmds)
 		path_part = ft_strjoin(allpath[i], "/");
 		exec = ft_strjoin(path_part, cmds->cmd);
 		free(path_part);
-		if (access(exec, F_OK | X_OK) == 0)
-		{
-			free_subtokens(allpath);
+		if (check_exec(exec, allpath) == 0)
 			return (exec);
-		}
 		free(exec);
 	}
 	free_subtokens(allpath);
@@ -69,20 +76,4 @@ int	handle_parent(pid_t pid, t_env *cmds)
 		cmds->exit_status = 1;
 	duping(cmds);
 	return (cmds->exit_status);
-}
-
-void	duping(t_env *cmds)
-{
-	if(cmds->saved_stdin != -1)
-	{
-		dup2(cmds->saved_stdin, 0);
-		close(cmds->saved_stdin);
-		cmds->saved_stdin = -1;
-	}
-	if(cmds->saved_stdout != -1)
-	{
-		dup2(cmds->saved_stdout, 1);
-		close(cmds->saved_stdout);
-		cmds->saved_stdout = -1;
-	}
 }

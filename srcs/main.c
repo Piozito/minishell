@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 14:49:40 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:25:56 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,13 @@ void	main_loop(t_env *cmds)
 		check_input(input);
 		if (*input != '\0')
 		{
-			pipes_handler(cmds, input);
 			add_history(input);
-		}
-		else
-		{
-			free(input);
-			continue;
+			pipes_handler(cmds, input);
+			ft_cmds_free(cmds);
+			duping(cmds);
 		}
 		free(input);
-		ft_cmds_free(cmds);
-		duping(cmds);
 	}
-	write(2, "exit\n", 5);
 	free(input);
 }
 
@@ -86,6 +80,7 @@ int	main(int argc, char **argv, char **env)
 	cmds->env = deep_copy_environ(env);
 	cmds->exit_status = 0;
 	main_loop(cmds);
+	write(2, "exit\n", 5);
 	free_env(cmds->env, env);
 	free_env(cmds->exp, env);
 	duping(cmds);

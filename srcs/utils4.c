@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:39:09 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/02 14:52:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:02:32 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ int	env_tester(t_env *cmd)
 	int	j;
 
 	i = 0;
-	j = 0;
 	while (cmd->env[i])
 	{
+		j = 0;
 		while (cmd->env[i][j])
 		{
 			if (j > 131071)
