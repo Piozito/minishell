@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:39:09 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/02 11:24:53 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:16:06 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,27 @@ char	*get_file(t_env *cmds, size_t i)
 		j++;
 	}
 	return (cmds->arg[i]);
+}
+
+int	env_tester(t_env *cmd)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (cmd->env[i])
+	{
+		while (cmd->env[i][j])
+		{
+			if (j > 131071)
+			{
+				write(2, "env too long \n", 15);
+				return (1);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }
