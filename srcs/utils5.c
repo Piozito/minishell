@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 13:17:27 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/02 10:58:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:52:51 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ void	remove_args(char **args, int pos)
 		args[j] = args[j + 2];
 		j++;
 	}
+	free(args[j]);
+	free(args[j + 1]);
 	args[j] = NULL;
-	args[j + 1] = NULL;
 }
 
 void	create_pipe(int p_fd[2])

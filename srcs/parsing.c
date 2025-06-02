@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 12:17:38 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:55:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,19 @@ t_env	*pipes_maker(t_env *cmds, char **pipes)
 	t_env	*temp;
 	t_env	*new_cmd;
 
-	i = -1;
-	while (pipes[++i] != NULL)
+	if (parsing(cmds, pipes[0]) == 1)
+		return (NULL);
+	temp = cmds;
+	for (i = 1; pipes[i] != NULL; i++)
 	{
 		new_cmd = malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
 		if (parsing(new_cmd, pipes[i]) == 1)
+		{
 			return (NULL);
-		if (i == 0)
-		{
-			cmds = new_cmd;
-			temp = cmds;
 		}
-		else
-		{
-			temp->next = new_cmd;
-			temp = temp->next;
-		}
+		temp->next = new_cmd;
+		temp = temp->next;
 	}
 	temp->next = NULL;
 	return (cmds);
@@ -122,5 +118,6 @@ int	parsing(t_env *cmd, const char *input)
 	cmd->path = my_get_path(cmd);
 	apply_heredoc(cmd);
 	free_subtokens(subtokens);
+	ft_debug(cmd);
 	return (0);
 }

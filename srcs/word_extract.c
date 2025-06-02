@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:31:57 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/27 13:35:52 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:09:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,36 @@ int	extract_helper(char **result, size_t *allocated_size, size_t i)
 	return (0);
 }
 
+void	quotes(const char *s, size_t idx, char *quote)
+{
+	if (!(*quote) && (s[idx] == '\'' || s[idx] == '\"'))
+		*quote = s[idx];
+	else if (*quote && s[idx] == *quote)
+		*quote = 0;
+}
+
+int	extract_help(const char *s, size_t *index, char del, char *quote)
+{
+	if (del == '|')
+	{
+		handle_quote(s, index, (int *)quote);
+	}
+	return (0);
+}
+
+int	check_break(const char *s, size_t idx, char quote, char del)
+{
+	if (!quote && is_separator(s[idx], del, 0, 0))
+		return (1);
+	return (0);
+}
+
 char	*extract_word(const char *s, size_t *index, char del)
 {
 	char	*result;
 	size_t	allocated_size;
 	size_t	i;
-	int		quote;
+	char	quote;
 
 	allocated_size = 1024;
 	quote = 0;
@@ -89,16 +113,17 @@ char	*extract_word(const char *s, size_t *index, char del)
 	result = malloc(allocated_size);
 	if (!result)
 		return (NULL);
-	while (s[*index] && !is_separator(s[*index], del, quote, quote))
+	while (s[*index])
 	{
-		if (del == '|')
-		{
-			handle_redir(s, index, result, &i);
-			handle_quote(s, index, &quote);
-		}
+		if (check_break(s, *index, quote, del))
+			break ;
+		quotes(s, *index, &quote);
+		extract_help(s, index, del, &quote);
 		result[i++] = s[(*index)++];
 		if (extract_helper(&result, &allocated_size, i))
 			return (NULL);
+		if (check_break(s, *index, quote, del))
+			break ;
 	}
 	result[i] = '\0';
 	return (result);

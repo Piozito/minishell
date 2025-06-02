@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 11:27:19 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:49:40 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,20 @@ void	main_loop(t_env *cmds)
 		signal(SIGINT, ft_handler);
 		signal(SIGQUIT, SIG_IGN);
 		input = readline("./minishell: ");
-		signal(SIGINT, ft_noint_handler);
-		signal(SIGQUIT, ft_noint_handler);
 		if (input == NULL)
 			break ;
+		signal(SIGQUIT, ft_noint_handler);
+		signal(SIGINT, ft_noint_handler);
 		check_input(input);
 		if (*input != '\0')
 		{
 			pipes_handler(cmds, input);
 			add_history(input);
+		}
+		else
+		{
+			free(input);
+			continue;
 		}
 		free(input);
 		ft_cmds_free(cmds);

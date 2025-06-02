@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/27 15:17:25 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:52:05 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,10 @@ int	ft_pipe(t_env *cmds)
 		cmd = cmd->next;
 	}
 	cmd = cmds;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	pipo(cmd, num_cmds, &last_pid);
+	signal(SIGINT, ft_noint_handler);
+	signal(SIGQUIT, ft_noint_handler);
 	return (wait_for_it(last_pid));
 }

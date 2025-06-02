@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:19:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 12:39:42 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:48:43 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,16 @@ int	handle_parent(pid_t pid, t_env *cmds)
 
 void	duping(t_env *cmds)
 {
-	dup2(cmds->saved_stdin, 0);
-	dup2(cmds->saved_stdout, 1);
-	close(cmds->saved_stdin);
-	close(cmds->saved_stdout);
+	if(cmds->saved_stdin != -1)
+	{
+		dup2(cmds->saved_stdin, 0);
+		close(cmds->saved_stdin);
+		cmds->saved_stdin = -1;
+	}
+	if(cmds->saved_stdout != -1)
+	{
+		dup2(cmds->saved_stdout, 1);
+		close(cmds->saved_stdout);
+		cmds->saved_stdout = -1;
+	}
 }
