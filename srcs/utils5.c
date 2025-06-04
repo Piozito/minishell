@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils5.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 13:17:27 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/02 15:46:37 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:23:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ void	remove_args(char **args, int pos)
 	int	j;
 
 	j = pos;
+	free(args[j]);
+	free(args[j + 1]);
 	while (args[j + 2])
 	{
 		args[j] = args[j + 2];
 		j++;
 	}
-	free(args[j]);
-	free(args[j + 1]);
 	args[j] = NULL;
+	args[j + 1] = NULL;
 }
 
 void	create_pipe(int p_fd[2])
@@ -98,9 +99,7 @@ int	arg_counter(char **subtokens, int *command_set)
 		while (subtokens[j][k])
 		{
 			if (subtokens[j][k] == '<' || subtokens[j][k] == '>')
-			{
 				break ;
-			}
 			k++;
 		}
 		arg_count++;

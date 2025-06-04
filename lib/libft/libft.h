@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:47:48 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/26 15:28:34 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:28:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,5 @@ char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
-
-typedef struct s_list
-{
-	int				content;
-	int				index;
-	struct s_list	*next;
-}					t_list;
-
-void				ft_lstadd_back(t_list **lst, t_list *new);
-void				ft_lstadd_front(t_list **lst, t_list *new);
-void				ft_lstiter(t_list *lst, void (*f)(void *));
-t_list				*ft_lstlast(t_list *lst);
-t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
-						void (*del)(void *));
-t_list				*ft_lstnew(int content);
-int					ft_lstsize(t_list *lst);
 
 #endif

@@ -45,13 +45,12 @@ char	*expand_string_variables(t_env *cmd, const char *input)
 
 	i = 0;
 	cap = 0;
-	while(cmd->env[i])
+	while (cmd->env[i])
 	{
-		if(ft_strlen(cmd->env[i]) > cap)
+		if (ft_strlen(cmd->env[i]) > cap)
 			cap = ft_strlen(cmd->env[i]);
 		i++;
 	}
-
 	res = malloc(cap);
 	if (!res)
 		return (NULL);

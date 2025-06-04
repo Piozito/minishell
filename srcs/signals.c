@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:49:43 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 14:01:44 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:47:13 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,44 +15,24 @@
 void	ft_cmds_free(t_env *cmds)
 {
 	t_env	*temp;
-	int		i;
+	t_env	*next;
 
 	if (!cmds)
-		return;
+		return ;
 	if (cmds->path)
-	{
 		free(cmds->path);
-		cmds->path = NULL;
-	}
-	if (cmds->cmd)
-	{
+	if (cmds->cmd && (!cmds->path || ft_strcmp(cmds->cmd, cmds->path) != 0))
 		free(cmds->cmd);
-		cmds->cmd = NULL;
-	}
-	if (cmds->arg)
-	{
-		i = 0;
-		while (cmds->arg[i])
-		{
-			free(cmds->arg[i]);
-			cmds->arg[i] = NULL;
-			i++;
-		}
-		free(cmds->arg);
-		cmds->arg = NULL;
-	}
+	free_subtokens(cmds->arg);
 	temp = cmds->next;
 	while (temp != NULL)
 	{
-		t_env *next = temp->next;
-
-		if (temp->path) free(temp->path);
-		if (temp->cmd) free(temp->cmd);
-		if (temp->arg) {
-			i = 0;
-			while (temp->arg[i]) free(temp->arg[i++]);
-			free(temp->arg);
-		}
+		next = temp->next;
+		if (temp->path)
+			free(temp->path);
+		if (temp->cmd)
+			free(temp->cmd);
+		free_subtokens(temp->arg);
 		free(temp);
 		temp = next;
 	}

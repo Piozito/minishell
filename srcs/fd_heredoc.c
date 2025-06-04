@@ -6,39 +6,11 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:36:46 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 10:57:00 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:54:15 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
-
-char	*concatenate_strings(char **strings)
-{
-	size_t	total_length;
-	size_t	i;
-	char	*result;
-
-	i = 0;
-	total_length = 0;
-	if (strings == NULL)
-		return (NULL);
-	while (strings[i] != NULL)
-	{
-		total_length += ft_strlen(strings[i]);
-		i++;
-	}
-	result = (char *)malloc(total_length + 1);
-	if (result == NULL)
-		return (NULL);
-	result[0] = '\0';
-	i = 0;
-	while (strings[i] != NULL)
-	{
-		ft_strlcat(result, strings[i], total_length + 1);
-		i++;
-	}
-	return (result);
-}
 
 void	heredoctor(char *word, int *fds, t_env *cmds)
 {
@@ -54,7 +26,7 @@ void	heredoctor(char *word, int *fds, t_env *cmds)
 			free(line);
 			return ;
 		}
-		expanded_line = expand_string_variables(cmds, line);
+		expanded_line = hc_expand(cmds, line);
 		if (!expanded_line)
 			expanded_line = ft_strdup(line);
 		write(fds[1], expanded_line, ft_strlen(expanded_line));

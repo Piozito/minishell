@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:39:09 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/04 12:45:08 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:25:51 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	command_not_found(t_env *cmds)
 	char	*full_str;
 	char	*temp;
 
-	if(env_tester(cmds) == 1)
+	if (env_tester(cmds) == 1)
 	{
 		cmds->exit_status = 126;
 		return ;
@@ -101,14 +101,14 @@ int	env_tester(t_env *cmd)
 	int	j;
 
 	i = 0;
-	j = 0;
 	while (cmd->env[i])
 	{
+		j = 0;
 		while (cmd->env[i][j])
 		{
 			if (j > 131071)
 			{
-				write(2, "Argument list too long.\n", 24);
+				write(2, "env too long \n", 15);
 				return (1);
 			}
 			j++;

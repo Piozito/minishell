@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/02 17:51:48 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:26:17 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	ft_cd(t_env *cmds)
 			write(cmds->fd, "\n", 1);
 			return (1);
 		}
-		if(old_pwd)
+		if (old_pwd)
 			update_pwd(cmds, old_pwd);
 	}
 	else
