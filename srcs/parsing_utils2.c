@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:26:00 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 16:03:30 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:21:49 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	cmd_check(t_env *cmds)
 		cmds->exit_status = 127;
 		return (1);
 	}
+	else
+		return (2);
 	return (0);
 }
 

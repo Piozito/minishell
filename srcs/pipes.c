@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/02 13:52:05 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:45:25 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ static void	execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
 	}
 	if (apply_fd(cmd) == 1)
 		exit(1);
+	if (cmd_check(cmd) == 2 && env_tester(cmd) == 1)
+	{
+		cmd->exit_status = 126;
+		duping(cmd);
+		exit(cmd->exit_status);
+	}
 	cmd->exit_status = check_builtin(cmd);
 	duping(cmd);
 	exit(cmd->exit_status);
@@ -48,8 +54,8 @@ pid_t	handle_child(t_env *cmds, int prev_fd, int p_fd[2], int is_last)
 		if ((ft_isalpha(cmds->cmd[0]) == 0 && cmd_check(cmds) == 0)
 			|| cmds->cmd[0] == ' ')
 		{
-			command_not_found(cmds->cmd);
-			exit(127);
+			command_not_found(cmds);
+			exit(cmds->exit_status);
 		}
 		execute_command(cmds, prev_fd, p_fd, is_last);
 	}

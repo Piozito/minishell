@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:31:57 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 16:11:35 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:09:52 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,41 @@ int	word_count_m(const char *s, char c)
 	if (s[0] && !is_separator(s[0], c, 0, 0))
 		count++;
 	return (count);
+}
+
+int	extract_helper(char **result, size_t *allocated_size, size_t i)
+{
+	if (i >= *allocated_size - 1)
+	{
+		*result = ft_strrealloc(*result, allocated_size);
+		if (!*result)
+			return (1);
+	}
+	return (0);
+}
+
+void	quotes(const char *s, size_t idx, char *quote)
+{
+	if (!(*quote) && (s[idx] == '\'' || s[idx] == '\"'))
+		*quote = s[idx];
+	else if (*quote && s[idx] == *quote)
+		*quote = 0;
+}
+
+int	extract_help(const char *s, size_t *index, char del, char *quote)
+{
+	if (del == '|')
+	{
+		handle_quote(s, index, (int *)quote);
+	}
+	return (0);
+}
+
+int	check_break(const char *s, size_t idx, char quote, char del)
+{
+	if (!quote && is_separator(s[idx], del, 0, 0))
+		return (1);
+	return (0);
 }
 
 char	*extract_word(const char *s, size_t *index, char del)

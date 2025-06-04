@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:58 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/05/26 15:06:08 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:44:21 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_env(t_env *cmds)
 	int	i;
 
 	i = 0;
+	if (env_tester(cmds) == 1)
+		return (126);
 	if (cmds->arg[0] != NULL)
 	{
 		write(cmds->fd, "env: env doesn't accept flags or arguments.\n", 45);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 14:52:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:44:43 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,13 @@ int	ft_exec(t_env *command)
 		init_exec(exec_args, command, arg_count);
 		if (command->path == NULL)
 		{
-			command_not_found(command->cmd);
+			command_not_found(command);
 			free(exec_args);
-			command->exit_status = 127;
 			return (command->exit_status);
 		}
 		command->exit_status = handle_fork(command->path, exec_args, command);
 	}
+	command->exit_status = 126;
 	free(exec_args);
 	return (command->exit_status);
 }

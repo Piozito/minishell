@@ -6,7 +6,7 @@
 /*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/05/26 15:04:14 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:51:48 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,11 @@ static char	*get_cd_path(t_env *cmds, char *path)
 
 static void	update_pwd(t_env *cmds, char *old_pwd)
 {
-	char	new_pwd[1024];
+	char	*new_pwd;
 	char	*tmp;
 
-	if (getcwd(new_pwd, 1024))
+	new_pwd = getcwd(NULL, 0);
+	if (new_pwd)
 	{
 		tmp = ft_strjoin("OLDPWD=", old_pwd);
 		ft_putenv(cmds, tmp);
@@ -91,13 +92,12 @@ static void	update_pwd(t_env *cmds, char *old_pwd)
 
 int	ft_cd(t_env *cmds)
 {
-	char	old_pwd[1024];
+	char	*old_pwd;
 	char	*path;
 
+	old_pwd = getcwd(NULL, 0);
 	if ((cmds->arg[1] == NULL || cmds->arg[0] == NULL))
 	{
-		if (!getcwd(old_pwd, 1024))
-			general_error("getcwd error.", 1, 1, cmds);
 		path = get_cd_path(cmds, cmds->arg[0]);
 		if (!path)
 			return (1);
@@ -108,7 +108,8 @@ int	ft_cd(t_env *cmds)
 			write(cmds->fd, "\n", 1);
 			return (1);
 		}
-		update_pwd(cmds, old_pwd);
+		if(old_pwd)
+			update_pwd(cmds, old_pwd);
 	}
 	else
 	{

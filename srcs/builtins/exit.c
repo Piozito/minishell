@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/26 13:50:54 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:36:13 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	ft_exit(t_env *cmds)
 		exit(0);
 	else
 	{
+		write(cmds->fd, "exit \n", 7);
 		write(cmds->fd, "too many arguments \n", 20);
 		return (1);
 	}

@@ -39,10 +39,19 @@ void	exp_line(const char *input, size_t *cap, char **res, t_env *cmd)
 
 char	*expand_string_variables(t_env *cmd, const char *input)
 {
-	size_t	cap;
 	char	*res;
+	size_t	cap;
+	size_t	i;
 
-	cap = ft_strlen(input) + 1024;
+	i = 0;
+	cap = 0;
+	while(cmd->env[i])
+	{
+		if(ft_strlen(cmd->env[i]) > cap)
+			cap = ft_strlen(cmd->env[i]);
+		i++;
+	}
+
 	res = malloc(cap);
 	if (!res)
 		return (NULL);

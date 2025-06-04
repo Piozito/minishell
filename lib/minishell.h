@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 17:40:53 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:43:12 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,9 @@ int		var_quote(const char *input, size_t *i, int quote);
 int		is_separator(char ch, char c, int quote, int dquote);
 int		general_error(char *str, int free, int ex, t_env *cmds);
 int		handle_quote(const char *s, size_t *index, int *quote_flag);
-int		check_break(const char *s, size_t idx, char quote, char del);
 int		extract_helper(char **result, size_t *allocated_size, size_t i);
 int		word_count_helper(const char *s, size_t *i, int *quote, char c);
-int		extract_helper(char **result, size_t *allocated_size, size_t i);
-int		extract_help(const char *s, size_t *index, char del, char *quote);
 int		handle_redir(const char *s, size_t *index, char *result, size_t *i);
-char	**fake_env_creator(void);
 char	*my_get_path(t_env *cmds);
 char	*get_file(t_env *cmds, size_t i);
 char	**deep_copy_environ(char **environ);
@@ -109,7 +105,7 @@ void	export_print(t_env *env);
 void	ft_noint_handler(int sig);
 void	ft_cmds_free(t_env *cmds);
 void	malloc_fail(char **tokens);
-void	command_not_found(char *cmd);
+void	command_not_found(t_env *cmds);
 void	ex_refresh(t_env *env, int i);
 void	free_subtokens(char **subtokens);
 void	remove_args(char **args, int pos);
@@ -117,7 +113,6 @@ void	free_env(char **array, char **env);
 void	remove_closed_quotes(char **result);
 void	expand_variables(t_env *cmd, char **result);
 void	pipes_handler(t_env *cmds, const char *input);
-void	quotes(const char *s, size_t idx, char *quote);
 void	pipo(t_env *cmd, int num_cmds, pid_t *last_pid);
 void	handle_parent_process(int p_fd[2], int *prev_fd);
 void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i);

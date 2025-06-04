@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:39:09 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/02 16:02:32 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:45:08 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,22 @@ char	*ft_strstr(const char *big, const char *little)
 	return (NULL);
 }
 
-void	command_not_found(char *cmd)
+void	command_not_found(t_env *cmds)
 {
 	char	*full_str;
 	char	*temp;
 
-	temp = ft_strjoin("command not found: \"", cmd);
+	if(env_tester(cmds) == 1)
+	{
+		cmds->exit_status = 126;
+		return ;
+	}
+	temp = ft_strjoin("command not found: \"", cmds->cmd);
 	full_str = ft_strjoin(temp, "\"\n");
 	write(2, full_str, ft_strlen(full_str));
 	free(temp);
 	free(full_str);
+	cmds->exit_status = 127;
 }
 
 int	executable_check(t_env *cmds)
@@ -95,14 +101,14 @@ int	env_tester(t_env *cmd)
 	int	j;
 
 	i = 0;
+	j = 0;
 	while (cmd->env[i])
 	{
-		j = 0;
 		while (cmd->env[i][j])
 		{
 			if (j > 131071)
 			{
-				write(2, "env too long \n", 15);
+				write(2, "Argument list too long.\n", 24);
 				return (1);
 			}
 			j++;
