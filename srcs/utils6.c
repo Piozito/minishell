@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:40:17 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 17:40:27 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:31:35 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,13 @@ char	**fake_env_creator(void)
 	free(cwd);
 	new[3] = NULL;
 	return (new);
+}
+
+void	ft_clear(t_env *cmds)
+{
+	free_subtokens(cmds->env);
+	free_subtokens(cmds->exp);
+	ft_cmds_free(cmds);
+	duping(cmds);
+	free(cmds);
 }

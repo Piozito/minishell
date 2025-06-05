@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:19:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 14:20:40 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:31:14 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,15 @@ char	*my_get_path(t_env *cmds)
 
 void	execute_child(char *path, char **exec_args, t_env *command)
 {
+	int	exit_st;
+
 	if (execve(path, exec_args, command->env) == -1)
 	{
 		command_not_found(command);
 		free(exec_args);
-		exit(command->exit_status);
+		exit_st = command->exit_status;
+		ft_clear(command);
+		exit(exit_st);
 	}
 }
 

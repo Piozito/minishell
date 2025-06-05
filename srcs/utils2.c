@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:37:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 15:19:21 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:54:08 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ char	**ft_split_quotes(t_env *cmd, const char *s, char delimiter)
 	if (check_redirs(result))
 	{
 		general_error("Redirection parsing error.", 1, 0, cmd);
+		free_subtokens(result);
 		return (NULL);
 	}
 	return (result);

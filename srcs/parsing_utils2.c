@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:26:00 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 15:19:24 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:03:49 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	set_args(t_env *cmd, char **subtokens, int command_set)
 		j++;
 	}
 	cmd->arg[arg_index] = NULL;
+	free_subtokens(subtokens);
 }
 
 int	is_valid(char *str)

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:49:43 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 16:51:27 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:21:30 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void	ft_cmds_free(t_env *cmds)
 	while (temp != NULL)
 	{
 		next = temp->next;
+		if (temp->cmd && (!temp->path || ft_strcmp(temp->cmd, temp->path) != 0))
+			free(temp->cmd);
 		if (temp->path)
 			free(temp->path);
-		if (temp->cmd)
-			free(temp->cmd);
 		free_subtokens(temp->arg);
 		free(temp);
 		temp = next;
@@ -67,7 +67,7 @@ void	ft_noint_handler(int sig)
 int	general_error(char *str, int free, int ex, t_env *cmds)
 {
 	if (free == 1)
-		ft_cmds_free(cmds);
+		ft_clear(cmds);
 	ft_putstr_fd(str, 1);
 	ft_putstr_fd("\n", 1);
 	if (ex == 1)

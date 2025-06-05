@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/05 16:50:58 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:31:02 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
 {
+	int	exit_st;
+
 	if (prev_fd != 0)
 	{
 		if (dup2(prev_fd, STDIN_FILENO) == -1)
@@ -31,23 +33,24 @@ static void	execute_command(t_env *cmd, int prev_fd, int p_fd[2], int is_last)
 		exit(1);
 	if (cmd_check(cmd) == 2 && env_tester(cmd) == 1)
 	{
-		cmd->exit_status = 126;
-		duping(cmd);
-		exit(cmd->exit_status);
+		ft_clear(cmd);
+		exit(126);
 	}
-	cmd->exit_status = check_builtin(cmd);
-	duping(cmd);
-	exit(cmd->exit_status);
+	exit_st = check_builtin(cmd);
+	ft_clear(cmd);
+	exit(exit_st);
 }
 
 pid_t	handle_child(t_env *cmds, int prev_fd, int p_fd[2], int is_last)
 {
 	pid_t	pid;
+	int		exit_st;
 
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork");
+		ft_clear(cmds);
 		exit(1);
 	}
 	if (pid == 0)
@@ -56,7 +59,9 @@ pid_t	handle_child(t_env *cmds, int prev_fd, int p_fd[2], int is_last)
 			|| ft_strchr(cmds->cmd, ' '))
 		{
 			command_not_found(cmds);
-			exit(cmds->exit_status);
+			exit_st = cmds->exit_status;
+			ft_clear(cmds);
+			exit(exit_st);
 		}
 		execute_command(cmds, prev_fd, p_fd, is_last);
 	}

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 15:19:33 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:10:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_env	*pipes_maker(t_env *cmds, char **pipes)
 		i++;
 	}
 	temp->next = NULL;
+	free_subtokens(pipes);
 	return (cmds);
 }
 
@@ -45,8 +46,8 @@ void	pipes_handler(t_env *cmds, const char *input)
 	{
 		if (parsing(cmds, pipes[0]) == 1)
 			return ;
-		pop(cmds, 0);
 		free_subtokens(pipes);
+		pop(cmds, 0);
 		return ;
 	}
 	cmds = pipes_maker(cmds, pipes);
@@ -56,7 +57,6 @@ void	pipes_handler(t_env *cmds, const char *input)
 		return ;
 	}
 	cmds->exit_status = ft_pipe(cmds);
-	free_subtokens(pipes);
 }
 
 int	parsing_help(t_env *cmd, int command_set)
@@ -103,12 +103,9 @@ int	parsing(t_env *cmd, const char *input)
 	if (!cmd->arg)
 		malloc_fail(subtokens);
 	set_args(cmd, subtokens, command_set);
-	if (check_heredoc(cmd) == 1)
-		return (1);
-	if (parsing_help(cmd, command_set) == 1)
+	if (parsing_help(cmd, command_set) == 1 || check_heredoc(cmd) == 1)
 		return (1);
 	cmd->path = my_get_path(cmd);
 	apply_heredoc(cmd);
-	free_subtokens(subtokens);
 	return (0);
 }

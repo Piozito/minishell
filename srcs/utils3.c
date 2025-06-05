@@ -25,6 +25,7 @@ int	pop_help(t_env *cmds, int i)
 int	pop(t_env *cmds, int i)
 {
 	pid_t	pid;
+	int		exit_st;
 
 	if (cmd_check(cmds) == 0)
 		return (pop_help(cmds, i));
@@ -34,9 +35,17 @@ int	pop(t_env *cmds, int i)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		if (apply_fd(cmds) == 1)
+		{
+			ft_clear(cmds);
 			exit(1);
+		}
 		if (i == 0)
-			exit(check_builtin(cmds));
+		{
+			exit_st = check_builtin(cmds);
+			ft_clear(cmds);
+			exit(exit_st);
+		}
+		ft_clear(cmds);
 		exit(1);
 	}
 	else if (pid > 0)
