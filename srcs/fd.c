@@ -109,14 +109,13 @@ int	apply_fd(t_env *cmds)
 		j = 0;
 		if (fd_checker(cmds, i, &j) == 0 && cmds->arg[i + 1])
 		{
+			remove_args(cmds->arg, i);
 			if (j == 1)
 				return (fd_error("append"));
 			else if (j == 2)
 				return (fd_error("input"));
 			else if (j == 3)
 				return (fd_error("output"));
-			else
-				remove_args(cmds->arg, i);
 		}
 		else
 			i++;

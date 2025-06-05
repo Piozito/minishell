@@ -31,6 +31,8 @@ int	pop(t_env *cmds, int i)
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (apply_fd(cmds) == 1)
 			exit(1);
 		if (i == 0)

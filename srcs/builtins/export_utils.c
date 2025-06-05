@@ -6,13 +6,13 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:09:23 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/05 15:23:01 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:05:12 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
 
-void	bubble_sort(char **env, int n)
+char	**bubble_sort(char **env, int n)
 {
 	int		i;
 	int		j;
@@ -24,7 +24,7 @@ void	bubble_sort(char **env, int n)
 		j = -1;
 		while (++j < n - i - 1)
 		{
-			if (ft_strcmp(env[j], env[j + 1]) > 0)
+			if (ft_strncmp(env[j], env[j + 1], 1) > 0)
 			{
 				tmp = env[j];
 				env[j] = env[j + 1];
@@ -32,6 +32,7 @@ void	bubble_sort(char **env, int n)
 			}
 		}
 	}
+	return (env);
 }
 
 void	export_print2(char **new_env, int i)
@@ -68,7 +69,7 @@ void	export_print(t_env *env)
 	while (++i < j)
 		new_env[i] = env->exp[i];
 	new_env[j] = NULL;
-	bubble_sort(new_env, j);
+	new_env = bubble_sort(new_env, j);
 	i = -1;
 	while (new_env[++i])
 		export_print2(new_env, i);
