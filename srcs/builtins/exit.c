@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/04 13:06:25 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:14:46 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,15 @@ int	ft_exit(t_env *cmds)
 	}
 	else if (cmds->arg[0] && cmds->arg[1] == NULL)
 	{
-		write(cmds->fd, "non numeric arg \n", 18);
+		write(1, "non numeric arg \n", 18);
 		exit(2);
 	}
 	else if (!cmds->arg[0])
 		exit(0);
 	else
 	{
-		write(cmds->fd, "exit \n", 7);
-		write(cmds->fd, "too many arguments \n", 20);
+		write(1, "exit \n", 7);
+		write(1, "too many arguments \n", 20);
 		return (1);
 	}
 	return (128);

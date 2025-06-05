@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:31:57 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 16:11:35 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:08:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*extract_word(const char *s, size_t *index, char del)
 	allocated_size = 1024;
 	quote = 0;
 	i = 0;
-	result = malloc(allocated_size);
+	result = ft_calloc(allocated_size, 1);
 	if (!result)
 		return (NULL);
 	while (s[*index])
@@ -83,12 +83,11 @@ char	*extract_word(const char *s, size_t *index, char del)
 		if (check_break(s, *index, quote, del))
 			break ;
 		quotes(s, *index, &quote);
-		extract_help(s, index, del, &quote);
+		if (del == '|' && !quote)
+			handle_redir(s, index, result, &i);
 		result[i++] = s[(*index)++];
 		if (extract_helper(&result, &allocated_size, i))
 			return (NULL);
-		if (check_break(s, *index, quote, del))
-			break ;
 	}
 	result[i] = '\0';
 	return (result);
@@ -100,7 +99,7 @@ char	*ft_strrealloc(char *result, size_t *size_ptr)
 	size_t	new_size;
 
 	new_size = (*size_ptr) * 2;
-	new_result = (char *)malloc(new_size * sizeof(char));
+	new_result = ft_calloc(new_size, 1);
 	if (!new_result)
 	{
 		free(result);

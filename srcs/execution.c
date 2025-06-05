@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:15:45 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/04 13:07:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:32:55 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ int	ft_exec(t_env *command)
 		}
 		command->exit_status = handle_fork(command->path, exec_args, command);
 	}
-	command->exit_status = 126;
+	else
+		command->exit_status = 126;
 	free(exec_args);
 	return (command->exit_status);
 }

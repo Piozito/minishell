@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:49:43 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 16:47:13 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:14:50 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	ft_cmds_free(t_env *cmds)
 
 	if (!cmds)
 		return ;
-	if (cmds->path)
-		free(cmds->path);
 	if (cmds->cmd && (!cmds->path || ft_strcmp(cmds->cmd, cmds->path) != 0))
 		free(cmds->cmd);
+	if (cmds->path)
+		free(cmds->path);
 	free_subtokens(cmds->arg);
 	temp = cmds->next;
 	while (temp != NULL)

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/04 13:26:22 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:15:06 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_unset(t_env *cmds)
 	i = 0;
 	if (cmds->arg[0][0] == '-')
 	{
-		write(cmds->fd, "unset: unset doesn't accept flags.\n", 36);
+		write(1, "unset: unset doesn't accept flags.\n", 36);
 		return (2);
 	}
 	while (cmds->arg[i])

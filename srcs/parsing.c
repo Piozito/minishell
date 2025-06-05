@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/04 13:22:08 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:19:33 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,14 @@ t_env	*pipes_maker(t_env *cmds, char **pipes)
 	t_env	*temp;
 	t_env	*new_cmd;
 
-	if (parsing(cmds, pipes[0]) == 1)
-		return (NULL);
+	parsing(cmds, pipes[0]);
 	temp = cmds;
 	i = 1;
 	while (pipes[i] != NULL)
 	{
 		new_cmd = malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
-		if (parsing(new_cmd, pipes[i]) == 1)
-			return (NULL);
+		parsing(new_cmd, pipes[i]);
 		temp->next = new_cmd;
 		temp = temp->next;
 		i++;
@@ -61,18 +59,12 @@ void	pipes_handler(t_env *cmds, const char *input)
 	free_subtokens(pipes);
 }
 
-int	parsing_help(t_env *cmd, char **subtokens, int command_set)
+int	parsing_help(t_env *cmd, int command_set)
 {
 	if (command_set == -1)
 	{
 		apply_fd(cmd);
 		return (0);
-	}
-	if (ft_strchr(cmd->cmd, ' ') != NULL)
-	{
-		command_not_found(cmd);
-		free_subtokens(subtokens);
-		return (1);
 	}
 	return (0);
 }
@@ -113,11 +105,10 @@ int	parsing(t_env *cmd, const char *input)
 	set_args(cmd, subtokens, command_set);
 	if (check_heredoc(cmd) == 1)
 		return (1);
-	if (parsing_help(cmd, subtokens, command_set) == 1)
+	if (parsing_help(cmd, command_set) == 1)
 		return (1);
 	cmd->path = my_get_path(cmd);
 	apply_heredoc(cmd);
 	free_subtokens(subtokens);
-	ft_debug(cmd);
 	return (0);
 }

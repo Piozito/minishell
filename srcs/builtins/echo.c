@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 13:00:22 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/04 13:06:09 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:22:34 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	ft_echo(t_env *cmds)
 	}
 	while (cmds->arg[j])
 	{
-		write(cmds->fd, cmds->arg[j], strlen(cmds->arg[j]));
+		write(1, cmds->arg[j], ft_strlen(cmds->arg[j]));
 		if (cmds->arg[j + 1])
-			write(cmds->fd, " ", 1);
+			write(1, " ", 1);
 		j++;
 	}
 	if (n)
-		write(cmds->fd, "\n", 1);
+		write(1, "\n", 1);
 	return (0);
 }

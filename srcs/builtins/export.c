@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 21:36:59 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/26 15:23:07 by fragarc2         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:22:08 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	find_env_index(char *arg, char **env)
 	if (key_len != 0)
 		key_len = key_len - 1;
 	else
-		key_len = strlen(arg);
+		key_len = ft_strlen(arg);
 	while (env && env[i])
 	{
 		if (!ft_strncmp(env[i], arg, key_len))
@@ -99,7 +99,7 @@ int	ft_export(t_env *env)
 	}
 	if (env->arg[0][0] == '-')
 	{
-		write(env->fd, "export: export doens't accepts flags.\n", 39);
+		write(1, "export: export doens't accepts flags.\n", 39);
 		return (2);
 	}
 	i = -1;
@@ -109,7 +109,7 @@ int	ft_export(t_env *env)
 			ex_refresh(env, i);
 		else
 		{
-			write(env->fd, "export:: not a valid identifier\n", 33);
+			write(1, "export:: not a valid identifier\n", 33);
 			return (2);
 		}
 	}

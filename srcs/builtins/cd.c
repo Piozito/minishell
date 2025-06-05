@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/04 13:26:17 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:14:31 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ int	ft_cd(t_env *cmds)
 			return (1);
 		if (chdir(path) != 0 && ft_strcmp(path, "-") != 0)
 		{
-			write(cmds->fd, "cd: no such file or directory: ", 32);
-			write(cmds->fd, path, ft_strlen(path));
-			write(cmds->fd, "\n", 1);
+			write(1, "cd: no such file or directory: ", 32);
+			write(1, path, ft_strlen(path));
+			write(1, "\n", 1);
 			return (1);
 		}
 		if (old_pwd)
@@ -113,7 +113,7 @@ int	ft_cd(t_env *cmds)
 	}
 	else
 	{
-		write(cmds->fd, "cd: cant accept flags or more than 1 arg.\n", 54);
+		write(1, "cd: cant accept flags or more than 1 arg.\n", 54);
 		return (2);
 	}
 	return (0);

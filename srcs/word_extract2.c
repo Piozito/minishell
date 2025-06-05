@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:18 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 16:13:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:18:58 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,8 @@ void	quotes(const char *s, size_t idx, char *quote)
 		*quote = s[idx];
 	else if (*quote && s[idx] == *quote)
 		*quote = 0;
-}
-
-int	extract_help(const char *s, size_t *index, char del, char *quote)
-{
-	if (del == '|')
-	{
-		handle_quote(s, index, (int *)quote);
-	}
-	return (0);
+	if (s[idx + 1] && s[idx + 1] != s[idx] && s[idx] == *quote)
+		*quote = 0;
 }
 
 int	check_break(const char *s, size_t idx, char quote, char del)
@@ -49,16 +42,16 @@ int	check_break(const char *s, size_t idx, char quote, char del)
 
 void	duping(t_env *cmds)
 {
-	if (cmds->saved_stdin != -1)
+	if (cmds->saved_stds[0] != -1)
 	{
-		dup2(cmds->saved_stdin, 0);
-		close(cmds->saved_stdin);
-		cmds->saved_stdin = -1;
+		dup2(cmds->saved_stds[0], 0);
+		close(cmds->saved_stds[0]);
+		cmds->saved_stds[0] = -1;
 	}
-	if (cmds->saved_stdout != -1)
+	if (cmds->saved_stds[1] != -1)
 	{
-		dup2(cmds->saved_stdout, 1);
-		close(cmds->saved_stdout);
-		cmds->saved_stdout = -1;
+		dup2(cmds->saved_stds[1], 1);
+		close(cmds->saved_stds[1]);
+		cmds->saved_stds[1] = -1;
 	}
 }

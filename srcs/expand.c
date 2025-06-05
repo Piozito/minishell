@@ -51,7 +51,7 @@ char	*expand_string_variables(t_env *cmd, const char *input)
 			cap = ft_strlen(cmd->env[i]);
 		i++;
 	}
-	res = malloc(cap);
+	res = ft_calloc(cap, 1);
 	if (!res)
 		return (NULL);
 	exp_line(input, &cap, &res, cmd);

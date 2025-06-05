@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:37:23 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/02 14:56:18 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:19:21 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	**pipe_check(t_env *cmds, const char *input)
 	char	quote;
 
 	i = 0;
-	pipe = 0;
+	pipe = 1;
 	quote = 0;
 	while (input[i] != '\0')
 	{
@@ -93,7 +93,7 @@ void	ft_split_quotes_helper(char **res, const char *s, char del, size_t w)
 		{
 			res[i] = extract_word(s, &index, del);
 			if (!res[i])
-				break ;
+				res[i] = ft_strdup("");
 		}
 		i++;
 	}
@@ -108,7 +108,7 @@ char	**ft_split_quotes(t_env *cmd, const char *s, char delimiter)
 	if (!s)
 		return (NULL);
 	words = word_count_m(s, delimiter);
-	result = (char **)malloc((words + 1) * sizeof(char *));
+	result = (char **)ft_calloc((words + 1) * sizeof(char *), 1);
 	if (!result)
 		return (NULL);
 	ft_split_quotes_helper(result, s, delimiter, words);

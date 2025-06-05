@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:09:23 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/02 10:53:30 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 15:23:01 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	bubble_sort(char **env, int n)
 		j = -1;
 		while (++j < n - i - 1)
 		{
-			if (strcmp(env[j], env[j + 1]) > 0)
+			if (ft_strcmp(env[j], env[j + 1]) > 0)
 			{
 				tmp = env[j];
 				env[j] = env[j + 1];
@@ -34,21 +34,21 @@ void	bubble_sort(char **env, int n)
 	}
 }
 
-void	export_print2(t_env *env, char **new_env, int i)
+void	export_print2(char **new_env, int i)
 {
-	write(env->fd, "declare -x ", 11);
+	write(1, "declare -x ", 11);
 	if (is_chr(new_env[i], '=') == 0)
 	{
-		write(env->fd, new_env[i], strlen(new_env[i]));
-		write(env->fd, "\n", 1);
+		write(1, new_env[i], ft_strlen(new_env[i]));
+		write(1, "\n", 1);
 	}
 	else
 	{
-		write(env->fd, new_env[i], is_chr(new_env[i], '='));
-		write(env->fd, "\"", 1);
-		ft_putstr_fd(new_env[i] + is_chr(new_env[i], '='), env->fd);
-		write(env->fd, "\"", 1);
-		write(env->fd, "\n", 1);
+		write(1, new_env[i], is_chr(new_env[i], '='));
+		write(1, "\"", 1);
+		ft_putstr_fd(new_env[i] + is_chr(new_env[i], '='), 1);
+		write(1, "\"", 1);
+		write(1, "\n", 1);
 	}
 }
 
@@ -71,7 +71,7 @@ void	export_print(t_env *env)
 	bubble_sort(new_env, j);
 	i = -1;
 	while (new_env[++i])
-		export_print2(env, new_env, i);
+		export_print2(new_env, i);
 	free(new_env);
 }
 

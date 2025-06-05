@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:19:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/04 13:22:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:20:40 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*my_get_path(t_env *cmds)
 	char	*path_part;
 	char	*path;
 
-	if (!access(cmds->cmd, X_OK))
+	if (cmds->cmd && !access(cmds->cmd, X_OK))
 		return (cmds->cmd);
 	i = -1;
 	path = env_expander(cmds, "PATH=");
@@ -47,7 +47,7 @@ char	*my_get_path(t_env *cmds)
 		path_part = ft_strjoin(allpath[i], "/");
 		exec = ft_strjoin(path_part, cmds->cmd);
 		free(path_part);
-		if (check_exec(exec, allpath) == 0)
+		if (cmds->cmd && check_exec(exec, allpath) == 0)
 			return (exec);
 		free(exec);
 	}
