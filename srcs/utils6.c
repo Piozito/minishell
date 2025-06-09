@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils6.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:40:17 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:59:18 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 19:09:47 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ char	**fake_env_creator(void)
 	new[2] = (char *)malloc(ft_strlen("PWD=") + ft_strlen(cwd) + 1);
 	if (!new[2])
 		general_error("env malloc failed.", 0, 1, NULL);
-	ft_strlcpy(new[2], "PWD=", 4);
-	ft_strlcat(new[2], cwd, ft_strlen(cwd));
+	ft_strlcpy(new[2], "PWD=", 5);
+	ft_strlcat(new[2], cwd, ft_strlen(cwd) + ft_strlen(new[2]) + 1);
 	free(cwd);
 	new[3] = NULL;
 	return (new);
@@ -102,4 +102,18 @@ void	ft_putenv(t_env *cmds, char *var)
 		}
 		i++;
 	}
+}
+
+char	*ft_envstrchr(const char *str, int c)
+{
+	while (*str)
+	{
+		if (*str == c)
+		{
+			str++;
+			return (ft_strdup(str));
+		}
+		str++;
+	}
+	return (ft_strdup(""));
 }

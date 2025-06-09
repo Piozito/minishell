@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:56:36 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/05 15:14:46 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:58:38 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,21 @@ int	num_ex(t_env *cmds)
 int	ft_exit(t_env *cmds)
 {
 	if (!cmds->arg[0])
-		exit(0);
+		exit(ft_clear(cmds));
 	else if (cmds->arg[1] == NULL && is_numeric(cmds->arg[0]) == 1)
 	{
 		if (cmds->arg[0])
-			exit(num_ex(cmds));
-		exit(0);
+			cmds->exit_status = num_ex(cmds);
+		exit(ft_clear(cmds));
 	}
 	else if (cmds->arg[0] && cmds->arg[1] == NULL)
 	{
 		write(1, "non numeric arg \n", 18);
+		ft_clear(cmds);
 		exit(2);
 	}
 	else if (!cmds->arg[0])
-		exit(0);
+		exit(ft_clear(cmds));
 	else
 	{
 		write(1, "exit \n", 7);

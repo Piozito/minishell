@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:11:20 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:20:30 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 19:09:39 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*env_expander(t_env *cmds, char *var_name)
 		j = 0;
 		if (ft_strncmp(var_name, cmds->env[i], ft_strlen(var_name)) == 0)
 		{
-			res = ft_strtrim(ft_strchr(cmds->env[i], '='), "=");
+			res = ft_envstrchr(cmds->env[i], '=');
 			while (cmds->env[i][j] != '=')
 				j++;
 			if (ft_strncmp(var_name, cmds->env[i], j) != 0 || res == NULL)

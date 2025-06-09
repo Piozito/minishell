@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:52:51 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 19:10:02 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ char	*get_file(t_env *cmds, size_t i);
 char	**deep_copy_environ(char **environ);
 char	**update_env(char *arg, char **env);
 char	*concatenate_strings(char **strings);
+char	*ft_envstrchr(const char *str, int c);
 char	*hc_expand(t_env *cmd, const char *input);
 char	*var_getter(const char *input, size_t *i);
 char	*env_expander(t_env *cmds, char *var_name);

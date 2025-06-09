@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: fragarc2 <fragarc2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:10:40 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/05 15:15:02 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 18:59:25 by fragarc2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ int	ft_pwd(t_env *cmds)
 		perror("pwd");
 	write(1, cwd, ft_strlen(cwd));
 	write(1, "\n", 1);
+	free(cwd);
 	return (0);
 }
