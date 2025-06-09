@@ -6,37 +6,36 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:49:43 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 19:21:30 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:43:55 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
 
-void	ft_cmds_free(t_env *cmds)
+void	ft_cmds_free(t_env *cmds, int ex)
 {
-	t_env	*temp;
-	t_env	*next;
+	t_env *tmp;
+	t_env *next;
 
-	if (!cmds)
-		return ;
-	if (cmds->cmd && (!cmds->path || ft_strcmp(cmds->cmd, cmds->path) != 0))
-		free(cmds->cmd);
-	if (cmds->path)
-		free(cmds->path);
-	free_subtokens(cmds->arg);
-	temp = cmds->next;
-	while (temp != NULL)
+	tmp = cmds;
+	if(ex == 1)
 	{
-		next = temp->next;
-		if (temp->cmd && (!temp->path || ft_strcmp(temp->cmd, temp->path) != 0))
-			free(temp->cmd);
-		if (temp->path)
-			free(temp->path);
-		free_subtokens(temp->arg);
-		free(temp);
-		temp = next;
+		free_subtokens(tmp->exp);
+		free_subtokens(tmp->env);
 	}
-	cmds->next = NULL;
+	duping(tmp);
+	while (tmp)
+	{
+		next = tmp->next;
+		if (tmp->cmd && (!tmp->path || ft_strcmp(tmp->cmd, tmp->path) != 0))
+			free(tmp->cmd);
+		if (tmp->path)
+			free(tmp->path);
+		free_subtokens(tmp->arg);
+		if(ex == 1 || tmp->prev)
+			free(tmp);
+		tmp = next;
+	}
 }
 
 void	ft_handler(int sig)

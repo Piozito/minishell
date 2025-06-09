@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 19:10:45 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:09:00 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_env	*pipes_maker(t_env *cmds, char **pipes)
 	{
 		new_cmd = malloc(sizeof(t_env));
 		initialize_cmd(cmds, new_cmd, 0);
+		new_cmd->prev = temp;
 		parsing(new_cmd, pipes[i]);
 		temp->next = new_cmd;
 		temp = temp->next;

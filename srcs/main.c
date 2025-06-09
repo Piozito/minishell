@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 19:30:28 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:44:09 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	main_loop(t_env *cmds)
 		{
 			add_history(input);
 			pipes_handler(cmds, input);
-			ft_cmds_free(cmds);
+			ft_cmds_free(cmds, 0);
 			duping(cmds);
 		}
 		free(input);

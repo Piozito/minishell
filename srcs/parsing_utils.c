@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 13:24:47 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 15:18:44 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 12:08:33 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 		cmd->cmd = NULL;
 		cmd->path = NULL;
 		cmd->arg = NULL;
+		cmd->prev = NULL;
 		cmd->next = NULL;
 		cmd->heredoc = -1;
 		cmd->saved_stds[0] = dup(0);
@@ -91,6 +92,7 @@ void	initialize_cmd(t_env *cmd, t_env *new_cmd, int i)
 	new_cmd->path = NULL;
 	new_cmd->cmd = NULL;
 	new_cmd->arg = NULL;
+	new_cmd->prev = NULL;
 	new_cmd->next = NULL;
 	new_cmd->exit_status = cmd->exit_status;
 	new_cmd->heredoc = cmd->heredoc;

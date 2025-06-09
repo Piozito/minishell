@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 19:07:17 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 13:25:45 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_env
 	int				heredoc;
 	int				saved_stds[2];
 	int				exit_status;
+	struct s_env	*prev;
 	struct s_env	*next;
 }				t_env;
 
@@ -107,7 +108,7 @@ void	ft_handler(int sig);
 void	ft_clear(t_env *cmds);
 void	export_print(t_env *env);
 void	ft_noint_handler(int sig);
-void	ft_cmds_free(t_env *cmds);
+void	ft_cmds_free(t_env *cmds, int ex);
 void	malloc_fail(char **tokens);
 void	command_not_found(t_env *cmds);
 void	ex_refresh(t_env *env, int i);
