@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:40:17 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:07:53 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:29:17 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,29 @@ int	ft_clear(t_env *cmds)
 	exit_code = temp->exit_status;
 	ft_cmds_free(temp, 1);
 	return (exit_code);
+}
+
+void	ft_putenv(t_env *cmds, char *var)
+{
+	int	i;
+	int	size;
+
+	i = 0;
+	size = ft_strlen(var);
+	while (cmds->env[i])
+	{
+		if (ft_strncmp(var, "OLDPWD=", 7) == 0
+			&& ft_strncmp(cmds->env[i], "OLDPWD=", 7) == 0)
+		{
+			free(cmds->env[i]);
+			cmds->env[i] = ft_strdup(var);
+		}
+		else if (ft_strncmp(var, "PWD=", 4) == 0
+			&& ft_strncmp(cmds->env[i], "PWD=", 4) == 0)
+		{
+			free(cmds->env[i]);
+			cmds->env[i] = ft_strdup(var);
+		}
+		i++;
+	}
 }

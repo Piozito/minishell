@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:11:20 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/04 13:08:12 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:20:30 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ char	*env_expander(t_env *cmds, char *var_name)
 			res = ft_strtrim(ft_strchr(cmds->env[i], '='), "=");
 			while (cmds->env[i][j] != '=')
 				j++;
-			if (ft_strncmp(var_name, cmds->env[i], j) != 0)
+			if (ft_strncmp(var_name, cmds->env[i], j) != 0 || res == NULL)
+			{
+				free(res);
 				return (ft_strdup(""));
-			if (res == NULL)
-				return (ft_strdup(""));
+			}
 			return (res);
 		}
 		i++;

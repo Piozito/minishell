@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:05:42 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:30:00 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,13 @@ void	ft_handler(int sig);
 void	ft_fake_handler(int sig);
 void	export_print(t_env *env);
 void	ft_noint_handler(int sig);
-void	ft_cmds_free(t_env *cmds, int ex);
 void	malloc_fail(char **tokens);
 void	command_not_found(t_env *cmds);
 void	ex_refresh(t_env *env, int i);
 void	free_subtokens(char **subtokens);
+void	ft_cmds_free(t_env *cmds, int ex);
 void	remove_args(char **args, int pos);
+void	ft_putenv(t_env *cmds, char *var);
 void	free_env(char **array, char **env);
 void	remove_closed_quotes(char **result);
 void	expand_variables(t_env *cmd, char **result);
@@ -128,7 +129,7 @@ void	set_args(t_env *cmd, char **subtokens, int command_set);
 void	check_shlvl(char **new_environ, char **environ, int count);
 void	var_joiner(char *exp, char **res, size_t *cap, size_t *len);
 void	execute_child(char *path, char **exec_args, t_env *command);
-pid_t	handle_child(t_env *cmds, int prev_fd, int p_fd[2], int is_last);
 void	hc_expline(const char *input, size_t *cap, char **res, t_env *cmd);
+pid_t	handle_child(t_env *cmds, int prev_fd, int p_fd[2], int is_last);
 
 #endif

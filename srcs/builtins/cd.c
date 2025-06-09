@@ -6,36 +6,11 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:46:18 by fragarc2          #+#    #+#             */
-/*   Updated: 2025/06/05 15:14:31 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:29:03 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../lib/minishell.h"
-
-static void	ft_putenv(t_env *cmds, char *var)
-{
-	int	i;
-	int	size;
-
-	i = 0;
-	size = ft_strlen(var);
-	while (cmds->env[i])
-	{
-		if (ft_strncmp(var, "OLDPWD=", 7) == 0
-			&& ft_strncmp(cmds->env[i], "OLDPWD=", 7) == 0)
-		{
-			free(cmds->env[i]);
-			cmds->env[i] = ft_strdup(var);
-		}
-		else if (ft_strncmp(var, "PWD=", 4) == 0
-			&& ft_strncmp(cmds->env[i], "PWD=", 4) == 0)
-		{
-			free(cmds->env[i]);
-			cmds->env[i] = ft_strdup(var);
-		}
-		i++;
-	}
-}
 
 static char	*homer(t_env *cmds)
 {
@@ -68,7 +43,7 @@ static char	*get_cd_path(t_env *cmds, char *path)
 		}
 		return (old_pwd);
 	}
-	return (path);
+	return (ft_strdup(path));
 }
 
 static void	update_pwd(t_env *cmds, char *old_pwd)
@@ -85,9 +60,20 @@ static void	update_pwd(t_env *cmds, char *old_pwd)
 		tmp = ft_strjoin("PWD=", new_pwd);
 		ft_putenv(cmds, tmp);
 		free(tmp);
+		free(new_pwd);
 	}
 	else
 		perror("getcwd");
+}
+
+int	cd_error(char *path, char *old_pwd)
+{
+	write(1, "cd: no such file or directory: ", 32);
+	write(1, path, ft_strlen(path));
+	write(1, "\n", 1);
+	free(old_pwd);
+	free(path);
+	return (1);
 }
 
 int	ft_cd(t_env *cmds)
@@ -96,18 +82,13 @@ int	ft_cd(t_env *cmds)
 	char	*path;
 
 	old_pwd = getcwd(NULL, 0);
-	if ((cmds->arg[1] == NULL || cmds->arg[0] == NULL))
+	if ((cmds->arg[0] == NULL || cmds->arg[1] == NULL))
 	{
 		path = get_cd_path(cmds, cmds->arg[0]);
 		if (!path)
 			return (1);
 		if (chdir(path) != 0 && ft_strcmp(path, "-") != 0)
-		{
-			write(1, "cd: no such file or directory: ", 32);
-			write(1, path, ft_strlen(path));
-			write(1, "\n", 1);
-			return (1);
-		}
+			return (cd_error(path, old_pwd));
 		if (old_pwd)
 			update_pwd(cmds, old_pwd);
 	}
@@ -116,5 +97,7 @@ int	ft_cd(t_env *cmds)
 		write(1, "cd: cant accept flags or more than 1 arg.\n", 54);
 		return (2);
 	}
+	free(old_pwd);
+	free(path);
 	return (0);
 }
