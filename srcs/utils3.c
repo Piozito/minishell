@@ -25,25 +25,18 @@ int	pop_help(t_env *cmds, int i)
 int	pop(t_env *cmds, int i)
 {
 	pid_t	pid;
-	int		exit_st;
 
-	if (cmd_check(cmds) == 0)
+	if (cmds->next == NULL)
 		return (pop_help(cmds, i));
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
 		if (apply_fd(cmds) == 1)
-		{
 			ft_clear(cmds);
-			exit(1);
-		}
 		if (i == 0)
 		{
-			exit_st = check_builtin(cmds);
-			ft_clear(cmds);
-			exit(exit_st);
+			cmds->exit_status = check_builtin(cmds);
+			exit(ft_clear(cmds));
 		}
 		ft_clear(cmds);
 		exit(1);

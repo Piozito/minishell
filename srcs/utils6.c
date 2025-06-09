@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:40:17 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 13:25:56 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:06:35 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,41 @@ char	**fake_env_creator(void)
 	return (new);
 }
 
-void	ft_clear(t_env *cmds)
+void	ft_cmds_free(t_env *cmds, int ex)
 {
-	t_env *temp;
+	t_env	*tmp;
+	t_env	*next;
+
+	tmp = cmds;
+	if (ex == 1)
+	{
+		free_subtokens(tmp->exp);
+		free_subtokens(tmp->env);
+	}
+	duping(tmp);
+	while (tmp)
+	{
+		next = tmp->next;
+		if (tmp->cmd && (!tmp->path || ft_strcmp(tmp->cmd, tmp->path) != 0))
+			free(tmp->cmd);
+		if (tmp->path)
+			free(tmp->path);
+		free_subtokens(tmp->arg);
+		if (ex == 1 || tmp->prev)
+			free(tmp);
+		tmp = next;
+	}
+}
+
+int	ft_clear(t_env *cmds)
+{
+	t_env	*temp;
+	int		exit_code;
 
 	temp = cmds;
-	while(temp && temp->prev)
+	while (temp && temp->prev)
 		temp = temp->prev;
+	exit_code = temp->exit_status;
 	ft_cmds_free(temp, 1);
+	return (exit_code);
 }

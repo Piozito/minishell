@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 12:00:49 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 13:25:45 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:05:42 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int		ft_echo(t_env *cmds);
 int		ft_unset(t_env *env);
 int		ft_export(t_env *env);
 int		apply_fd(t_env *cmds);
+int		ft_clear(t_env *cmds);
 int		cmd_check(t_env *cmds);
 int		env_tester(t_env *cmd);
 int		ft_exec(t_env *command);
@@ -105,7 +106,7 @@ char	**ft_split_quotes(t_env *cmd, const char *s, char delimiter);
 char	*ft_find_closing_quote(const char *str, int start, char quote);
 void	duping(t_env *cmds);
 void	ft_handler(int sig);
-void	ft_clear(t_env *cmds);
+void	ft_fake_handler(int sig);
 void	export_print(t_env *env);
 void	ft_noint_handler(int sig);
 void	ft_cmds_free(t_env *cmds, int ex);

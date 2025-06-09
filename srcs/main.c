@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 13:44:09 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:23:55 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	main_loop(t_env *cmds)
 
 	while (1)
 	{
-		initialize_cmd(cmds, NULL, 1);
 		signal(SIGINT, ft_handler);
 		signal(SIGQUIT, SIG_IGN);
+		initialize_cmd(cmds, NULL, 1);
 		input = readline("./minishell: ");
 		if (input == NULL)
 			break ;

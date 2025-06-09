@@ -6,37 +6,11 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:49:43 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 13:43:55 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:03:11 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../lib/minishell.h"
-
-void	ft_cmds_free(t_env *cmds, int ex)
-{
-	t_env *tmp;
-	t_env *next;
-
-	tmp = cmds;
-	if(ex == 1)
-	{
-		free_subtokens(tmp->exp);
-		free_subtokens(tmp->env);
-	}
-	duping(tmp);
-	while (tmp)
-	{
-		next = tmp->next;
-		if (tmp->cmd && (!tmp->path || ft_strcmp(tmp->cmd, tmp->path) != 0))
-			free(tmp->cmd);
-		if (tmp->path)
-			free(tmp->path);
-		free_subtokens(tmp->arg);
-		if(ex == 1 || tmp->prev)
-			free(tmp);
-		tmp = next;
-	}
-}
 
 void	ft_handler(int sig)
 {
@@ -51,13 +25,24 @@ void	ft_noint_handler(int sig)
 {
 	if (sig == SIGQUIT)
 	{
-		if (isatty(0))
-			write(1, "Quit (core dumped)\n", 19);
+		write(1, "Quit (core dumped)\n", 19);
 	}
 	else if (sig == SIGINT)
 	{
-		if (isatty(0))
-			write(1, "\n", 1);
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+	}
+}
+
+void	ft_fake_handler(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		(void)sig;
+	}
+	else if (sig == SIGINT)
+	{
 		rl_replace_line("", 0);
 		rl_on_new_line();
 	}

@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/09 13:12:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:49:35 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ int	ft_pipe(t_env *cmds)
 		cmd = cmd->next;
 	}
 	cmd = cmds;
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, ft_fake_handler);
+	signal(SIGQUIT, ft_fake_handler);
 	pipo(cmd, num_cmds, &last_pid);
 	signal(SIGINT, ft_noint_handler);
 	signal(SIGQUIT, ft_noint_handler);
