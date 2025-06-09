@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:40:17 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:06:35 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:07:53 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	ft_cmds_free(t_env *cmds, int ex)
 	tmp = cmds;
 	if (ex == 1)
 	{
+		rl_clear_history();
 		free_subtokens(tmp->exp);
 		free_subtokens(tmp->env);
 	}

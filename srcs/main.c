@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:11:53 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 14:23:55 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:07:55 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,4 @@ int	main(int argc, char **argv, char **env)
 	main_loop(cmds);
 	write(2, "exit\n", 5);
 	ft_clear(cmds);
-	rl_clear_history();
 }
