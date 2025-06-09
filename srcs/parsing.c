@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 11:12:34 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 12:09:00 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:38:03 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void	pipes_handler(t_env *cmds, const char *input)
 	if (pipes[1] == NULL)
 	{
 		if (parsing(cmds, pipes[0]) == 1)
+		{
+			free_subtokens(pipes);
 			return ;
+		}
 		free_subtokens(pipes);
 		pop(cmds, 0);
 		return ;
@@ -64,6 +67,7 @@ int	parsing_help(t_env *cmd, int command_set)
 {
 	if (command_set == -1)
 	{
+		check_heredoc(cmd);
 		apply_fd(cmd);
 		return (0);
 	}

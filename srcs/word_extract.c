@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 10:31:57 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 15:08:34 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:27:49 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ char	*extract_word(const char *s, size_t *index, char del)
 		quotes(s, *index, &quote);
 		if (del == '|' && !quote)
 			handle_redir(s, index, result, &i);
-		result[i++] = s[(*index)++];
+		if (s[(*index)] != '\0')
+			result[i++] = s[(*index)++];
 		if (extract_helper(&result, &allocated_size, i))
 			return (NULL);
 	}

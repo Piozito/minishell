@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:49:43 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/09 15:03:11 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:00:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,15 @@ void	ft_fake_handler(int sig)
 
 int	general_error(char *str, int free, int ex, t_env *cmds)
 {
-	if (free == 1)
-		ft_clear(cmds);
 	ft_putstr_fd(str, 1);
 	ft_putstr_fd("\n", 1);
 	if (ex == 1)
+	{
+		ft_clear(cmds);
 		exit(1);
+	}
+	if (free == 1)
+		ft_cmds_free(cmds, 0);
 	return (1);
 }
 

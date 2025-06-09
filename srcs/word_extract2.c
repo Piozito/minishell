@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 16:11:18 by aaleixo-          #+#    #+#             */
-/*   Updated: 2025/06/05 16:56:33 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:41:41 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	extract_helper(char **result, size_t *allocated_size, size_t i)
 void	quotes(const char *s, size_t idx, char *quote)
 {
 	if (!(*quote) && (s[idx] == '\'' || s[idx] == '\"')
-		&& ft_find_closing_quote(s, idx, s[idx]) != NULL)
+		&& ft_find_closing_quote(s, idx + 1, s[idx]) != NULL)
 		*quote = s[idx];
 	else if (*quote && s[idx] == *quote)
 		*quote = 0;
