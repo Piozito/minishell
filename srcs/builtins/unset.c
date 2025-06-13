@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 19:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/05 15:15:06 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:23:19 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	remove_env_var(char **env, const char *var)
 		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0
 			&& env[i][ft_strlen(var)] == '=')
 		{
+			free(env[i]);
 			while (env[i])
 			{
 				env[i] = env[i + 1];

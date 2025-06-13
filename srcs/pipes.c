@@ -6,7 +6,7 @@
 /*   By: aaleixo- <aaleixo-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 13:30:04 by marvin            #+#    #+#             */
-/*   Updated: 2025/06/09 14:49:35 by aaleixo-         ###   ########.fr       */
+/*   Updated: 2025/06/13 11:20:05 by aaleixo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ pid_t	handle_child(t_env *cmds, int prev_fd, int p_fd[2], int is_last)
 		ft_clear(cmds);
 		exit(1);
 	}
-	if (pid == 0)
+	if (pid == 0 && cmds->cmd)
 	{
 		if ((ft_isalpha(cmds->cmd[0]) == 0 && cmd_check(cmds) == 0)
 			|| ft_strchr(cmds->cmd, ' '))
